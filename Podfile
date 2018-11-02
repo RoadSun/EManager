@@ -7,7 +7,6 @@ target 'EManager' do
   pod 'Alamofire', '~> 4.7'
   pod 'SwiftyJSON', '~> 4.0'
   pod 'SnapKit', '~> 4.2.0'
-
   # Pods for EManager
 
   target 'EManagerTests' do

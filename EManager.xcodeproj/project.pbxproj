@@ -57,6 +57,7 @@
 		602DE1852189AA5300CC4511 /* EManagerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EManagerUITests.swift; sourceTree = "<group>"; };
 		602DE1872189AA5300CC4511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		602DE196218AD99800CC4511 /* SRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRequest.swift; sourceTree = "<group>"; };
+		602DE19A218C2B5B00CC4511 /* PeerTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PeerTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A6576315E06F2BEAF26DBF /* Pods-EManagerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerUITests/Pods-EManagerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8B3475704189D6BD6FA2A89D /* Pods-EManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerTests/Pods-EManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		AB186122656B3DED540361E4 /* Pods-EManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerTests/Pods-EManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 		CB1D92DB72FA6EC2753F301C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				602DE19A218C2B5B00CC4511 /* PeerTalk.framework */,
 				1312A2AB853206982B280269 /* Pods_EManager.framework */,
 				FEBE067491FAD082BF540189 /* Pods_EManagerTests.framework */,
 				AC4625D62BFF47AE78217BB0 /* Pods_EManagerUITests.framework */,
