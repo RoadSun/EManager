@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60108D9321915E960099A903 /* SnapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9221915E960099A903 /* SnapController.swift */; };
+		60108D9521915EC90099A903 /* FileDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9421915EC90099A903 /* FileDatas.swift */; };
+		60108D97219166060099A903 /* SortController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D96219166060099A903 /* SortController.swift */; };
 		602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1622189AA5100CC4511 /* AppDelegate.swift */; };
 		602DE1652189AA5100CC4511 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1642189AA5100CC4511 /* ViewController.swift */; };
 		602DE1682189AA5100CC4511 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602DE1662189AA5100CC4511 /* Main.storyboard */; };
@@ -42,6 +45,9 @@
 		116E85AD4CAD52B12D1BDE6B /* Pods-EManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManager.release.xcconfig"; path = "Pods/Target Support Files/Pods-EManager/Pods-EManager.release.xcconfig"; sourceTree = "<group>"; };
 		1312A2AB853206982B280269 /* Pods_EManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		203BCD1CBF7B745B60CC3304 /* Pods-EManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManager.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EManager/Pods-EManager.debug.xcconfig"; sourceTree = "<group>"; };
+		60108D9221915E960099A903 /* SnapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapController.swift; sourceTree = "<group>"; };
+		60108D9421915EC90099A903 /* FileDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatas.swift; sourceTree = "<group>"; };
+		60108D96219166060099A903 /* SortController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortController.swift; sourceTree = "<group>"; };
 		602DE15F2189AA5100CC4511 /* EManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602DE1622189AA5100CC4511 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602DE1642189AA5100CC4511 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -107,6 +113,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		60108D8E21915E170099A903 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				60108D9421915EC90099A903 /* FileDatas.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		60108D8F21915E5D0099A903 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				60108D9221915E960099A903 /* SnapController.swift */,
+				60108D96219166060099A903 /* SortController.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		602DE1562189AA5100CC4511 = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +162,8 @@
 				602DE16E2189AA5300CC4511 /* LaunchScreen.storyboard */,
 				602DE1712189AA5300CC4511 /* Info.plist */,
 				602DE1692189AA5100CC4511 /* EManager.xcdatamodeld */,
+				60108D8F21915E5D0099A903 /* Test */,
+				60108D8E21915E170099A903 /* Common */,
 				602DE193218A9B9300CC4511 /* Tool */,
 			);
 			path = EManager;
@@ -395,10 +420,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60108D9321915E960099A903 /* SnapController.swift in Sources */,
+				60108D97219166060099A903 /* SortController.swift in Sources */,
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
 				602DE16B2189AA5100CC4511 /* EManager.xcdatamodeld in Sources */,
+				60108D9521915EC90099A903 /* FileDatas.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
