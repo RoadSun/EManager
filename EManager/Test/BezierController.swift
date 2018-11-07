@@ -1,20 +1,19 @@
 //
-//  SortController.swift
+//  BezierController.swift
 //  EManager
 //
-//  Created by EX DOLL on 2018/11/6.
+//  Created by EX DOLL on 2018/11/7.
 //  Copyright © 2018 EX DOLL. All rights reserved.
 //
 
 import UIKit
 
-class SortController: UIViewController {
-        
+class BezierController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "冒泡"
-        self.view.backgroundColor = UIColor.white
-        
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {

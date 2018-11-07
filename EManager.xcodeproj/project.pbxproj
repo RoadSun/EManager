@@ -10,6 +10,10 @@
 		60108D9321915E960099A903 /* SnapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9221915E960099A903 /* SnapController.swift */; };
 		60108D9521915EC90099A903 /* FileDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9421915EC90099A903 /* FileDatas.swift */; };
 		60108D97219166060099A903 /* SortController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D96219166060099A903 /* SortController.swift */; };
+		60108D9D219273F30099A903 /* QRCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9C219273F30099A903 /* QRCodeController.swift */; };
+		60108D9F2192755E0099A903 /* ORCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9E2192755E0099A903 /* ORCode.swift */; };
+		60108DA32192D4720099A903 /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA22192D4720099A903 /* ColorController.swift */; };
+		60108DA52192D9050099A903 /* BezierController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA42192D9050099A903 /* BezierController.swift */; };
 		602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1622189AA5100CC4511 /* AppDelegate.swift */; };
 		602DE1652189AA5100CC4511 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1642189AA5100CC4511 /* ViewController.swift */; };
 		602DE1682189AA5100CC4511 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602DE1662189AA5100CC4511 /* Main.storyboard */; };
@@ -48,6 +52,10 @@
 		60108D9221915E960099A903 /* SnapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapController.swift; sourceTree = "<group>"; };
 		60108D9421915EC90099A903 /* FileDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatas.swift; sourceTree = "<group>"; };
 		60108D96219166060099A903 /* SortController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortController.swift; sourceTree = "<group>"; };
+		60108D9C219273F30099A903 /* QRCodeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeController.swift; sourceTree = "<group>"; };
+		60108D9E2192755E0099A903 /* ORCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORCode.swift; sourceTree = "<group>"; };
+		60108DA22192D4720099A903 /* ColorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
+		60108DA42192D9050099A903 /* BezierController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierController.swift; sourceTree = "<group>"; };
 		602DE15F2189AA5100CC4511 /* EManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602DE1622189AA5100CC4511 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602DE1642189AA5100CC4511 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -126,6 +134,9 @@
 			children = (
 				60108D9221915E960099A903 /* SnapController.swift */,
 				60108D96219166060099A903 /* SortController.swift */,
+				60108D9C219273F30099A903 /* QRCodeController.swift */,
+				60108DA22192D4720099A903 /* ColorController.swift */,
+				60108DA42192D9050099A903 /* BezierController.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -191,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				602DE196218AD99800CC4511 /* SRequest.swift */,
+				60108D9E2192755E0099A903 /* ORCode.swift */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -421,12 +433,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				60108D9321915E960099A903 /* SnapController.swift in Sources */,
+				60108DA32192D4720099A903 /* ColorController.swift in Sources */,
 				60108D97219166060099A903 /* SortController.swift in Sources */,
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,
+				60108D9D219273F30099A903 /* QRCodeController.swift in Sources */,
+				60108D9F2192755E0099A903 /* ORCode.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
 				602DE16B2189AA5100CC4511 /* EManager.xcdatamodeld in Sources */,
 				60108D9521915EC90099A903 /* FileDatas.swift in Sources */,
+				60108DA52192D9050099A903 /* BezierController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,12 +617,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45X9S6AWNF;
 				INFOPLIST_FILE = EManager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pp.EManager;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangqiang.t;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -619,12 +636,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45X9S6AWNF;
 				INFOPLIST_FILE = EManager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pp.EManager;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zhangqiang.t;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

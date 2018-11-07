@@ -7,10 +7,12 @@
 //
 
 import UIKit
-var FilePages = [["快速排序","冒泡排序"],["约束"]]
-var FilePagesNames = ["快速排序":"SortController",
-                      "冒泡排序":"SnapController",
-                      "约束":"SnapController"]
+var FilePages = [["排序"],["约束"],["二维码"],["颜色"],["贝塞尔"]]
+var FilePagesNames = ["排序":"SortController",
+                      "约束":"SnapController",
+                      "二维码":"QRCodeController",
+                      "颜色":"ColorController",
+                      "贝塞尔":"BezierController"]
 class FileDatas: NSObject {
-    
+    // Unmanaged.passUnretained(value).toOpaque() 打印内存地址
 }
