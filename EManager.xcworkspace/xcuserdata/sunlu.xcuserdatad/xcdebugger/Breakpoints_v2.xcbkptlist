@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "EManager/Test/QRCodeController.swift"
-            timestampString = "563270865.923892"
+            timestampString = "563355853.738966"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
@@ -26,12 +26,12 @@
                   moduleName = "EManager"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlu/Downloads/GitHub/EManager/EManager/Test/QRCodeController.swift"
-                  timestampString = "563270866.236667"
+                  timestampString = "563355853.863192"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "120"
                   endingLineNumber = "120"
-                  offsetFromSymbolStart = "152">
+                  offsetFromSymbolStart = "134">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -41,12 +41,12 @@
                   moduleName = "EManager"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/sunlu/Downloads/GitHub/EManager/EManager/Test/QRCodeController.swift"
-                  timestampString = "563270866.238133"
+                  timestampString = "563355853.867169"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "121"
                   endingLineNumber = "121"
-                  offsetFromSymbolStart = "28">
+                  offsetFromSymbolStart = "22">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -58,13 +58,23 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "EManager/Test/QRCodeController.swift"
-            timestampString = "563270865.923948"
+            timestampString = "563355853.739486"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "110"
             endingLineNumber = "110"
             landmarkName = "metadataOutput(_:didOutput:from:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            scope = "0"
+            stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

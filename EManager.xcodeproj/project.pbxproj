@@ -14,6 +14,12 @@
 		60108D9F2192755E0099A903 /* ORCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9E2192755E0099A903 /* ORCode.swift */; };
 		60108DA32192D4720099A903 /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA22192D4720099A903 /* ColorController.swift */; };
 		60108DA52192D9050099A903 /* BezierController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA42192D9050099A903 /* BezierController.swift */; };
+		60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA72193C57C0099A903 /* CollectionViewController.swift */; };
+		60108DAA2193D03B0099A903 /* SCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DA92193D03B0099A903 /* SCell.swift */; };
+		60108DAD2193D61B0099A903 /* CollectionFootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DAB2193D61B0099A903 /* CollectionFootView.swift */; };
+		60108DAE2193D61B0099A903 /* CollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DAC2193D61B0099A903 /* CollectionHeaderView.swift */; };
+		60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DB021940DCC0099A903 /* SSnapBasicView.swift */; };
+		60108DB3219416D00099A903 /* SSnapUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DB2219416D00099A903 /* SSnapUpdateView.swift */; };
 		602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1622189AA5100CC4511 /* AppDelegate.swift */; };
 		602DE1652189AA5100CC4511 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1642189AA5100CC4511 /* ViewController.swift */; };
 		602DE1682189AA5100CC4511 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602DE1662189AA5100CC4511 /* Main.storyboard */; };
@@ -56,6 +62,12 @@
 		60108D9E2192755E0099A903 /* ORCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORCode.swift; sourceTree = "<group>"; };
 		60108DA22192D4720099A903 /* ColorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
 		60108DA42192D9050099A903 /* BezierController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BezierController.swift; sourceTree = "<group>"; };
+		60108DA72193C57C0099A903 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
+		60108DA92193D03B0099A903 /* SCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCell.swift; sourceTree = "<group>"; };
+		60108DAB2193D61B0099A903 /* CollectionFootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionFootView.swift; sourceTree = "<group>"; };
+		60108DAC2193D61B0099A903 /* CollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionHeaderView.swift; sourceTree = "<group>"; };
+		60108DB021940DCC0099A903 /* SSnapBasicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapBasicView.swift; sourceTree = "<group>"; };
+		60108DB2219416D00099A903 /* SSnapUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapUpdateView.swift; sourceTree = "<group>"; };
 		602DE15F2189AA5100CC4511 /* EManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602DE1622189AA5100CC4511 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602DE1642189AA5100CC4511 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -137,8 +149,29 @@
 				60108D9C219273F30099A903 /* QRCodeController.swift */,
 				60108DA22192D4720099A903 /* ColorController.swift */,
 				60108DA42192D9050099A903 /* BezierController.swift */,
+				60108DA92193D03B0099A903 /* SCell.swift */,
+				60108DAB2193D61B0099A903 /* CollectionFootView.swift */,
+				60108DAC2193D61B0099A903 /* CollectionHeaderView.swift */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		60108DA62193C55C0099A903 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				60108DAF21940D930099A903 /* Snap */,
+				60108DA72193C57C0099A903 /* CollectionViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		60108DAF21940D930099A903 /* Snap */ = {
+			isa = PBXGroup;
+			children = (
+				60108DB021940DCC0099A903 /* SSnapBasicView.swift */,
+				60108DB2219416D00099A903 /* SSnapUpdateView.swift */,
+			);
+			path = Snap;
 			sourceTree = "<group>";
 		};
 		602DE1562189AA5100CC4511 = {
@@ -174,6 +207,7 @@
 				602DE1712189AA5300CC4511 /* Info.plist */,
 				602DE1692189AA5100CC4511 /* EManager.xcdatamodeld */,
 				60108D8F21915E5D0099A903 /* Test */,
+				60108DA62193C55C0099A903 /* View */,
 				60108D8E21915E170099A903 /* Common */,
 				602DE193218A9B9300CC4511 /* Tool */,
 			);
@@ -432,14 +466,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */,
+				60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */,
 				60108D9321915E960099A903 /* SnapController.swift in Sources */,
+				60108DAA2193D03B0099A903 /* SCell.swift in Sources */,
 				60108DA32192D4720099A903 /* ColorController.swift in Sources */,
 				60108D97219166060099A903 /* SortController.swift in Sources */,
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,
+				60108DAE2193D61B0099A903 /* CollectionHeaderView.swift in Sources */,
+				60108DAD2193D61B0099A903 /* CollectionFootView.swift in Sources */,
 				60108D9D219273F30099A903 /* QRCodeController.swift in Sources */,
 				60108D9F2192755E0099A903 /* ORCode.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
+				60108DB3219416D00099A903 /* SSnapUpdateView.swift in Sources */,
 				602DE16B2189AA5100CC4511 /* EManager.xcdatamodeld in Sources */,
 				60108D9521915EC90099A903 /* FileDatas.swift in Sources */,
 				60108DA52192D9050099A903 /* BezierController.swift in Sources */,
