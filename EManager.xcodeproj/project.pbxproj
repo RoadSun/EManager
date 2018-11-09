@@ -20,6 +20,9 @@
 		60108DAE2193D61B0099A903 /* CollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DAC2193D61B0099A903 /* CollectionHeaderView.swift */; };
 		60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DB021940DCC0099A903 /* SSnapBasicView.swift */; };
 		60108DB3219416D00099A903 /* SSnapUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DB2219416D00099A903 /* SSnapUpdateView.swift */; };
+		60108DE4219568950099A903 /* SSnapRemakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE3219568950099A903 /* SSnapRemakeView.swift */; };
+		60108DE621956DA70099A903 /* SSnapUsingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE521956DA70099A903 /* SSnapUsingView.swift */; };
+		60108DE8219571F30099A903 /* SSnapEdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE7219571F30099A903 /* SSnapEdgesView.swift */; };
 		602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1622189AA5100CC4511 /* AppDelegate.swift */; };
 		602DE1652189AA5100CC4511 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1642189AA5100CC4511 /* ViewController.swift */; };
 		602DE1682189AA5100CC4511 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 602DE1662189AA5100CC4511 /* Main.storyboard */; };
@@ -68,6 +71,9 @@
 		60108DAC2193D61B0099A903 /* CollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionHeaderView.swift; sourceTree = "<group>"; };
 		60108DB021940DCC0099A903 /* SSnapBasicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapBasicView.swift; sourceTree = "<group>"; };
 		60108DB2219416D00099A903 /* SSnapUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapUpdateView.swift; sourceTree = "<group>"; };
+		60108DE3219568950099A903 /* SSnapRemakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapRemakeView.swift; sourceTree = "<group>"; };
+		60108DE521956DA70099A903 /* SSnapUsingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapUsingView.swift; sourceTree = "<group>"; };
+		60108DE7219571F30099A903 /* SSnapEdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapEdgesView.swift; sourceTree = "<group>"; };
 		602DE15F2189AA5100CC4511 /* EManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		602DE1622189AA5100CC4511 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		602DE1642189AA5100CC4511 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +176,9 @@
 			children = (
 				60108DB021940DCC0099A903 /* SSnapBasicView.swift */,
 				60108DB2219416D00099A903 /* SSnapUpdateView.swift */,
+				60108DE3219568950099A903 /* SSnapRemakeView.swift */,
+				60108DE521956DA70099A903 /* SSnapUsingView.swift */,
+				60108DE7219571F30099A903 /* SSnapEdgesView.swift */,
 			);
 			path = Snap;
 			sourceTree = "<group>";
@@ -480,7 +489,10 @@
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
 				60108DB3219416D00099A903 /* SSnapUpdateView.swift in Sources */,
+				60108DE621956DA70099A903 /* SSnapUsingView.swift in Sources */,
+				60108DE8219571F30099A903 /* SSnapEdgesView.swift in Sources */,
 				602DE16B2189AA5100CC4511 /* EManager.xcdatamodeld in Sources */,
+				60108DE4219568950099A903 /* SSnapRemakeView.swift in Sources */,
 				60108D9521915EC90099A903 /* FileDatas.swift in Sources */,
 				60108DA52192D9050099A903 /* BezierController.swift in Sources */,
 			);

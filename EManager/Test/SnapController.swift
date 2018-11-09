@@ -25,7 +25,10 @@ class SnapController: UIViewController {
 //            make.center.equalToSuperview()      // 位于当前视图的中心
 //        }
 //        let basicV = SSnapBasicView()
-        let basicV = SSnapUpdateView()
+//        let basicV = SSnapUpdateView()
+//        let basicV = SSnapRemakeView()
+//        let basicV = SSnapUsingView()
+        let basicV = SSnapEdgesView()
         basicV.frame = CGRect(x: 10, y: 94, width: self.view.frame.size.width - 20, height: self.view.frame.size.height - 94 - 50)
         basicV.layer.borderColor = UIColor.gray.cgColor
         basicV.layer.borderWidth = 0.5

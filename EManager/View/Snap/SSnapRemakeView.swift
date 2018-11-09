@@ -1,19 +1,18 @@
 //
-//  SSnapUpdateView.swift
+//  SSnapRemakeView.swift
 //  EManager
 //
-//  Created by EX DOLL on 2018/11/8.
+//  Created by EX DOLL on 2018/11/9.
 //  Copyright © 2018 EX DOLL. All rights reserved.
 //
 
 import UIKit
 
-class SSnapUpdateView: UIView {
+class SSnapRemakeView: UIView {
     var button:UIButton!
-    var size:CGSize!
+    var isLeft = true
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.size = CGSize(width: 20, height: 50)
         button = UIButton(type: UIButtonType.system)
         button.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
         button.backgroundColor = UIColor.lightGray
@@ -21,30 +20,31 @@ class SSnapUpdateView: UIView {
         button.layer.borderWidth = 0.5
         button.setTitle("Click", for: .normal)
         self.addSubview(button)
-
+        self.updateConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func updateConstraints() {
-        button.snp.updateConstraints { (make) in
-            make.center.equalTo(self)
-            make.width.equalTo(self.size.width).priority(.low)
-            make.height.equalTo(self.size.height).priority(.low)
-            make.width.lessThanOrEqualTo(self)
-            make.height.lessThanOrEqualTo(self)
+        button.snp.remakeConstraints { (make) in
+            make.width.height.equalTo(100)
+            if self.isLeft {
+                make.left.top.equalTo(self).offset(10);
+            }else{
+                make.bottom.right.equalTo(self).offset(-10);
+            }
         }
-        super.updateConstraints()
     }
     
     @objc func buttonClick(_ sender:UIButton) {
-        self.size = CGSize(width: self.size.width * 1.3, height: self.size.height * 1.3)
+        isLeft = !isLeft
         self.setNeedsUpdateConstraints()
         self.updateConstraintsIfNeeded()
         UIView.animate(withDuration: 0.4) {
             self.layoutIfNeeded()
         }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
 }
