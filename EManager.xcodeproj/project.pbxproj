@@ -35,6 +35,9 @@
 		6053CE9D2199088E00E1014C /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9C2199088E00E1014C /* BodyView.swift */; };
 		6053CE9F219909F900E1014C /* ControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9E219909F900E1014C /* ControlController.swift */; };
 		6053CEA1219922AE00E1014C /* CirclePan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEA0219922AE00E1014C /* CirclePan.swift */; };
+		6053CEA5219A632600E1014C /* BasicFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEA4219A632600E1014C /* BasicFunction.swift */; };
+		6053CEA7219A9A8700E1014C /* RobotHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEA6219A9A8700E1014C /* RobotHandle.swift */; };
+		6053CEA9219AA34900E1014C /* CoordinatesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEA8219AA34900E1014C /* CoordinatesController.swift */; };
 		99FFA5F7C40DEE89E3305517 /* Pods_EManagerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEBE067491FAD082BF540189 /* Pods_EManagerTests.framework */; };
 		9FF84718E4B5BC59C04B5125 /* Pods_EManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1312A2AB853206982B280269 /* Pods_EManager.framework */; };
 		A4C6D47378FBBCB22B6FE03F /* Pods_EManagerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4625D62BFF47AE78217BB0 /* Pods_EManagerUITests.framework */; };
@@ -96,6 +99,9 @@
 		6053CE9C2199088E00E1014C /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
 		6053CE9E219909F900E1014C /* ControlController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlController.swift; sourceTree = "<group>"; };
 		6053CEA0219922AE00E1014C /* CirclePan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclePan.swift; sourceTree = "<group>"; };
+		6053CEA4219A632600E1014C /* BasicFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicFunction.swift; sourceTree = "<group>"; };
+		6053CEA6219A9A8700E1014C /* RobotHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotHandle.swift; sourceTree = "<group>"; };
+		6053CEA8219AA34900E1014C /* CoordinatesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatesController.swift; sourceTree = "<group>"; };
 		66A6576315E06F2BEAF26DBF /* Pods-EManagerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerUITests/Pods-EManagerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		8B3475704189D6BD6FA2A89D /* Pods-EManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerTests/Pods-EManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		AB186122656B3DED540361E4 /* Pods-EManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EManagerTests/Pods-EManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				60108D9421915EC90099A903 /* FileDatas.swift */,
+				6053CEA4219A632600E1014C /* BasicFunction.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -263,6 +270,8 @@
 				6053CE9C2199088E00E1014C /* BodyView.swift */,
 				6053CE9E219909F900E1014C /* ControlController.swift */,
 				6053CEA0219922AE00E1014C /* CirclePan.swift */,
+				6053CEA6219A9A8700E1014C /* RobotHandle.swift */,
+				6053CEA8219AA34900E1014C /* CoordinatesController.swift */,
 			);
 			path = Robot;
 			sourceTree = "<group>";
@@ -493,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */,
+				6053CEA9219AA34900E1014C /* CoordinatesController.swift in Sources */,
 				60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */,
 				60108D9321915E960099A903 /* SnapController.swift in Sources */,
 				60108DAA2193D03B0099A903 /* SCell.swift in Sources */,
@@ -513,7 +523,9 @@
 				60108DE4219568950099A903 /* SSnapRemakeView.swift in Sources */,
 				60108D9521915EC90099A903 /* FileDatas.swift in Sources */,
 				60108DA52192D9050099A903 /* BezierController.swift in Sources */,
+				6053CEA7219A9A8700E1014C /* RobotHandle.swift in Sources */,
 				6053CEA1219922AE00E1014C /* CirclePan.swift in Sources */,
+				6053CEA5219A632600E1014C /* BasicFunction.swift in Sources */,
 				6053CE9D2199088E00E1014C /* BodyView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

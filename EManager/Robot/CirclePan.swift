@@ -23,26 +23,13 @@ class CirclePan: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     @objc func panEvent(_ sender:UIPanGestureRecognizer) {
         let point = sender.location(in: self)
-        var x = point.x - self.Ctr.center.x
-        var y = point.y - self.Ctr.center.y
 
-        let sin_α = y / sqrt(pow(x, 2.0) + pow(y, 2.0))
-        var angl = asin(sin_α);
-        let int_angl = Int((180.0/CGFloat.pi)*angl)
-        let sign = CGFloat(x < 0 ? -1.0 : 1.0)
-        if angl > -0.6 && sign > 0{
-            angl = -0.6
-        }
-        
-        if angl > -1.5 && sign < 0{
-            angl = -1.5
-        }
-        current.setTitle("\(int_angl) -- \(angl)", for: .normal)
-        x = 100.0*cos(angl)*sign + self.Ctr.center.x
-        y = 100.0*sin(angl) + self.Ctr.center.y
-        self.head.center = CGPoint(x: x, y: y)
+        let ARange = adjustRange(30, 120, moving: point, fixed: self.Ctr.center)
+ 
+        self.head.center = CGPoint(x: ARange.x, y:ARange.y)
         
         let linePath = CGMutablePath()
         linePath.move(to: self.Ctr.center)
@@ -73,12 +60,15 @@ class CirclePan: UIView {
     
     lazy var head: UIView = {
         let view = UIButton(type: .system)
-        view.setTitle("头", for: .normal)
+        view.setBackgroundImage(BasicFunction.Img("headicon"), for: .normal)
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 40
         view.layer.masksToBounds = true
         view.layer.borderWidth = 5
-        view.layer.borderColor = UIColor.orange.cgColor
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.shadowColor = UIColor.lightGray.cgColor
+        view.layer.shadowOffset = CGSize(width: 3, height: 3)
+        view.layer.shadowOpacity = 1
         view.frame.size = CGSize(width: 80, height: 80)
         view.center = CGPoint(x: self.Ctr.center.x, y: self.Ctr.center.y - 100)
         self.addSubview(view)
@@ -110,6 +100,7 @@ class CirclePan: UIView {
         min.layer.masksToBounds = true
         min.layer.borderWidth = 0.5
         min.layer.borderColor = UIColor.lightGray.cgColor
+        min.text = "60"
         self.addSubview(min)
         return min
     }()
@@ -121,6 +112,7 @@ class CirclePan: UIView {
         min.layer.masksToBounds = true
         min.layer.borderWidth = 0.5
         min.layer.borderColor = UIColor.lightGray.cgColor
+        min.text = "120"
         self.addSubview(min)
         return min
     }()
