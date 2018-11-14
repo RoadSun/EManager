@@ -18,6 +18,10 @@ class CirclePan: UIView {
         _ = min
         _ = max
         _ = current
+        let linePath = CGMutablePath()
+        linePath.move(to: self.Ctr.center)
+        linePath.addLine(to: self.head.center)
+        self.nlineShape(linePath)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,7 +31,10 @@ class CirclePan: UIView {
     @objc func panEvent(_ sender:UIPanGestureRecognizer) {
         let point = sender.location(in: self)
 
-        let ARange = adjustRange(30, 120, moving: point, fixed: self.Ctr.center)
+        if RobotHandle.isEnable(moving: point, current: self.center, max: 40) == false {
+            return
+        }
+        let ARange = RobotHandle.adjustRange(30, 120, moving: point, fixed: self.Ctr.center, length: 100)
  
         self.head.center = CGPoint(x: ARange.x, y:ARange.y)
         
@@ -65,7 +72,7 @@ class CirclePan: UIView {
         view.layer.cornerRadius = 40
         view.layer.masksToBounds = true
         view.layer.borderWidth = 5
-        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderColor = UIColor.orange.cgColor
         view.layer.shadowColor = UIColor.lightGray.cgColor
         view.layer.shadowOffset = CGSize(width: 3, height: 3)
         view.layer.shadowOpacity = 1
