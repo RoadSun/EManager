@@ -13,31 +13,34 @@ class ColorController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let rect = CGRect(x: 30, y: 60, width: 200, height: 200)
+//        let rect = CGRect(x: 30, y: 60, width: 200, height: 200)
+//
+//        let gradientView = UIView(frame: rect)
+//
+//
+//
+//        let gradientLayer = CAGradientLayer()
+//
+//        gradientLayer.frame = gradientView.frame
+//
+//
+//
+//        let fromColor = UIColor.yellow.cgColor
+//
+//        let midColor = UIColor.red.cgColor
+//
+//        let toColor = UIColor.purple.cgColor
+//
+//
+//
+//        gradientLayer.colors = [fromColor, midColor, toColor]
+//
+//        view.layer.addSublayer(gradientLayer)
+//
+//        self.view.addSubview(gradientView)
         
-        let gradientView = UIView(frame: rect)
-        
-        
-        
-        let gradientLayer = CAGradientLayer()
-        
-        gradientLayer.frame = gradientView.frame
-        
-        
-        
-        let fromColor = UIColor.yellow.cgColor
-        
-        let midColor = UIColor.red.cgColor
-        
-        let toColor = UIColor.purple.cgColor
-        
-        
-        
-        gradientLayer.colors = [fromColor, midColor, toColor]
-        
-        view.layer.addSublayer(gradientLayer)
-        
-        self.view.addSubview(gradientView)
+        let cauves = Canvas(frame: self.view.bounds)
+        self.view.addSubview(cauves)
     }
 
     override func didReceiveMemoryWarning() {
