@@ -14,11 +14,27 @@ class CoordinatesController: UIViewController {
         super.viewDidLoad()
         _ = moveTest
     }
-    
+    var pointT:CGPoint!
+    var w:CGFloat!
+    var h:CGFloat!
     @objc func moveTestEvent(_ sender:UIPanGestureRecognizer) {
-        let point = sender.location(in: self.view)
-        self.moveTest.center = point
-        self.moveTest.setTitle("\(point.x)\n\(self.view.frame.size.height - point.y)", for: .normal)
+
+        if sender.state == .began {
+            pointT = self.moveTest.convert(self.moveTest.frame.origin, to: self.view)
+            w = pointT.x - self.moveTest.frame.origin.x
+            h = pointT.y - self.moveTest.frame.origin.y
+        }else if (sender.state == .changed){
+            let point = sender.location(in: self.view)
+            self.moveTest.frame.origin = CGPoint(x: point.x - w, y: point.y - h)
+        }
+        
+        
+//        let window = UIApplication.shared.delegate?.window
+        
+        
+//        UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+//
+//        CGRect rect=[view1 convertRect: view1.bounds toView:window];
     }
     
     lazy var moveTest: UIButton = {
@@ -27,15 +43,45 @@ class CoordinatesController: UIViewController {
         view.backgroundColor = UIColor.white
         view.layer.borderWidth = 0.5
         view.layer.borderColor = UIColor.black.cgColor
-        view.frame.size = CGSize(width: 150, height: 40)
+        view.frame.size = CGSize(width: 150, height: 150)
         view.center = CGPoint(x: self.view.frame.size.width/2, y: self.view.frame.size.height/2)
         self.view.addSubview(view)
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(moveTestEvent(_:)))
-        view.addGestureRecognizer(pan)
+//        let pan = UIPanGestureRecognizer(target: self, action: #selector(moveTestEvent(_:)))
+//        view.addGestureRecognizer(pan)
         return view
     }()
     
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch:AnyObject in touches {
+            let t:UITouch = touch as! UITouch
+            pointT = t.location(in: self.view)
+            print(t.location(in: self.view))
+            w = pointT.x - self.moveTest.frame.origin.x
+            h = pointT.y - self.moveTest.frame.origin.y
+            //当在屏幕上连续拍动两下时，背景回复为白色
+//            if t.tapCount == 2
+//            {
+//                self.view.backgroundColor = UIColor.white
+//            }else if t.tapCount == 1
+//            {
+//                self.view.backgroundColor = UIColor.blue
+//            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch:AnyObject in touches {
+            let t:UITouch = touch as! UITouch
+            pointT = t.location(in: self.view)
+            self.moveTest.frame.origin = CGPoint(x: pointT.x - w, y: pointT.y - h)
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(touches)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

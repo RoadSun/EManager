@@ -17,12 +17,25 @@ let footIdentifier   = "CollectionFootView"
 
 class SortController: UIViewController , UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return CellSortTitle.count
+        return CellSortTitle.count+1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identify, for: indexPath) as! SCell
-        cell.title.text = "\(indexPath.row+1).\(CellSortTitle[indexPath.row])"
+        if indexPath.row == CellSortTitle.count {
+            cell.title.text = "添加"
+            cell.selectedBlock = {tag in
+                CellSortTitle.append("图图图")
+                collectionView.reloadData()
+            }
+        }else{
+            cell.title.text = "\(indexPath.row+1).\(CellSortTitle[indexPath.row])"
+            cell.selectedBlock = {tag in
+                CellSortTitle.remove(at: tag)
+                collectionView.reloadData()
+            }
+        }
+        cell.row = indexPath.row
         return cell;
     }
     
@@ -51,7 +64,7 @@ class SortController: UIViewController , UICollectionViewDelegate, UICollectionV
             return headerView
         }else{
             let footView : CollectionFootView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: footIdentifier, for: indexPath) as! CollectionFootView
-            footView.view.backgroundColor = UIColor.white
+            footView.view.backgroundColor = UIColor.orange
             return footView
         }
     }
