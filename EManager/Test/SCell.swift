@@ -22,7 +22,7 @@ class SCell: UICollectionViewCell {
     
     @objc func deleteClick(_ sender:UIButton) {
         if selectedBlock != nil {
-            selectedBlock()
+            selectedBlock(sender.tag)
         }
     }
     

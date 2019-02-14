@@ -9,10 +9,10 @@
 import UIKit
 
 class TimerController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
     
@@ -25,7 +25,6 @@ class TimerController: UIViewController {
             let ss:String = String(format: "%02d", second % 60)
             print("\(hh) : \(mm) : \(ss)")
             }.fire()
-        
     }
-
+    
 }
