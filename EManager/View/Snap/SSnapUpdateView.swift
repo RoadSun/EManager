@@ -10,7 +10,7 @@ import UIKit
 
 class SSnapUpdateView: UIView {
     var button:UIButton!
-    var size:CGSize!
+//    var size:CGSize!
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.size = CGSize(width: 20, height: 50)

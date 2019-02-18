@@ -56,7 +56,6 @@ class SendUDPController: UIViewController, GCDAsyncUdpSocketDelegate {
         print("[\(ip ?? ""):\(port)]\(list ?? "")")
         log.text = log.text! + "[\(ip ?? ""):\(port)]\(list ?? "")\n"
         try? sock.receiveOnce()
-        
     }
     
     func udpSocket(_ sock: GCDAsyncUdpSocket, didNotConnect error: Error?) {
@@ -91,5 +90,4 @@ class SendUDPController: UIViewController, GCDAsyncUdpSocketDelegate {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

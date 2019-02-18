@@ -65,7 +65,7 @@ class UDPController: UIViewController, GCDAsyncUdpSocketDelegate {
 //        let content = [250,50,50,50]
 //        let data = NSData(bytes: content, length: content.count) as Data
         let data = "发发发".data(using: String.Encoding.utf8)
-        let host = "192.168.3.174"
+        let host = "255.255.255.255"
         let port:UInt16 = 9600
         // 异步发送
         udpServerSocket.send(data!, toHost: host, port: port, withTimeout: 10, tag: 100)
