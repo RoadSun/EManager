@@ -19,6 +19,27 @@ class BezierController: UIViewController,UIAccelerometerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        /*
+         
+         function drawLightning(x1,y1,x2,y2,displace)
+         {
+         if (displace < curDetail) {
+         graf.moveTo(x1,y1);
+         graf.lineTo(x2,y2);
+         }
+         else {
+         var mid_x = (x2+x1)/2;
+         var mid_y = (y2+y1)/2;
+         mid_x += (Math.random()-.5)*displace;
+         mid_y += (Math.random()-.5)*displace;
+         drawLightning(x1,y1,mid_x,mid_y,displace/2);
+         drawLightning(x2,y2,mid_x,mid_y,displace/2);
+         }
+         }
+         
+         */
+        /*
         //放一个小球在中央
         ball=UIImageView(image:UIImage(named:"ball"))
         ball.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
@@ -61,6 +82,7 @@ class BezierController: UIViewController,UIAccelerometerDelegate {
                 }
             }
         }
+ */
     }
 }
 

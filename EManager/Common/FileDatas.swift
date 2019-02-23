@@ -7,7 +7,18 @@
 //
 
 import UIKit
-var FilePages = [["排序"],["约束"],["二维码"],["颜色"],["贝塞尔"],["BOY","坐标系"],["封装"],["定时器"],["UDP","UDP Send"],["画板"]]
+var FilePages = [["排序"],
+                 ["约束"],
+                 ["二维码"],
+                 ["颜色"],
+                 ["贝塞尔"],
+                 ["BOY","坐标系"],
+                 ["封装"],
+                 ["定时器"],
+                 ["UDP","UDP Send"],
+                 ["画板"],
+                 ["蓝牙","wifi","USB"]]
+
 var FilePagesNames = ["排序":"SortController",
                       "约束":"SnapController",
                       "二维码":"QRCodeController",
@@ -19,7 +30,10 @@ var FilePagesNames = ["排序":"SortController",
                       "定时器":"TimerController",
                       "UDP":"UDPController",
                       "UDP Send":"SendUDPController",
-                      "画板":"CanvasController"]
+                      "画板":"CanvasController",
+                      "蓝牙":"SignalController",
+                      "wifi":"SignalController",
+                      "USB":"SignalController"]
 
 var CellSortTitle = ["冒泡","快速","归并"]
 class FileDatas: NSObject {
