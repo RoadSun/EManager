@@ -10,19 +10,18 @@ import UIKit
 import CoreBluetooth
 class SignalController: UIViewController, SBlueToothManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array.count
+        return 1//(SBTManager.shared.deviceList?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = ""//array[indexPath.row]
+        cell?.textLabel?.text = "\(indexPath.row)"
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        SBlueToothManager.shared.connectDeviceWithPeripheral(0)
+        SBTManager.shared.writeToPeripheral(Data.init())
     }
-    
 
     @IBOutlet weak var logView: UILabel!
     @IBOutlet weak var insertField: UITextField!
@@ -30,20 +29,11 @@ class SignalController: UIViewController, SBlueToothManagerDelegate, UITableView
     var array:[CBPeripheral] = [CBPeripheral]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         SBlueToothManager.shared.delegate = self
     }
 
-    private func blue_scanDataDeviceListOutput(_ list: [String : CBPeripheral]) {
-        logView.text = "\(list)"
-        array.removeAll()
-        for obj in list.values {
-            array.append(obj)
-        }
-    }
-    
-    func blue_didConnectBlue() {
-        
+    func blue_scanDataDeviceListOutput(_ list: [String : CBPeripheral]) {
+        print(list)
     }
     
     @IBAction func sendClick(_ sender: Any) {
@@ -58,5 +48,12 @@ class SignalController: UIViewController, SBlueToothManagerDelegate, UITableView
         // Pass the selected object to the new view controller.
     }
     */
+    lazy var dList: UITableView = {
+        let table = UITableView(frame: CGRect(x: 0, y: 0, width: screenW, height: 270), style: .plain)
+        table.delegate = self
+        table.dataSource = self
+        self.view.addSubview(table)
+        return table
+    }()
 
 }
