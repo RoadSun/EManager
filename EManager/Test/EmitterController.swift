@@ -115,7 +115,7 @@ class EmitterController: UIViewController {
         // 圆心位于(emitterPosition.x, emitterPosition.y, emitterZPosition)
         // 半径为emitterSize.width
         centerHeartLayer.emitterPosition = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        centerHeartLayer.emitterSize = centerHeartButtonClicked.frame.size
+//        centerHeartLayer.emitterSize = centerHeartButtonClicked.frame.size
         centerHeartLayer.birthRate = 0
         
         let cell = CAEmitterCell()

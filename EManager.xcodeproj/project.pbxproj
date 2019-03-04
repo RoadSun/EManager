@@ -44,6 +44,7 @@
 		6053CEAB219BFD2200E1014C /* RBSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEAA219BFD2200E1014C /* RBSlider.swift */; };
 		6053CEAF219C023A00E1014C /* VController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEAE219C023A00E1014C /* VController.swift */; };
 		607A6F3721A3B3B900F5059A /* SAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607A6F3621A3B3B900F5059A /* SAudio.swift */; };
+		60CA4A9E222D1C5B00A172DB /* CharacteristicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA4A9D222D1C5B00A172DB /* CharacteristicController.swift */; };
 		60CC291421A246DC00A0F381 /* PixelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC291321A246DC00A0F381 /* PixelView.swift */; };
 		60CC291721A24DAF00A0F381 /* MotionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CC291621A24DAF00A0F381 /* MotionModel.swift */; };
 		60D8A27B2223741800E89B1A /* SBTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8A27A2223741800E89B1A /* SBTManager.swift */; };
@@ -142,6 +143,7 @@
 		6053CEAA219BFD2200E1014C /* RBSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBSlider.swift; sourceTree = "<group>"; };
 		6053CEAE219C023A00E1014C /* VController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VController.swift; sourceTree = "<group>"; };
 		607A6F3621A3B3B900F5059A /* SAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAudio.swift; sourceTree = "<group>"; };
+		60CA4A9D222D1C5B00A172DB /* CharacteristicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacteristicController.swift; sourceTree = "<group>"; };
 		60CC291321A246DC00A0F381 /* PixelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelView.swift; sourceTree = "<group>"; };
 		60CC291621A24DAF00A0F381 /* MotionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionModel.swift; sourceTree = "<group>"; };
 		60D8A27A2223741800E89B1A /* SBTManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBTManager.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				60FBB95822168D8C008A3F11 /* CanvasController.swift */,
 				60FBB9B2221BD217008A3F11 /* SignalController.swift */,
 				60FBB9B3221BD217008A3F11 /* SignalController.xib */,
+				60CA4A9D222D1C5B00A172DB /* CharacteristicController.swift */,
 				60D8A2D02227D7F300E89B1A /* EmitterController.swift */,
 			);
 			path = Test;
@@ -640,6 +643,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60CA4A9E222D1C5B00A172DB /* CharacteristicController.swift in Sources */,
 				600B2B87219D66F300CBF641 /* Canvas.swift in Sources */,
 				60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */,
 				6053CEA9219AA34900E1014C /* CoordinatesController.swift in Sources */,
