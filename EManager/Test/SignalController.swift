@@ -32,9 +32,9 @@ class SignalController: UIViewController, SBlueToothManagerDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let charatic = CharacteristicController()
-        self.navigationController?.pushViewController(charatic, animated: true)
-        SBlueToothManager.shared.connectDeviceWithPeripheral(indexPath.row)
+//        let charatic = CharacteristicController()
+//        self.navigationController?.pushViewController(charatic, animated: true)
+        SBlueToothManager.shared.peripheral_connectDeviceWithPeripheral(indexPath.row)
     }
 
     @IBOutlet weak var logView: UILabel!
@@ -43,7 +43,9 @@ class SignalController: UIViewController, SBlueToothManagerDelegate, UITableView
     var array:[CBPeripheral] = [CBPeripheral]()
     override func viewDidLoad() {
         super.viewDidLoad()
+//        SBlueToothManager.shared.createPeripheral()
         _ = dList
+        SBlueToothManager.shared.createManager()
         SBlueToothManager.shared.delegate = self
     }
 
@@ -56,14 +58,14 @@ class SignalController: UIViewController, SBlueToothManagerDelegate, UITableView
         logView.text = "\(value)"
     }
     
-    func blue_didWriteSucessWithStyle(_ style: Int) {
-        print("\(style)")
+    func blue_didWriteSucessWithStyle() {
+        
     }
     
-    var list = [250,90,90,90,250,50,50,50]
+    var list = ["FA","90","90","90","FA","90","90","90"]
     var index = 0
     @IBAction func sendClick(_ sender: Any) {
-        SBlueToothManager.shared.writeCheckBlueWithBlue("0x\(list[index])") //insertField.text!
+        SBlueToothManager.shared.writeCheckBlueWithBlue(list[index]) //insertField.text!
         index += 1
         if index > 7 {
             index = 0

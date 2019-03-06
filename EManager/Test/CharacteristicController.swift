@@ -29,7 +29,7 @@ class CharacteristicController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        SBlueToothManager.shared.connectDeviceWithPeripheral(indexPath.row)
+        SBlueToothManager.shared.peripheral_connectDeviceWithPeripheral(indexPath.row)
     }
     
     override func viewDidLoad() {
