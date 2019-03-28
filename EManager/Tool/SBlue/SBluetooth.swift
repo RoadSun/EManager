@@ -11,8 +11,6 @@ import CoreBluetooth
 
 private var mgr:SBluetooth!
 class SBluetooth: UIViewController {
-
-    
     /*
      peripheral 外围central中央
      
@@ -39,8 +37,6 @@ class SBluetooth: UIViewController {
         }
         return mgr
     }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

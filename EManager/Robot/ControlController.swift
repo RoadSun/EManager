@@ -13,9 +13,17 @@ class ControlController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isTranslucent = false
-        let boy = BodyView(frame: self.view.bounds)
+//        let boy = BodyView(frame: self.view.bounds)
+        let canvas = SCanvasFace(frame: CGRect(x: 100, y: 100, width: ScreenW - 200, height: ScreenH - 200))
+        canvas.backgroundColor = UIColor.black
+        
+//        let scroll = UIScrollView(frame: canvas.frame)
+//        scroll.zoomScale = 0.5
+//        scroll.contentSize = CGSize(width: ScreenW, height: ScreenH)
+//        scroll.addSubview(canvas)
+        self.view.addSubview(canvas)
 //        let boy = CirclePan(frame: self.view.bounds)
-        self.view.addSubview(boy)
+//        self.view.addSubview(canvas)
     }
 
     override func didReceiveMemoryWarning() {

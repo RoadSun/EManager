@@ -85,6 +85,36 @@ class SPen: NSObject {
         context.strokePath()
     }
     
+    // 十字线
+    class func drawCross(_ point:CGPoint, val:CGFloat, _ context:CGContext) {
+        // 线条颜色
+        context.setStrokeColor(UIColor.gray.cgColor)
+        // 设置线条平滑，不需要两边像素宽
+        context.setShouldAntialias(false)
+        // 设置线条宽度
+        context.setLineWidth(2.0)
+        // 设置线条起点
+        
+        let x = point.x - val
+        let y = point.y - val
+        let x_w = point.x + val
+        let y_h = point.y + val
+
+        
+        context.move(to: CGPoint(x: x, y: point.y))
+        context.addLine(to: CGPoint(x: x_w, y: point.y))
+        
+        context.move(to: CGPoint(x: point.x, y: y))
+        context.addLine(to: CGPoint(x: point.x, y: y_h))
+
+        context.strokePath()
+        
+        // 开始画线
+        context.setStrokeColor(UIColor.white.cgColor)
+        context.setLineWidth(0.5)
+        context.strokePath()
+    }
+    
     /*
      * 画圆
      */

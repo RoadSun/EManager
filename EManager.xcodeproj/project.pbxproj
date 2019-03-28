@@ -44,6 +44,12 @@
 		6053CEAB219BFD2200E1014C /* RBSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEAA219BFD2200E1014C /* RBSlider.swift */; };
 		6053CEAF219C023A00E1014C /* VController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CEAE219C023A00E1014C /* VController.swift */; };
 		607A6F3721A3B3B900F5059A /* SAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607A6F3621A3B3B900F5059A /* SAudio.swift */; };
+		6091EA89224B2FF0009F73E2 /* SFx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA88224B2FF0009F73E2 /* SFx.swift */; };
+		6091EA8B224B2FFC009F73E2 /* SFy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA8A224B2FFC009F73E2 /* SFy.swift */; };
+		6091EA8D224B3C58009F73E2 /* SCanvasFace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA8C224B3C58009F73E2 /* SCanvasFace.swift */; };
+		6091EA8F224C56B3009F73E2 /* STrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA8E224C56B2009F73E2 /* STrack.swift */; };
+		6091EA91224C60A9009F73E2 /* SPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA90224C60A9009F73E2 /* SPointModel.swift */; };
+		6091EA93224CA7AF009F73E2 /* SPt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA92224CA7AF009F73E2 /* SPt.swift */; };
 		60C77C33222F548B00EF9F1A /* SBlueToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */; };
 		60C77C35222F54D000EF9F1A /* SBluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C34222F54D000EF9F1A /* SBluetooth.swift */; };
 		60CA4A9E222D1C5B00A172DB /* CharacteristicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CA4A9D222D1C5B00A172DB /* CharacteristicController.swift */; };
@@ -144,6 +150,12 @@
 		6053CEAA219BFD2200E1014C /* RBSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBSlider.swift; sourceTree = "<group>"; };
 		6053CEAE219C023A00E1014C /* VController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VController.swift; sourceTree = "<group>"; };
 		607A6F3621A3B3B900F5059A /* SAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAudio.swift; sourceTree = "<group>"; };
+		6091EA88224B2FF0009F73E2 /* SFx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFx.swift; sourceTree = "<group>"; };
+		6091EA8A224B2FFC009F73E2 /* SFy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFy.swift; sourceTree = "<group>"; };
+		6091EA8C224B3C58009F73E2 /* SCanvasFace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCanvasFace.swift; sourceTree = "<group>"; };
+		6091EA8E224C56B2009F73E2 /* STrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STrack.swift; sourceTree = "<group>"; };
+		6091EA90224C60A9009F73E2 /* SPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPointModel.swift; sourceTree = "<group>"; };
+		6091EA92224CA7AF009F73E2 /* SPt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPt.swift; sourceTree = "<group>"; };
 		60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBlueToothManager.swift; sourceTree = "<group>"; };
 		60C77C34222F54D000EF9F1A /* SBluetooth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBluetooth.swift; sourceTree = "<group>"; };
 		60CA4A9D222D1C5B00A172DB /* CharacteristicController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacteristicController.swift; sourceTree = "<group>"; };
@@ -363,6 +375,7 @@
 		6053CE9B2199086E00E1014C /* Robot */ = {
 			isa = PBXGroup;
 			children = (
+				6091EA87224B2D27009F73E2 /* Face2D */,
 				6053CE9C2199088E00E1014C /* BodyView.swift */,
 				6053CE9E219909F900E1014C /* ControlController.swift */,
 				6053CEA0219922AE00E1014C /* CirclePan.swift */,
@@ -370,6 +383,19 @@
 				6053CEA8219AA34900E1014C /* CoordinatesController.swift */,
 			);
 			path = Robot;
+			sourceTree = "<group>";
+		};
+		6091EA87224B2D27009F73E2 /* Face2D */ = {
+			isa = PBXGroup;
+			children = (
+				6091EA88224B2FF0009F73E2 /* SFx.swift */,
+				6091EA8A224B2FFC009F73E2 /* SFy.swift */,
+				6091EA8C224B3C58009F73E2 /* SCanvasFace.swift */,
+				6091EA8E224C56B2009F73E2 /* STrack.swift */,
+				6091EA90224C60A9009F73E2 /* SPointModel.swift */,
+				6091EA92224CA7AF009F73E2 /* SPt.swift */,
+			);
+			path = Face2D;
 			sourceTree = "<group>";
 		};
 		60C77C31222F548B00EF9F1A /* SBlue */ = {
@@ -666,18 +692,21 @@
 				60FBB9532216843A008A3F11 /* SCanvasModel.swift in Sources */,
 				60108DAA2193D03B0099A903 /* SCell.swift in Sources */,
 				60FBB94D2216843A008A3F11 /* SPen.swift in Sources */,
+				6091EA89224B2FF0009F73E2 /* SFx.swift in Sources */,
 				60FBB9542216843A008A3F11 /* SCanvasBase.swift in Sources */,
 				60108DA32192D4720099A903 /* ColorController.swift in Sources */,
 				60108D97219166060099A903 /* SortController.swift in Sources */,
 				60FBB9C1221CFDC9008A3F11 /* SBody.swift in Sources */,
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,
 				60108DAE2193D61B0099A903 /* CollectionHeaderView.swift in Sources */,
+				6091EA8F224C56B3009F73E2 /* STrack.swift in Sources */,
 				60D8A2D12227D7F300E89B1A /* EmitterController.swift in Sources */,
 				60FBB9512216843A008A3F11 /* SChartBridge.swift in Sources */,
 				60108DAD2193D61B0099A903 /* CollectionFootView.swift in Sources */,
 				60108D9D219273F30099A903 /* QRCodeController.swift in Sources */,
 				60FBB9502216843A008A3F11 /* SCanvasModelExtend.swift in Sources */,
 				60FBB94C2216843A008A3F11 /* SCanvasControl.swift in Sources */,
+				6091EA91224C60A9009F73E2 /* SPointModel.swift in Sources */,
 				60FBB93F22153C63008A3F11 /* SendUDPController.swift in Sources */,
 				60108D9F2192755E0099A903 /* ORCode.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
@@ -699,10 +728,13 @@
 				60FBB9BF221CF2B7008A3F11 /* SSlider.swift in Sources */,
 				60108DA52192D9050099A903 /* BezierController.swift in Sources */,
 				60F8E48821C8E59C00570F4D /* TimerController.swift in Sources */,
+				6091EA8D224B3C58009F73E2 /* SCanvasFace.swift in Sources */,
+				6091EA93224CA7AF009F73E2 /* SPt.swift in Sources */,
 				60D8A2CB2226609E00E89B1A /* SColorView.swift in Sources */,
 				6053CEA7219A9A8700E1014C /* RobotHandle.swift in Sources */,
 				6053CEA1219922AE00E1014C /* CirclePan.swift in Sources */,
 				600B2B89219D672E00CBF641 /* PathCreator.swift in Sources */,
+				6091EA8B224B2FFC009F73E2 /* SFy.swift in Sources */,
 				6053CEAB219BFD2200E1014C /* RBSlider.swift in Sources */,
 				607A6F3721A3B3B900F5059A /* SAudio.swift in Sources */,
 				6053CEAF219C023A00E1014C /* VController.swift in Sources */,
