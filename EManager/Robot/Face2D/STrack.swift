@@ -7,18 +7,12 @@
 //
 
 import UIKit
-var a:CGFloat = 40
+
 var lx:CGFloat = 0
 var ty:CGFloat = 0
 var move:CGPoint = CGPoint(x: -100, y: -100)
 
-func midpointL(_ p1:CGPoint)->CGPoint {
-    return CGPoint(x: p1.x - 40, y:p1.y)
-}
 
-func midpointR(_ p1:CGPoint)->CGPoint {
-    return CGPoint(x: p1.x + 40, y: p1.y)
-}
 
 func midpointL1(_ p1:CGPoint)->CGPoint {
     return CGPoint(x: p1.x - 10, y:p1.y)

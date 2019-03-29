@@ -2,14 +2,23 @@
 //  SPointModel.swift
 //  EManager
 //
-//  Created by EX DOLL on 2019/3/28.
+//  Created by Sunlu on 2019/3/28.
 //  Copyright © 2019 EX DOLL. All rights reserved.
 //
 
 import UIKit
 
 class SPointModel: NSObject {
-
+    var a:CGFloat = 40
+    
+    func midpointL(_ p1:CGPoint)->CGPoint {
+        return CGPoint(x: p1.x - a, y:p1.y)
+    }
+    
+    func midpointR(_ p1:CGPoint)->CGPoint {
+        return CGPoint(x: p1.x + a, y: p1.y)
+    }
+    
     var teamArray = [[SPt]]()
     var baseArray = [[SPt]]()
     func initArray() {
