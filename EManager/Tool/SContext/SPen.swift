@@ -111,14 +111,14 @@ class SPen: NSObject {
         
         // 开始画线
         context.setStrokeColor(UIColor.white.cgColor)
-        context.setLineWidth(0.5)
+        context.setLineWidth(3)
         context.strokePath()
     }
     
     /*
      * 画圆
      */
-    class func drawCircle(_ rects:[CGRect],_ context:CGContext) {
+    class func drawCircle(_ rects:[CGRect],_ context:CGContext, _ color:UIColor = .green) {
         // 画圆
         for obj in rects {
             context.addEllipse(in: obj)
@@ -130,6 +130,24 @@ class SPen: NSObject {
         // 关闭路径
         context.strokePath()
     }
+    
+    /*
+     * 画圆
+     */
+    class func drawCirclePoint(_ pts:[CGPoint],_ context:CGContext, _ color:UIColor = .green) {
+        // 画圆
+        for obj in pts {
+            let rect = CGRect(origin: CGPoint(x: obj.x-4.5, y: obj.y-4.5), size: CGSize(width: 9, height: 9))
+            context.addEllipse(in: rect)
+        }
+        // 线宽
+        context.setLineWidth(3)
+        // 画笔颜色
+        context.setStrokeColor(UIColor.yellow.cgColor)
+        // 关闭路径
+        context.strokePath()
+    }
+    
     
     /*
      * 手绘

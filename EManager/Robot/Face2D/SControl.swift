@@ -8,57 +8,33 @@
 
 import UIKit
 
-protocol SControlDelegate {
-    func control_outputValue(_ value:CGFloat)
-}
-
-struct SControlOutputData {
-    var x:CGFloat = 0
-    var xMin:CGFloat = 0
-    var xMax:CGFloat = 0
-    var y:CGFloat {
-        get {
-            return x
-        }
-        set {
-            current = y
-        }
-    }
-    var yMin:CGFloat = 0
-    var yMax:CGFloat = 0
-    var current:CGFloat {
-        get {
-            return y
-        }
-        set {
-            
-        }
-    }
-    var baseMin:CGFloat = 0
-    var baseMax:CGFloat = 180
-    var baseRange:CGFloat = 180
-    var min:CGFloat = 60
-    var max:CGFloat = 120
-    var range:CGFloat = 60
-    init() {
-        range = max - min
-        baseRange = baseMax - baseMin
-    }
+@objc protocol SControlDelegate {
+    @objc optional func control_outputValue(_ value:CGFloat)
+    @objc optional func control_nameCurrentRangeValue(_ value:String, _ min:String, _ max:String) // 部位 当前值 范围
 }
 
 struct SCrossData {
     var angle:CGFloat = CGFloat.pi / 2
     var R:CGFloat = 50
-    var pt:CGPoint = CGPoint(x: -100, y: -100)
+    var pt:CGPoint = CGPoint(x: -200, y: -200)
     var tanV:CGFloat = 0
     var sinV:CGFloat = 0
     var cosV:CGFloat = 0
+    var angleTan:CGFloat = 0
+    var angleSin:CGFloat = 0
+    var angleCos:CGFloat = 0
+    var angleRange:CGFloat = 180
+    var value = 90
     mutating func setVal(_ a:CGFloat = CGFloat.pi / 2,_ r:CGFloat = 50) {
         angle = a
         R = r
         self.tanV = r*tan(a)
         self.sinV = r*sin(a)
         self.cosV = r*cos(a)
+         // 纯角度值
+        self.angleTan = tan(a)
+        self.angleSin = sin(a)
+        self.angleCos = cos(a)
     }
 }
 
@@ -66,11 +42,10 @@ class SControl: UIView {
     // 基础数据
     var _model = SPointModel()
     // 选中的动点
-    var moveB:CGPoint = CGPoint(x: -100, y: -100)
+    var moveB:CGPoint = CGPoint(x: -200, y: -200)
     // 滑动杆滑动范围
     var crossData = SCrossData()
-    // 输出控制计算
-    var valueData = SControlOutputData()
+    
     var delegate:SControlDelegate!
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -86,13 +61,23 @@ class SControl: UIView {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapEvent(_:)))
         self.addGestureRecognizer(tap)
-        _model.a = 70
+        _model.a = 40
         _model.initArray()
-        crossData.setVal(CGFloat.pi / 6, 50)
+//        crossData.setVal(CGFloat.pi / 2, 50)
+        _ = test
+        _ = valSlider
     }
+   
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+//    初始化面部表情数据
+    func changeData(_ val:CGFloat) {
+        let o_base_y = teamCurrentPoint.bpt.point.y - crossData.sinV // 范围起点
+        moveB.y = (val / crossData.angleRange) * (crossData.sinV * 2) + o_base_y
+        moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.angleTan + teamCurrentPoint.bpt.point.x
+        
+        teamCurrentPoint.pt.point = moveB
+        _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+        self.setNeedsDisplay()
     }
     
     @objc func panEvent(_ sender:UIPanGestureRecognizer) {
@@ -109,17 +94,20 @@ class SControl: UIView {
             // 上下范围控制
             if point.y < teamCurrentPoint.bpt.point.y - crossData.sinV {
                 moveB.y = teamCurrentPoint.bpt.point.y - crossData.sinV
-                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.tanV + teamCurrentPoint.bpt.point.x
+                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.angleTan + teamCurrentPoint.bpt.point.x
             }else if (point.y > teamCurrentPoint.bpt.point.y + crossData.sinV) {
                 moveB.y = teamCurrentPoint.bpt.point.y + crossData.sinV
-                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.tanV + teamCurrentPoint.bpt.point.x
+                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.angleTan + teamCurrentPoint.bpt.point.x
             }else{
                 moveB.y = point.y
-                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.tanV + teamCurrentPoint.bpt.point.x
+                moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.angleTan + teamCurrentPoint.bpt.point.x
             }
+            // 输出值
+            let val = 90 - (moveB.y - teamCurrentPoint.bpt.point.y) * 90 / crossData.sinV
+            self.delegate.control_outputValue!(val)
+            valSlider.value = Float(val)
+            crossData.value = Int(val)
             
-            //            let val = 90 - (moveB.y - teamCurrentPoint.bpt.point.y) * 90 / crossData.sinV
-            //            self.delegate.control_outputValue(val)
             teamCurrentPoint.pt.point = moveB
             _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
         }
@@ -136,13 +124,29 @@ class SControl: UIView {
     }
     
     var teamCurrentPoint = STeamCurrentPoint()
+    var resultPTS = [CGPoint]()
     @objc func tapEvent(_ sender:UITapGestureRecognizer) {
         var hide = true
         let point = sender.location(in: self)
+        /*
+        for (index, arr) in _model.teamArray.enumerated() {
+            if index == 1 {
+                resultPTS.removeAll()
+                resultPTS = _model.containsPointForCurveLineType(point, move: arr[0].point, to: arr[1].point, control: _model.midpointL(arr[1].point))
+                resultPTS += _model.containsPointForCurveLineType(point, move: arr[2].point, to: arr[1].point, control: _model.midpointR(arr[1].point))
+                break
+            }
+        }
+        self.setNeedsDisplay()
+        return
+        */
         for (index, arr) in _model.teamArray.enumerated() {
             // 先判断选中点是否在响应动点范围内, 如果在范围内, 把动点赋予可移动点
             for (subIndex, pt) in arr.enumerated() {
+                
                 if ((pt.point.x - point.x)*(pt.point.x - point.x) + (pt.point.y - point.y)*(pt.point.y - point.y)) < 400 {
+                    self.delegate.control_nameCurrentRangeValue!(_model.nameArray[index], "\(teamCurrentPoint.bpt.min)", "\(teamCurrentPoint.bpt.max)")
+                    
                     if pt.state == 1 {
                         moveB = pt.point
                         teamCurrentPoint.bpt = _model.baseArray[index][subIndex]
@@ -150,7 +154,7 @@ class SControl: UIView {
                         teamCurrentPoint.i0 = index
                         teamCurrentPoint.i1 = subIndex
                     }
-                    
+                    crossData.setVal(teamCurrentPoint.bpt.angle, 50)
                     hide = false
                     break
                 }
@@ -158,8 +162,8 @@ class SControl: UIView {
         }
         
         if hide {
-            moveB.x = -100
-            moveB.y = -100
+            moveB.x = -200
+            moveB.y = -200
         }
         
         self.setNeedsDisplay()
@@ -176,12 +180,20 @@ class SControl: UIView {
         let context = UIGraphicsGetCurrentContext()
         
         for (index, arr) in _model.teamArray.enumerated() {
+            print(index)
             if arr.count == 3 {
-                context?.move(to: arr[0].point)
-                context?.addQuadCurve(to: arr[1].point, control: _model.midpointL(arr[1].point))
-                
-                context?.move(to: arr[2].point)
-                context?.addQuadCurve(to: arr[1].point, control: _model.midpointR(arr[1].point))
+                if index == 9 || index == 10 {
+                    
+                    context?.move(to: arr[0].point)
+                    context?.addLine(to: arr[1].point)
+                    context?.addLine(to: arr[2].point)
+                }else{
+                    context?.move(to: arr[0].point)
+                    context?.addQuadCurve(to: arr[1].point, control: _model.midpointL(arr[1].point))
+                    
+                    context?.move(to: arr[2].point)
+                    context?.addQuadCurve(to: arr[1].point, control: _model.midpointR(arr[1].point))
+                }
             }
             
             if arr.count == 4 {
@@ -205,15 +217,81 @@ class SControl: UIView {
             }
         }
         
+//        for (index,obj) in _model.profileArray.enumerated() {
+//            if index == 0 {
+//                context?.move(to: obj.point)
+//            }else{
+//                context?.addLine(to: obj.point)
+//            }
+//        }
+        // 遍历所有的中点
+        context?.move(to: _model.profileMidPointArray[0].point)
+        for (index,_) in _model.profileMidPointArray.enumerated() {
+            // 在点范围之内
+            if index < _model.profileMidPointArray.count - 1 {
+                context?.addQuadCurve(to: _model.profileMidPointArray[index + 1].point, control: _model.profileArray[index + 1].point)
+            }
+        }
+
         context?.setStrokeColor(UIColor.orange.cgColor)
         context?.setLineWidth(3)
         context?.setLineCap(.round)
         context?.strokePath()
         
-        SPen.drawCircle([createRectL(CGPoint(x: _model.a * 4, y: _model.a * 2), 40)], context!)
-        SPen.drawCircle([createRectR(CGPoint(x: _model.a * 10, y: _model.a * 2), 40)], context!)
-        //        SPen.drawCross(teamCurrentPoint.bpt.point, val: 40, context!)
-        SFacePen.drawRuler(teamCurrentPoint.bpt.point, crossData.angle, crossData.R, context!)
+        SPen.drawCircle([createRectL(CGPoint(x: _model.a * 4 + _model.xx, y: _model.a * 2 + _model.yy), 40)], context!)
+        SPen.drawCircle([createRectR(CGPoint(x: _model.a * 10 + _model.xx, y: _model.a * 2 + _model.yy), 40)], context!)
+        if moveB.x != -200 {
+            SFacePen.drawRuler(teamCurrentPoint.bpt.point, crossData.angle, crossData.R, context!)
+        }
         SPen.drawCircle([createRectR(moveB, 20)], context!)
+        
+//        SFacePen.drawText("左眼眉上", .left, CGRect(x: 20, y: 30, width: 120, height: 30), context!)
+//        SFacePen.drawText("当前值: \(crossData.value)", .left, CGRect(x: 20, y: 60, width: 120, height: 30), context!)
+//        SFacePen.drawText("范围: \(teamCurrentPoint.pt.min) ~ \(teamCurrentPoint.pt.max)", .left, CGRect(x: 20, y: 90, width: 120, height: 30), context!)
+        
+        SPen.drawCirclePoint(resultPTS, context!)
+    }
+    
+    
+    lazy var test: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(self, action: #selector(testClick(_:)), for: .touchUpInside)
+        btn.frame = CGRect(x: self.w - 60, y: 20, width: 40, height: 30)
+        btn.layer.cornerRadius = 3
+        btn.layer.masksToBounds = true
+        btn.setTitle("测试", for: .normal)
+        btn.isHidden = true
+        btn.backgroundColor = UIColor.gray//RGBA16(value: 0x00ffff, Alpha: 1)
+        btn.setTitleColor(UIColor.white, for: .normal)
+        self.addSubview(btn)
+        return btn
+    }()
+    var isChange:Bool = false
+    @objc func testClick(_ sender:UIButton) {
+        isChange = !isChange
+    }
+    
+    lazy var valSlider: UISlider = {
+        let slider = UISlider()
+        slider.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+        slider.maximumValue = 180
+        slider.value = 90
+        slider.minimumValue = 0
+        slider.isHidden = true
+        slider.addTarget(self, action: #selector(sliderChange(_:)), for: .valueChanged)
+        self.addSubview(slider)
+        return slider
+    }()
+    
+    @objc func sliderChange(_ sender:UISlider) {
+        var val = CGFloat(sender.value)
+        if isChange {
+            val = crossData.angleRange - val
+        }
+        changeData(val)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

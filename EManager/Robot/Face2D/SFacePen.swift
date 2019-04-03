@@ -15,7 +15,7 @@ class SFacePen: NSObject {
         let y = r * sin(angle)
         let point0 = CGPoint(x: point.x + x, y: point.y + y)
         let point1 = CGPoint(x: point.x - x, y: point.y - y)
-
+        
         // 线条颜色
         context.setStrokeColor(UIColor.gray.cgColor)
         // 设置线条平滑，不需要两边像素宽
@@ -30,7 +30,19 @@ class SFacePen: NSObject {
         context.strokePath()
         // 开始画线
         context.setStrokeColor(UIColor.white.cgColor)
-//        context.setLineWidth(0.5)
         context.strokePath()
+    }
+    
+    class func  drawText(_ content:String, _ alignment:NSTextAlignment = .left,_ rect:CGRect,_ context:CGContext) {
+        let str = content
+        //文字样式属性
+        let style = NSMutableParagraphStyle()
+        style.alignment = alignment
+        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20),
+                          NSAttributedStringKey.foregroundColor: UIColor.orange,
+                          NSAttributedStringKey.paragraphStyle: style]
+        
+        //绘制在指定区域
+        (str as NSString).draw(in: rect, withAttributes: attributes)
     }
 }
