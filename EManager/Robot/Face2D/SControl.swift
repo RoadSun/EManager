@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol SControlDelegate {
-    @objc optional func control_outputValue(_ value:CGFloat)
+    @objc optional func control_outputValue(_ value:CGFloat, _ tag:Int)
     @objc optional func control_nameCurrentRangeValue(_ value:String, _ min:String, _ max:String) // 部位 当前值 范围
 }
 
@@ -29,7 +29,7 @@ struct SCrossData {
         angle = a
         R = r
         self.tanV = r*tan(a)
-        self.sinV = r*sin(a)
+        self.sinV = r*(sin(a) < 0 ? -sin(a) : sin(a))
         self.cosV = r*cos(a)
          // 纯角度值
         self.angleTan = tan(a)
@@ -38,7 +38,7 @@ struct SCrossData {
     }
 }
 
-class SControl: UIView {
+class SControl: SFaceBase {
     // 基础数据
     var _model = SPointModel()
     // 选中的动点
@@ -50,17 +50,6 @@ class SControl: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panEvent(_:)))
-        self.addGestureRecognizer(pan)
-        
-        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchEvent(_:)))
-        self.addGestureRecognizer(pinch)
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressEvent(_:)))
-        self.addGestureRecognizer(longPress)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapEvent(_:)))
-        self.addGestureRecognizer(tap)
         _model.a = 40
         _model.initArray()
 //        crossData.setVal(CGFloat.pi / 2, 50)
@@ -80,7 +69,7 @@ class SControl: UIView {
         self.setNeedsDisplay()
     }
     
-    @objc func panEvent(_ sender:UIPanGestureRecognizer) {
+    override func panEvent(_ sender:UIPanGestureRecognizer) {
         let point = sender.location(in: self)
         // 先判断可移动点位置, 如果不在范围内, 不让进行移动
         if sender.state == .began {
@@ -103,29 +92,71 @@ class SControl: UIView {
                 moveB.x = (moveB.y - teamCurrentPoint.bpt.point.y) / crossData.angleTan + teamCurrentPoint.bpt.point.x
             }
             // 输出值
-            let val = 90 - (moveB.y - teamCurrentPoint.bpt.point.y) * 90 / crossData.sinV
-            self.delegate.control_outputValue!(val)
-            valSlider.value = Float(val)
-            crossData.value = Int(val)
+            let val = getValueForMove(movePoint: moveB,
+                                      basePoint: teamCurrentPoint.bpt.point,
+                                      standard: crossData.sinV,
+                                      range: 180)
             
+            self.delegate.control_outputValue!(val, teamCurrentPoint.i0)
+            valSlider.value = Float(val) // 滑动条
+            crossData.value = Int(val) // 标尺
+            
+            // 设定移动点
             teamCurrentPoint.pt.point = moveB
-            _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+            print("moveB : \(teamCurrentPoint.pt.point)")
+            if _model.teamArray[teamCurrentPoint.i0].count == 7 {
+                // 嘴角边起始点
+                if teamCurrentPoint.i1 == 0 {
+                    _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+                    _model.teamArray[teamCurrentPoint.i0][_model.teamArray[teamCurrentPoint.i0].count - 1] = teamCurrentPoint.pt
+                } else if ( teamCurrentPoint.i1 == _model.teamArray[teamCurrentPoint.i0].count - 1 ) {
+                    // 嘴角边终点
+                    _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+                    _model.teamArray[teamCurrentPoint.i0][_model.teamArray[teamCurrentPoint.i0].count - 1] = teamCurrentPoint.pt
+                }else{
+                    // 在移动范围内,随动点进行值改变
+                    _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+                    print("teamCurrentPoint.pt.point : \(teamCurrentPoint.pt.point)")
+                }
+            }else{
+                // 其他部位值改变
+                _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1] = teamCurrentPoint.pt
+            }
         }
         
         self.setNeedsDisplay()
     }
     
-    @objc func pinchEvent(_ sender:UIPinchGestureRecognizer) {
+    /*
+     * 获得滑动值
+     * movePoint 动点
+     * basePoint 基础点
+     * standard  标准值
+     * range     范围
+     * reserve   默认反向
+     */
+    func getValueForMove( movePoint:CGPoint, basePoint:CGPoint, standard:CGFloat, range:CGFloat, reserve:Bool = false) ->CGFloat{
+        var val:CGFloat = 0
+        let ratio = (movePoint.y - (basePoint.y - standard)) / (standard * 2)
+        if reserve {
+            val = ratio * range
+        }else{
+            val = (1 - ratio) * range
+        }
+        return val
+    }
+    
+    override func pinchEvent(_ sender:UIPinchGestureRecognizer) {
         
     }
     
-    @objc func longPressEvent(_ sender:UILongPressGestureRecognizer) {
+    override func longPressEvent(_ sender:UILongPressGestureRecognizer) {
         
     }
     
     var teamCurrentPoint = STeamCurrentPoint()
     var resultPTS = [CGPoint]()
-    @objc func tapEvent(_ sender:UITapGestureRecognizer) {
+    override func tapEvent(_ sender:UITapGestureRecognizer) {
         var hide = true
         let point = sender.location(in: self)
         /*
@@ -180,9 +211,8 @@ class SControl: UIView {
         let context = UIGraphicsGetCurrentContext()
         
         for (index, arr) in _model.teamArray.enumerated() {
-            print(index)
             if arr.count == 3 {
-                if index == 9 || index == 10 {
+                if index == 8 || index == 9 {
                     
                     context?.move(to: arr[0].point)
                     context?.addLine(to: arr[1].point)
@@ -215,6 +245,16 @@ class SControl: UIView {
                 context?.move(to: arr[3].point)
                 context?.addQuadCurve(to: arr[2].point, control: arr[2].point)
             }
+            
+            if arr.count == 7 {
+                context?.move(to: arr[0].point)
+                context?.addLine(to: arr[1].point)
+                context?.addLine(to: arr[2].point)
+                context?.addLine(to: arr[3].point)
+                context?.addLine(to: arr[4].point)
+                context?.addLine(to: arr[5].point)
+                context?.addLine(to: arr[6].point)
+            }
         }
         
 //        for (index,obj) in _model.profileArray.enumerated() {
@@ -224,7 +264,7 @@ class SControl: UIView {
 //                context?.addLine(to: obj.point)
 //            }
 //        }
-        // 遍历所有的中点
+        // 遍历所有的中点, 画出头型
         context?.move(to: _model.profileMidPointArray[0].point)
         for (index,_) in _model.profileMidPointArray.enumerated() {
             // 在点范围之内

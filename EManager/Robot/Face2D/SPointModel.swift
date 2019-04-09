@@ -81,13 +81,10 @@ class SPointModel: NSObject {
         let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.8*a+yy),state:1,No:1,Min:0,Max:180)
         let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.8*a+yy),state:1,No:2,Min:0,Max:180)
         let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let array_6 = [point_6_0,point_6_1,point_6_2,point_6_3]
-        // 嘴下
-        let point_7_0 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_7_1 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_7_2 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:2,Min:0,Max:180)
-        let point_7_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let array_7 = [point_7_0,point_7_1,point_7_2,point_7_3]
+        let point_7_1 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:5,Min:0,Max:180)
+        let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:6,Min:0,Max:180)
+        let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
+        let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_1,point_7_2,point_7_3]
         
         // 下巴
         let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
@@ -113,7 +110,7 @@ class SPointModel: NSObject {
         let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
         let array_11 = [point_11_0,point_11_1,point_11_2]
         
-        teamArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_6,array_7,array_8,array_9,array_10,array_11]
+        teamArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_7,array_8,array_9,array_10,array_11]
         
         initArrayBase()
         initProfieArray()
@@ -162,13 +159,10 @@ class SPointModel: NSObject {
         let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.8*a+yy),state:1,No:1,Min:0,Max:180)
         let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.8*a+yy),state:1,No:2,Min:0,Max:180)
         let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let array_6 = [point_6_0,point_6_1,point_6_2,point_6_3]
-        // 嘴下
-        let point_7_0 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_7_1 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_7_2 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:2,Min:0,Max:180)
-        let point_7_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let array_7 = [point_7_0,point_7_1,point_7_2,point_7_3]
+        let point_7_1 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:4,Min:0,Max:180)
+        let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:5,Min:0,Max:180)
+        let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
+        let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_1,point_7_2,point_7_3]
         
         // 下巴
         let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
@@ -194,7 +188,7 @@ class SPointModel: NSObject {
         let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
         let array_11 = [point_11_0,point_11_1,point_11_2]
         
-        baseArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_6,array_7,array_8,array_9,array_10,array_11]
+        baseArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_7,array_8,array_9,array_10,array_11]
     }
     
     func initProfieArray() {

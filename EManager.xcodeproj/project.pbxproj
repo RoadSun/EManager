@@ -11,6 +11,9 @@
 		600B2B87219D66F300CBF641 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600B2B86219D66F300CBF641 /* Canvas.swift */; };
 		600B2B89219D672E00CBF641 /* PathCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600B2B88219D672E00CBF641 /* PathCreator.swift */; };
 		600F5AF3225493B9003B7152 /* SFaceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600F5AF2225493B9003B7152 /* SFaceOperation.swift */; };
+		600F5AF62254B3F6003B7152 /* icon_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 600F5AF42254B3F6003B7152 /* icon_btn_selected.png */; };
+		600F5AF72254B3F6003B7152 /* icon_btn_selected_no.png in Resources */ = {isa = PBXBuildFile; fileRef = 600F5AF52254B3F6003B7152 /* icon_btn_selected_no.png */; };
+		600F5AF92255AFC3003B7152 /* SFaceBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600F5AF82255AFC3003B7152 /* SFaceBase.swift */; };
 		60108D9321915E960099A903 /* SnapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9221915E960099A903 /* SnapController.swift */; };
 		60108D9521915EC90099A903 /* FileDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D9421915EC90099A903 /* FileDatas.swift */; };
 		60108D97219166060099A903 /* SortController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108D96219166060099A903 /* SortController.swift */; };
@@ -111,6 +114,9 @@
 		600B2B86219D66F300CBF641 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		600B2B88219D672E00CBF641 /* PathCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathCreator.swift; sourceTree = "<group>"; };
 		600F5AF2225493B9003B7152 /* SFaceOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFaceOperation.swift; sourceTree = "<group>"; };
+		600F5AF42254B3F6003B7152 /* icon_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_btn_selected.png; sourceTree = "<group>"; };
+		600F5AF52254B3F6003B7152 /* icon_btn_selected_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_btn_selected_no.png; sourceTree = "<group>"; };
+		600F5AF82255AFC3003B7152 /* SFaceBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFaceBase.swift; sourceTree = "<group>"; };
 		60108D9221915E960099A903 /* SnapController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapController.swift; sourceTree = "<group>"; };
 		60108D9421915EC90099A903 /* FileDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDatas.swift; sourceTree = "<group>"; };
 		60108D96219166060099A903 /* SortController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortController.swift; sourceTree = "<group>"; };
@@ -390,8 +396,11 @@
 		6091EA87224B2D27009F73E2 /* Face2D */ = {
 			isa = PBXGroup;
 			children = (
+				600F5AF52254B3F6003B7152 /* icon_btn_selected_no.png */,
+				600F5AF42254B3F6003B7152 /* icon_btn_selected.png */,
 				6091EA90224C60A9009F73E2 /* SPointModel.swift */,
 				6091EA92224CA7AF009F73E2 /* SPt.swift */,
+				600F5AF82255AFC3003B7152 /* SFaceBase.swift */,
 				6091EA94224DBAD3009F73E2 /* SControl.swift */,
 				6091EA96224DEAD9009F73E2 /* SFacePen.swift */,
 				60C844C0225331230060C734 /* SFaceLog.swift */,
@@ -578,6 +587,8 @@
 				60FBB93C2214FFB7008A3F11 /* UDPController.xib in Resources */,
 				602DE16D2189AA5300CC4511 /* Assets.xcassets in Resources */,
 				602DE1682189AA5100CC4511 /* Main.storyboard in Resources */,
+				600F5AF72254B3F6003B7152 /* icon_btn_selected_no.png in Resources */,
+				600F5AF62254B3F6003B7152 /* icon_btn_selected.png in Resources */,
 				60FBB9B5221BD217008A3F11 /* SignalController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -701,6 +712,7 @@
 				600F5AF3225493B9003B7152 /* SFaceOperation.swift in Sources */,
 				60FBB9542216843A008A3F11 /* SCanvasBase.swift in Sources */,
 				60108DA32192D4720099A903 /* ColorController.swift in Sources */,
+				600F5AF92255AFC3003B7152 /* SFaceBase.swift in Sources */,
 				60108D97219166060099A903 /* SortController.swift in Sources */,
 				60FBB9C1221CFDC9008A3F11 /* SBody.swift in Sources */,
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,

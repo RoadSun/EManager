@@ -33,7 +33,193 @@ class SFacePen: NSObject {
         context.strokePath()
     }
     
-    class func  drawText(_ content:String, _ alignment:NSTextAlignment = .left,_ rect:CGRect,_ context:CGContext) {
+    // 能动范围
+    class func drawRulerOperationRange(_ point:CGPoint, _ angle:CGFloat, _ r:CGFloat,_ minVal:CGFloat, _ maxVal:CGFloat, _ context:CGContext) {
+        let cos_fabs = fabs(cos(angle))
+        let sin_fabs = fabs(sin(angle))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint!
+        var point1:CGPoint!
+
+        if angle >= 0 && angle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: point.x + x, y: point.y - y)
+            point1 = CGPoint(x: point.x - x, y: point.y + y)
+        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: point.x - x, y: point.y - y)
+            point1 = CGPoint(x: point.x + x, y: point.y + y)
+        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
+            // 第三象限
+            point0 = CGPoint(x: point.x - x, y: point.y + y)
+            point1 = CGPoint(x: point.x + x, y: point.y - y)
+        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            point0 = CGPoint(x: point.x + x, y: point.y + y)
+            point1 = CGPoint(x: point.x - x, y: point.y - y)
+        }else{
+            return
+        }
+
+        // 线条颜色
+        context.setStrokeColor(UIColor.gray.cgColor)
+        // 设置线条平滑，不需要两边像素宽
+        context.setShouldAntialias(false)
+        // 设置线条宽度
+        context.setLineWidth(3)
+        // 设置线条起点
+        
+        context.move(to: point0)
+        context.addLine(to: point1)
+        
+        context.strokePath()
+        // 开始画线
+        context.setStrokeColor(UIColor.white.cgColor)
+        context.strokePath()
+        
+        // 画两头的限制尺度
+        context.setStrokeColor(UIColor.darkGray.cgColor)
+        context.setLineWidth(40)
+        let maxH:CGFloat = 3
+        var pointMax:CGPoint!
+        var pointMin:CGPoint!
+        if angle >= 0 && angle < CGFloat.pi / 2 {
+            // 第一象限
+            pointMax = CGPoint(x: point0.x + maxH * cos_fabs, y: point0.y - maxH * sin_fabs)
+            pointMin = CGPoint(x: point1.x - maxH * cos_fabs, y: point1.y + maxH * sin_fabs)
+        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+            // 第二象限
+            pointMax = CGPoint(x: point0.x - maxH * cos_fabs, y: point0.y - maxH * sin_fabs)
+            pointMin = CGPoint(x: point1.x + maxH * cos_fabs, y: point1.y + maxH * sin_fabs)
+        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
+            // 第三象限
+            pointMax = CGPoint(x: point0.x - maxH * cos_fabs, y: point0.y + maxH * sin_fabs)
+            pointMin = CGPoint(x: point1.x + maxH * cos_fabs, y: point1.y - maxH * sin_fabs)
+        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            pointMax = CGPoint(x: point0.x + maxH * cos_fabs, y: point0.y + maxH * sin_fabs)
+            pointMin = CGPoint(x: point1.x - maxH * cos_fabs, y: point1.y - maxH * sin_fabs)
+        }else{
+            return
+        }
+
+        context.move(to: point0)
+        context.addLine(to: pointMax)
+        
+        context.move(to: point1)
+        context.addLine(to: pointMin)
+        context.strokePath()
+
+        // 画小红线
+        context.setStrokeColor(UIColor.red.cgColor)
+        context.setLineWidth(35)
+        context.move(to: CGPoint(x: point.x, y: point.y - 1))
+        context.addLine(to: CGPoint(x: point.x, y: point.y + 1))
+        context.strokePath()
+
+        // 画能动范围 范围最小值
+        let min_val_r = minVal * 2 * r / 180
+        let max_val_r = maxVal * 2 * r / 180
+        var minFromPoint:CGPoint!
+        var maxFromPoint:CGPoint!
+        
+        if angle >= 0 && angle < CGFloat.pi / 2 {
+            // 第一象限
+            minFromPoint = CGPoint(x: point0.x - min_val_r * cos_fabs, y: point0.y + min_val_r * sin_fabs)
+            maxFromPoint = CGPoint(x: point0.x - max_val_r * cos_fabs, y: point0.y + max_val_r * sin_fabs)
+        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+            // 第二象限
+            minFromPoint = CGPoint(x: point0.x + min_val_r * cos_fabs, y: point0.y + min_val_r * sin_fabs)
+            maxFromPoint = CGPoint(x: point0.x + max_val_r * cos_fabs, y: point0.y + max_val_r * sin_fabs)
+        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
+            // 第三象限
+            minFromPoint = CGPoint(x: point0.x + min_val_r * cos_fabs, y: point0.y - min_val_r * sin_fabs)
+            maxFromPoint = CGPoint(x: point0.x + max_val_r * cos_fabs, y: point0.y - max_val_r * sin_fabs)
+        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            minFromPoint = CGPoint(x: point0.x - min_val_r * cos_fabs, y: point0.y - min_val_r * sin_fabs)
+            maxFromPoint = CGPoint(x: point0.x - max_val_r * cos_fabs, y: point0.y - max_val_r * sin_fabs)
+        }else{
+            return
+        }
+        
+        context.setStrokeColor(UIColor.green.cgColor)
+        context.setLineWidth(5)
+        context.move(to: minFromPoint)
+        context.addLine(to: maxFromPoint)
+        context.strokePath()
+    }
+    
+    /*
+     * 小圆点, 手动操控
+     */
+    class func operation_pointMove(_ val:CGFloat,
+                                   _ center:CGPoint,
+                                   _ angle:CGFloat,
+                                   _ r:CGFloat,
+                                   _ context:CGContext,
+                                   _ isRotation:Bool = false) {
+        // 计算旋转时候圆点的位置
+        let r0 = val * r / 90.0
+        let cos_fabs = fabs(cos(angle))
+        let sin_fabs = fabs(sin(angle))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint!
+        // 计算后的点x
+        var p_x:CGFloat!
+        // 计算后的点y
+        var p_y:CGFloat!
+        // 计算滑动时值变化
+        if angle >= 0 && angle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: center.x + x , y: center.y - y)
+            p_x = point0.x - cos_fabs * r0
+            p_y = point0.y + sin_fabs * r0
+        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: center.x - x , y: center.y - y)
+            p_x = point0.x + cos_fabs * r0
+            p_y = point0.y + sin_fabs * r0
+        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
+            // 第三象限
+            point0 = CGPoint(x: center.x - x , y: center.y + y)
+            p_x = point0.x + cos_fabs * r0
+            p_y = point0.y - sin_fabs * r0
+        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            point0 = CGPoint(x: center.x + x , y: center.y + y)
+            p_x = point0.x - cos_fabs * r0
+            p_y = point0.y - sin_fabs * r0
+        }else{
+            return
+        }
+        
+        // movepoint
+        context.addArc(center: CGPoint(x: p_x, y: p_y), radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        context.setLineWidth(12)
+        context.setStrokeColor(UIColor.white.cgColor)
+        context.strokePath()
+    }
+    
+    class func operation_forMove() {
+        
+    }
+    
+    /*
+     * 原点, 手动操控
+     */
+    class func operation_center(_ point:CGPoint, _ context:CGContext) {
+        context.addArc(center: point, radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        context.setLineWidth(18)
+        context.setStrokeColor(UIColor.blue.cgColor)
+        context.strokePath()
+    }
+    
+    // 文字位置
+    
+    class func  drawText(_ content:String, _ alignment:NSTextAlignment = .center,_ rect:CGRect, _ val:CGFloat,_ context:CGContext) {
         let str = content
         //文字样式属性
         let style = NSMutableParagraphStyle()
@@ -41,8 +227,18 @@ class SFacePen: NSObject {
         let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20),
                           NSAttributedStringKey.foregroundColor: UIColor.orange,
                           NSAttributedStringKey.paragraphStyle: style]
-        
         //绘制在指定区域
+        context.translateBy(x: rect.origin.x, y: rect.origin.y)
+        context.rotate(by: val) // 135 * CGFloat.pi/180.0
+//        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3))
+        context.setFillColor(UIColor.green.cgColor)
+        context.addRect(rect)
+        context.setLineWidth(0.5)
+        context.strokePath()
+        
         (str as NSString).draw(in: rect, withAttributes: attributes)
+        
     }
+    
+    // 文字, 带旋转
 }
