@@ -34,7 +34,7 @@ class SFacePen: NSObject {
     }
     
     // 能动范围
-    class func drawRulerOperationRange(_ point:CGPoint, _ angle:CGFloat, _ r:CGFloat,_ minVal:CGFloat, _ maxVal:CGFloat, _ context:CGContext) {
+    class func drawRulerOperationRange(_ center:CGPoint, _ angle:CGFloat, _ r:CGFloat,_ minVal:CGFloat, _ maxVal:CGFloat, _ context:CGContext) {
         let cos_fabs = fabs(cos(angle))
         let sin_fabs = fabs(sin(angle))
         let x = r * cos_fabs
@@ -44,20 +44,20 @@ class SFacePen: NSObject {
 
         if angle >= 0 && angle < CGFloat.pi / 2 {
             // 第一象限
-            point0 = CGPoint(x: point.x + x, y: point.y - y)
-            point1 = CGPoint(x: point.x - x, y: point.y + y)
+            point0 = CGPoint(x: center.x + x, y: center.y - y)
+            point1 = CGPoint(x: center.x - x, y: center.y + y)
         } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
             // 第二象限
-            point0 = CGPoint(x: point.x - x, y: point.y - y)
-            point1 = CGPoint(x: point.x + x, y: point.y + y)
+            point0 = CGPoint(x: center.x - x, y: center.y - y)
+            point1 = CGPoint(x: center.x + x, y: center.y + y)
         } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
             // 第三象限
-            point0 = CGPoint(x: point.x - x, y: point.y + y)
-            point1 = CGPoint(x: point.x + x, y: point.y - y)
+            point0 = CGPoint(x: center.x - x, y: center.y + y)
+            point1 = CGPoint(x: center.x + x, y: center.y - y)
         } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
             // 第四象限
-            point0 = CGPoint(x: point.x + x, y: point.y + y)
-            point1 = CGPoint(x: point.x - x, y: point.y - y)
+            point0 = CGPoint(x: center.x + x, y: center.y + y)
+            point1 = CGPoint(x: center.x - x, y: center.y - y)
         }else{
             return
         }
@@ -114,8 +114,8 @@ class SFacePen: NSObject {
         // 画小红线
         context.setStrokeColor(UIColor.red.cgColor)
         context.setLineWidth(35)
-        context.move(to: CGPoint(x: point.x, y: point.y - 1))
-        context.addLine(to: CGPoint(x: point.x, y: point.y + 1))
+        context.move(to: CGPoint(x: center.x, y: center.y - 1))
+        context.addLine(to: CGPoint(x: center.x, y: center.y + 1))
         context.strokePath()
 
         // 画能动范围 范围最小值
@@ -154,58 +154,63 @@ class SFacePen: NSObject {
     /*
      * 小圆点, 手动操控
      */
-    class func operation_pointMove(_ val:CGFloat,
-                                   _ center:CGPoint,
-                                   _ angle:CGFloat,
-                                   _ r:CGFloat,
-                                   _ context:CGContext,
-                                   _ isRotation:Bool = false) {
-        // 计算旋转时候圆点的位置
-        let r0 = val * r / 90.0
-        let cos_fabs = fabs(cos(angle))
-        let sin_fabs = fabs(sin(angle))
-        let x = r * cos_fabs
-        let y = r * sin_fabs
-        var point0:CGPoint!
-        // 计算后的点x
-        var p_x:CGFloat!
-        // 计算后的点y
-        var p_y:CGFloat!
-        // 计算滑动时值变化
-        if angle >= 0 && angle < CGFloat.pi / 2 {
-            // 第一象限
-            point0 = CGPoint(x: center.x + x , y: center.y - y)
-            p_x = point0.x - cos_fabs * r0
-            p_y = point0.y + sin_fabs * r0
-        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
-            // 第二象限
-            point0 = CGPoint(x: center.x - x , y: center.y - y)
-            p_x = point0.x + cos_fabs * r0
-            p_y = point0.y + sin_fabs * r0
-        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
-            // 第三象限
-            point0 = CGPoint(x: center.x - x , y: center.y + y)
-            p_x = point0.x + cos_fabs * r0
-            p_y = point0.y - sin_fabs * r0
-        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
-            // 第四象限
-            point0 = CGPoint(x: center.x + x , y: center.y + y)
-            p_x = point0.x - cos_fabs * r0
-            p_y = point0.y - sin_fabs * r0
-        }else{
-            return
-        }
-        
-        // movepoint
-        context.addArc(center: CGPoint(x: p_x, y: p_y), radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+    class func operation_pointMove(_ point:CGPoint, _ context:CGContext) {
+        context.addArc(center: point, radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
         context.setLineWidth(12)
         context.setStrokeColor(UIColor.white.cgColor)
         context.strokePath()
     }
     
-    class func operation_forMove() {
-        
-    }
+   /*
+     class func operation_pointMove(_ val:CGFloat,
+     _ center:CGPoint,
+     _ angle:CGFloat,
+     _ r:CGFloat,
+     _ context:CGContext,
+     _ isRotation:Bool = false) {
+     // 计算旋转时候圆点的位置
+     let r0 = val * r / 90.0
+     let cos_fabs = fabs(cos(angle))
+     let sin_fabs = fabs(sin(angle))
+     let x = r * cos_fabs
+     let y = r * sin_fabs
+     var point0:CGPoint!
+     // 计算后的点x
+     var p_x:CGFloat!
+     // 计算后的点y
+     var p_y:CGFloat!
+     // 计算滑动时值变化
+     if angle >= 0 && angle < CGFloat.pi / 2 {
+     // 第一象限
+     point0 = CGPoint(x: center.x + x , y: center.y - y)
+     p_x = point0.x - cos_fabs * r0
+     p_y = point0.y + sin_fabs * r0
+     } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+     // 第二象限
+     point0 = CGPoint(x: center.x - x , y: center.y - y)
+     p_x = point0.x + cos_fabs * r0
+     p_y = point0.y + sin_fabs * r0
+     } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
+     // 第三象限
+     point0 = CGPoint(x: center.x - x , y: center.y + y)
+     p_x = point0.x + cos_fabs * r0
+     p_y = point0.y - sin_fabs * r0
+     } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
+     // 第四象限
+     point0 = CGPoint(x: center.x + x , y: center.y + y)
+     p_x = point0.x - cos_fabs * r0
+     p_y = point0.y - sin_fabs * r0
+     }else{
+     return
+     }
+     
+     // movepoint
+     context.addArc(center: CGPoint(x: p_x, y: p_y), radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+     context.setLineWidth(30)
+     context.setStrokeColor(UIColor.white.cgColor)
+     context.strokePath()
+     }
+     */
     
     /*
      * 原点, 手动操控
@@ -219,7 +224,7 @@ class SFacePen: NSObject {
     
     // 文字位置
     
-    class func  drawText(_ content:String, _ alignment:NSTextAlignment = .center,_ rect:CGRect, _ val:CGFloat,_ context:CGContext) {
+    class func  drawText(_ content:String, _ alignment:NSTextAlignment = .center,_ rect:CGRect,_ context:CGContext) {
         let str = content
         //文字样式属性
         let style = NSMutableParagraphStyle()
@@ -228,16 +233,13 @@ class SFacePen: NSObject {
                           NSAttributedStringKey.foregroundColor: UIColor.orange,
                           NSAttributedStringKey.paragraphStyle: style]
         //绘制在指定区域
-        context.translateBy(x: rect.origin.x, y: rect.origin.y)
-        context.rotate(by: val) // 135 * CGFloat.pi/180.0
+//        context.translateBy(x: rect.origin.x, y: rect.origin.y)
+//        context.rotate(by: val) // 135 * CGFloat.pi/180.0
 //        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3))
         context.setFillColor(UIColor.green.cgColor)
-        context.addRect(rect)
-        context.setLineWidth(0.5)
         context.strokePath()
         
         (str as NSString).draw(in: rect, withAttributes: attributes)
-        
     }
     
     // 文字, 带旋转

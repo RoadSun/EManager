@@ -39,8 +39,6 @@ struct SCrossData {
 }
 
 class SControl: SFaceBase {
-    // 基础数据
-    var _model = SPointModel()
     // 选中的动点
     var moveB:CGPoint = CGPoint(x: -200, y: -200)
     // 滑动杆滑动范围

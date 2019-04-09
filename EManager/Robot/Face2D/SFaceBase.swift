@@ -9,7 +9,9 @@
 import UIKit
 
 class SFaceBase: UIView {
-
+    // 基础数据
+    var _model = SPointModel()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panEvent(_:)))

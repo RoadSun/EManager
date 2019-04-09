@@ -22,9 +22,14 @@ class ControlController: UIViewController, SControlDelegate {
         operation = SFaceOperation(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
         operation.backgroundColor = .lightGray
         
+        // 脖子, 脸部朝向
+        let neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 1200))
+        
+        
         self.view.backgroundColor = .black
         self.view.addSubview(control)
         self.view.addSubview(operation)
+        self.view.addSubview(neck)
 
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)
