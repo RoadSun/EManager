@@ -116,6 +116,7 @@ class ControlController: UIViewController, SControlDelegate {
         btn.setTitle("测试", for: .normal)
         btn.backgroundColor = UIColor.gray//RGBA16(value: 0x00ffff, Alpha: 1)
         btn.setTitleColor(UIColor.white, for: .normal)
+        btn.isHidden = true
         self.view.addSubview(btn)
         return btn
     }()

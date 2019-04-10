@@ -161,56 +161,38 @@ class SFacePen: NSObject {
         context.strokePath()
     }
     
-   /*
-     class func operation_pointMove(_ val:CGFloat,
-     _ center:CGPoint,
-     _ angle:CGFloat,
-     _ r:CGFloat,
-     _ context:CGContext,
-     _ isRotation:Bool = false) {
-     // 计算旋转时候圆点的位置
-     let r0 = val * r / 90.0
-     let cos_fabs = fabs(cos(angle))
-     let sin_fabs = fabs(sin(angle))
-     let x = r * cos_fabs
-     let y = r * sin_fabs
-     var point0:CGPoint!
-     // 计算后的点x
-     var p_x:CGFloat!
-     // 计算后的点y
-     var p_y:CGFloat!
-     // 计算滑动时值变化
-     if angle >= 0 && angle < CGFloat.pi / 2 {
-     // 第一象限
-     point0 = CGPoint(x: center.x + x , y: center.y - y)
-     p_x = point0.x - cos_fabs * r0
-     p_y = point0.y + sin_fabs * r0
-     } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
-     // 第二象限
-     point0 = CGPoint(x: center.x - x , y: center.y - y)
-     p_x = point0.x + cos_fabs * r0
-     p_y = point0.y + sin_fabs * r0
-     } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
-     // 第三象限
-     point0 = CGPoint(x: center.x - x , y: center.y + y)
-     p_x = point0.x + cos_fabs * r0
-     p_y = point0.y - sin_fabs * r0
-     } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
-     // 第四象限
-     point0 = CGPoint(x: center.x + x , y: center.y + y)
-     p_x = point0.x - cos_fabs * r0
-     p_y = point0.y - sin_fabs * r0
-     }else{
-     return
-     }
-     
-     // movepoint
-     context.addArc(center: CGPoint(x: p_x, y: p_y), radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
-     context.setLineWidth(30)
-     context.setStrokeColor(UIColor.white.cgColor)
-     context.strokePath()
-     }
+    /*
+     * 小圆点, 手动操控
      */
+    class func operation_pointer(_ center:CGPoint, _ angle:CGFloat, _ context:CGContext) {
+        
+        let r:CGFloat = 450
+        
+        let cos_fabs = fabs(cos(angle))
+        let sin_fabs = fabs(sin(angle))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint = CGPoint.zero
+        
+        if angle >= 0 && angle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: center.x + x, y: center.y - y)
+        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: center.x - x, y: center.y - y)
+        }
+        
+        context.move(to: center)
+        context.addLine(to: point0)
+        context.setLineWidth(0.5)
+        context.setStrokeColor(UIColor.red.cgColor)
+        context.strokePath()
+        
+        context.addArc(center: center, radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        context.setLineWidth(12)
+        context.setStrokeColor(UIColor.blue.cgColor)
+        context.strokePath()
+    }
     
     /*
      * 原点, 手动操控
@@ -222,8 +204,9 @@ class SFacePen: NSObject {
         context.strokePath()
     }
     
-    // 文字位置
-    
+    /*
+     * 文字位置
+     */
     class func  drawText(_ content:String, _ alignment:NSTextAlignment = .center,_ rect:CGRect,_ context:CGContext) {
         let str = content
         //文字样式属性
@@ -233,14 +216,22 @@ class SFacePen: NSObject {
                           NSAttributedStringKey.foregroundColor: UIColor.orange,
                           NSAttributedStringKey.paragraphStyle: style]
         //绘制在指定区域
-//        context.translateBy(x: rect.origin.x, y: rect.origin.y)
-//        context.rotate(by: val) // 135 * CGFloat.pi/180.0
-//        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3))
+//        context.translateBy(x: rect.origin.x, y: rect.origin.y) // 旋转锚点
+//        context.rotate(by: val) // 135 * CGFloat.pi/180.0 // 旋转角度
+//        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3)) // 旋转角度
         context.setFillColor(UIColor.green.cgColor)
         context.strokePath()
-        
         (str as NSString).draw(in: rect, withAttributes: attributes)
     }
     
-    // 文字, 带旋转
+    /*
+     * 触摸区域
+     */
+    class func operation_touchArea(_ rects:[CGRect], _ context:CGContext) {
+        context.addRects(rects)
+        context.setLineWidth(3)
+        context.setStrokeColor(UIColor.yellow.cgColor)
+        context.setLineCap(.round)
+        context.strokePath()
+    }
 }

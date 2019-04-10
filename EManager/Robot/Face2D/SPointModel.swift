@@ -39,8 +39,9 @@ class SPointModel: NSObject {
     var profileArray = [SPt]() // 脸轮廓
     var profileMidPointArray = [SPt]() // 脸轮廓线段中点
     var neckArray = [SPt]() // 脖子点
-    var neckCrossArray = [[SPt]]()
-    var neckCrossMidArray = [[SPt]]()
+    var neckCrossArray = [[SPt]]() // 面部十字
+    var neckCrossArrayBase = [[SPt]]() // 面部十字基础点
+    var neckCrossMidArray = [[SPt]]() // 面部十字中点
     var nameArray = [String]() // 面部名称
     func initArray() {
         // 左眼眉上
@@ -222,44 +223,84 @@ class SPointModel: NSObject {
     /*
      * 脖子
      */
-    func initNeckArray() {
-        
-        // 转头
-        let point_11_0 = SPt(point:CGPoint(x: 0*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
-        // 脖1
-        let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        
-        let point_0 =   SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_1 =   SPt(point:CGPoint(x: 3*a+xx, y: 10*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_2 =   SPt(point:CGPoint(x: 1.5*a+xx, y: 7*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_3 =   SPt(point:CGPoint(x: 1*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_4 =   SPt(point:CGPoint(x: 2*a+xx, y: 0*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_4_0 = SPt(point:CGPoint(x: 4*a+xx, y: 0*a+yy - 2*a),state:0,No:0,Min:0,Max:180)
-        let point_4_1 = SPt(point:CGPoint(x: 7*a+xx, y: 0*a+yy - 2.5*a),state:0,No:0,Min:0,Max:180)
-        let point_4_2 = SPt(point:CGPoint(x: 10*a+xx, y: 0*a+yy - 2*a),state:0,No:0,Min:0,Max:180)
-        let point_5 =   SPt(point:CGPoint(x: 12*a+xx, y: 0*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_6 =   SPt(point:CGPoint(x: 13*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_7 =   SPt(point:CGPoint(x: 12.5*a+xx, y: 7*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_8 =   SPt(point:CGPoint(x: 11*a+xx, y: 10*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_9 =   SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        
-        // 脖2
-        let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        
-        let point_11_2 = SPt(point:CGPoint(x: 14*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        
-        neckArray = [point_11_0, point_9_2, point_9_1, point_9_0,
-                     point_0,point_1,point_2,point_3,point_4,point_4_0,point_4_1,point_4_2,point_5,point_6,point_7,point_8,point_9,
-                     point_10_0, point_10_1, point_10_2, point_11_2]
-        
+    func initNeckArray(_ isChange:Bool = false) {
+        if isChange == false {
+            // 转头
+            let point_11_0 = SPt(point:CGPoint(x: 0*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
+            // 脖1
+            let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            
+            let point_0 =   SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_1 =   SPt(point:CGPoint(x: 3*a+xx, y: 10*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_2 =   SPt(point:CGPoint(x: 1.5*a+xx, y: 7*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_3 =   SPt(point:CGPoint(x: 1*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_4 =   SPt(point:CGPoint(x: 2*a+xx, y: 0*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_4_0 = SPt(point:CGPoint(x: 4*a+xx, y: 0*a+yy - 2*a),state:0,No:0,Min:0,Max:180)
+            let point_4_1 = SPt(point:CGPoint(x: 7*a+xx, y: 0*a+yy - 2.5*a),state:0,No:0,Min:0,Max:180)
+            let point_4_2 = SPt(point:CGPoint(x: 10*a+xx, y: 0*a+yy - 2*a),state:0,No:0,Min:0,Max:180)
+            let point_5 =   SPt(point:CGPoint(x: 12*a+xx, y: 0*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_6 =   SPt(point:CGPoint(x: 13*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_7 =   SPt(point:CGPoint(x: 12.5*a+xx, y: 7*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_8 =   SPt(point:CGPoint(x: 11*a+xx, y: 10*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_9 =   SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            
+            // 脖2
+            let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            
+            let point_11_2 = SPt(point:CGPoint(x: 14*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            
+            neckArray = [point_11_0, point_9_2, point_9_1, point_9_0,
+                         point_0,point_1,point_2,point_3,point_4,point_4_0,point_4_1,point_4_2,point_5,point_6,point_7,point_8,point_9,
+                         point_10_0, point_10_1, point_10_2, point_11_2]
+        }else{
+            profileMidPointArray.removeAll()
+        }
         for index in 0..<(neckArray.count-1) {
             let midPoint = SPointModel.CGPointMidPoint(neckArray[index].point, neckArray[index+1].point)
             let pt =   SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
             profileMidPointArray.append(pt)
+        }
+        
+    }
+    
+    /*
+     * 脖子表情
+     */
+    var centerSway:SPt! // 摆头
+    func initNeckFace(_ isChange:Bool = false) {
+        if isChange == false {
+            // 竖点
+            let point_0_0 = SPt(point:CGPoint(x: 7*a+xx, y: -1*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_0_1 = SPt(point:CGPoint(x: 7*a+xx, y: 5*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_0_2 = SPt(point:CGPoint(x: 7*a+xx, y: 11*a+yy),state:0,No:2,Min:0,Max:180)
+            
+            // 横点
+            let point_1_0 = SPt(point:CGPoint(x: 1*a+xx, y: 5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_1_1 = SPt(point:CGPoint(x: 7*a+xx, y: 5*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_1_2 = SPt(point:CGPoint(x: 13*a+xx, y: 5*a+yy),state:0,No:2,Min:0,Max:180)
+            
+            neckCrossArray = [[point_0_0,point_0_1,point_0_2],
+                              [point_1_0,point_1_1,point_1_2]]
+            neckCrossArrayBase = [[point_0_0,point_0_1,point_0_2],
+                                  [point_1_0,point_1_1,point_1_2]]
+            
+            centerSway = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:0,No:2,Min:0,Max:180)
+            
+        }else{
+            neckCrossMidArray.removeAll()
+        }
+        for (_,list) in neckCrossArray.enumerated() {
+            var tempList = [SPt]()
+            for index in 0..<(list.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(list[index].point, list[index+1].point)
+                let pt =   SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                tempList.append(pt)
+            }
+            neckCrossMidArray.append(tempList)
         }
     }
     
@@ -309,7 +350,7 @@ class SPointModel: NSObject {
      * 路径 http://www.cnblogs.com/ioshe/p/5481841.html
      * 航哥 http://www.hangge.com/blog/cache/category_72_34.html
      * 折线图 http://www.cnblogs.com/huangzhengguo/p/9495020.html
-     *判断点point是否在p0 和 p1两点构成的线段上
+     * 判断点point是否在p0 和 p1两点构成的线段上
      */
     func pointIsInLineByTwoPoint(_ point:CGPoint, _ p0:CGPoint, _ p1:CGPoint) ->Bool{
         //先设置一个所允许的最大值，点到线段的最短距离小于该值说明点在线段上

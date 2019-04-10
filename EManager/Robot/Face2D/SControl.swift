@@ -50,8 +50,6 @@ class SControl: SFaceBase {
         
         _model.a = 40
         _model.initArray()
-//        crossData.setVal(CGFloat.pi / 2, 50)
-        _ = test
         _ = valSlider
     }
    
@@ -289,26 +287,7 @@ class SControl: SFaceBase {
         
         SPen.drawCirclePoint(resultPTS, context!)
     }
-    
-    
-    lazy var test: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.addTarget(self, action: #selector(testClick(_:)), for: .touchUpInside)
-        btn.frame = CGRect(x: self.w - 60, y: 20, width: 40, height: 30)
-        btn.layer.cornerRadius = 3
-        btn.layer.masksToBounds = true
-        btn.setTitle("测试", for: .normal)
-        btn.isHidden = true
-        btn.backgroundColor = UIColor.gray//RGBA16(value: 0x00ffff, Alpha: 1)
-        btn.setTitleColor(UIColor.white, for: .normal)
-        self.addSubview(btn)
-        return btn
-    }()
-    var isChange:Bool = false
-    @objc func testClick(_ sender:UIButton) {
-        isChange = !isChange
-    }
-    
+
     lazy var valSlider: UISlider = {
         let slider = UISlider()
         slider.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -323,7 +302,7 @@ class SControl: SFaceBase {
     
     @objc func sliderChange(_ sender:UISlider) {
         var val = CGFloat(sender.value)
-        if isChange {
+        if self.isCapture {
             val = crossData.angleRange - val
         }
         changeData(val)

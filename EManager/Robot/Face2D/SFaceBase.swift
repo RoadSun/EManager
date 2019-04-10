@@ -38,4 +38,22 @@ class SFaceBase: UIView {
     @objc func longPressEvent(_ sender:UILongPressGestureRecognizer) {}
     
     @objc func tapEvent(_ sender:UITapGestureRecognizer) {}
+    
+    lazy var capturePoint: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(self, action: #selector(capturePointClick(_:)), for: .touchUpInside)
+        btn.frame = CGRect(x: self.w - 60, y: 20, width: 40, height: 30)
+        btn.layer.cornerRadius = 3
+        btn.layer.masksToBounds = true
+        btn.setTitle("捕捉", for: .normal)
+        btn.backgroundColor = UIColor.gray//RGBA16(value: 0x00ffff, Alpha: 1)
+        btn.setTitleColor(UIColor.white, for: .normal)
+        self.addSubview(btn)
+        return btn
+    }()
+    
+    var isCapture:Bool = false
+    @objc func capturePointClick(_ sender:UIButton) {
+        
+    }
 }

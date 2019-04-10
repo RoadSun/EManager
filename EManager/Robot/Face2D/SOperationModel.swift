@@ -52,41 +52,6 @@ class SOperationModel: NSObject {
         return CGPoint(x: p_x, y: p_y)
     }
     
-    class func setLineK(_ center:CGPoint,_ r:CGFloat, _ angle:CGFloat) ->CGFloat {
-        var point0:CGPoint!
-        let cos_fabs = fabs(cos(angle))
-        let sin_fabs = fabs(sin(angle))
-        let x = r * cos_fabs
-        let y = r * sin_fabs
-        var k:CGFloat!
-        // 计算滑动时值变化
-        if angle >= 0 && angle < CGFloat.pi / 2 {
-            // 第一象限
-            point0 = CGPoint(x: center.x + x, y: center.y - y)
-            k = fabs(point0.y - center.y) / fabs(center.x - center.x)
-            print(1)
-        } else if (angle >= CGFloat.pi / 2 && angle < CGFloat.pi) {
-            // 第二象限
-            point0 = CGPoint(x: center.x - x, y: center.y - y)
-            k = -fabs(point0.y - center.y) / fabs(center.x - center.x)
-            print(2)
-        } else if (angle >= CGFloat.pi && angle < CGFloat.pi * 1.5) {
-            // 第三象限
-            point0 = CGPoint(x: center.x - x, y: center.y + y)
-            k = fabs(point0.y - center.y) / fabs(center.x - center.x)
-            print(3)
-        } else if (angle >= CGFloat.pi * 1.5 && Float(angle) <= Float(CGFloat.pi * 2)) {
-            // 第四象限
-            point0 = CGPoint(x: center.x + x, y: center.y + y)
-            k = -fabs(point0.y - center.y) / fabs(center.x - center.x)
-            print(4)
-        }else{
-            return 0
-        }
-        print(k)
-        return k
-    }
-    
     // 拖动点
     class func omodel_panPoint(_ point:CGPoint, _ center:CGPoint,_ r:CGFloat, _ angle:CGFloat) -> CGPoint{
         var newPoint:CGPoint = CGPoint.zero
@@ -232,7 +197,7 @@ class SOperationModel: NSObject {
         
         return newPoint
     }
-    
+    // 文字位置
     class func omodel_textPosition(_ point:CGPoint,
                                    _ angle:CGFloat,
                                    _ r:CGFloat) -> (min:CGRect,max:CGRect,c:CGRect,d:CGRect){
@@ -322,5 +287,61 @@ class SOperationModel: NSObject {
             val = 180
         }
         return val
+    }
+    
+    /*
+     * 左右点 上下点, 根据拖动进行位置变换
+     * 原始点 定点 动点
+     */
+    class func omodel_neck(_ center:CGPoint, _ fixP:CGPoint, _ point:CGPoint) -> CGPoint {
+        let k:CGFloat = 0.05
+        var newPoint = CGPoint.zero
+        newPoint.x = (point.x - fixP.x) * k + center.x
+        newPoint.y = (point.y - fixP.y) * k + center.y
+        return newPoint
+    }
+    
+    /*
+     * 获取所有点进行变换
+     */
+    class func omodel_swas(_ center:CGPoint, _ baseAgl:CGFloat, _ angle:CGFloat, _ point:CGPoint) -> CGPoint{
+        let r = sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
+    
+        let newAngle = baseAgl + angle
+        
+        let cos_fabs = fabs(cos(newAngle))
+        let sin_fabs = fabs(sin(newAngle))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint!
+        if newAngle >= 0 && newAngle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: center.x + x , y: center.y - y)
+            
+        } else if (newAngle >= CGFloat.pi / 2 && newAngle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: center.x - x , y: center.y - y)
+            
+        } else if (newAngle >= CGFloat.pi && newAngle < CGFloat.pi * 1.5) {
+            // 第三象限
+            point0 = CGPoint(x: center.x - x , y: center.y + y)
+            
+        } else if (newAngle >= CGFloat.pi * 1.5 && Float(newAngle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            point0 = CGPoint(x: center.x + x , y: center.y + y)
+            
+        }
+        
+        return point0
+    }
+    
+    /*
+     * 差值
+     */
+    class func omodel_angle(_ center:CGPoint, _ angle:CGFloat, _ point:CGPoint) -> CGFloat{
+        let r = sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
+        var newAngle = acos((point.x - center.x) / r)
+        newAngle = newAngle - angle
+        return newAngle
     }
 }
