@@ -8,11 +8,6 @@
 
 import UIKit
 
-@objc protocol SControlDelegate {
-    @objc optional func control_outputValue(_ value:CGFloat, _ tag:Int)
-    @objc optional func control_nameCurrentRangeValue(_ value:String, _ min:String, _ max:String) // 部位 当前值 范围
-}
-
 struct SCrossData {
     var angle:CGFloat = CGFloat.pi / 2
     var R:CGFloat = 50
@@ -38,13 +33,13 @@ struct SCrossData {
     }
 }
 
-class SControl: SFaceBase {
+class SFaceControl: SFaceBase {
     // 选中的动点
     var moveB:CGPoint = CGPoint(x: -200, y: -200)
     // 滑动杆滑动范围
     var crossData = SCrossData()
     
-    var delegate:SControlDelegate!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -150,7 +145,6 @@ class SControl: SFaceBase {
         
     }
     
-    var teamCurrentPoint = STeamCurrentPoint()
     var resultPTS = [CGPoint]()
     override func tapEvent(_ sender:UITapGestureRecognizer) {
         var hide = true
@@ -294,7 +288,7 @@ class SControl: SFaceBase {
         slider.maximumValue = 180
         slider.value = 90
         slider.minimumValue = 0
-        slider.isHidden = true
+//        slider.isHidden = true
         slider.addTarget(self, action: #selector(sliderChange(_:)), for: .valueChanged)
         self.addSubview(slider)
         return slider

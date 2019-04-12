@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 struct SPointerData {
     var points = [CGPoint]()
     var sign:Bool = true
@@ -89,6 +91,7 @@ class SNeckControl: SFaceBase {
                     beginPoint = pointerData.points[1]
                 }
                 currentAngle = val * CGFloat.pi / 6400.0 + currentAngle
+                // 设定范围
                 if currentAngle > CGFloat.pi * 0.75 {
                     currentAngle = CGFloat.pi * 0.75
                 }else if (currentAngle < CGFloat.pi * 0.25) {
@@ -125,6 +128,11 @@ class SNeckControl: SFaceBase {
                 
                 // 圆点跟着动
                 faceCenterPoint = _model.neckCrossArray[0][1].point
+                
+                /*** 输出 ***/
+                if self.delegate != nil {
+                    self.delegate.control_outputValue!((currentAngle * 180.0) / CGFloat.pi, 20)
+                }
                 self.setNeedsDisplay()
             }
             return
@@ -160,6 +168,55 @@ class SNeckControl: SFaceBase {
         self.setNeedsDisplay()
     }
     
+    override func tapEvent(_ sender: UITapGestureRecognizer) {
+        let point = sender.location(in: self)
+        let angle_1:CGFloat = CGFloat.pi / 180.0
+        // 左偏
+        if point.x >= 80 && point.x < 280 && point.y >= 550 && point.y <= 630 {
+            currentAngle += angle_1
+        }
+        // 右偏
+        if point.x >= 280 && point.x <= 480 && point.y >= 550 && point.y <= 630 {
+            currentAngle -= angle_1
+        }
+        
+        if currentAngle > CGFloat.pi * 0.75 {
+            currentAngle = CGFloat.pi * 0.75
+        }else if (currentAngle < CGFloat.pi * 0.25) {
+            currentAngle = CGFloat.pi * 0.25
+        }
+
+        // 头部跟着动
+        for (index, obj) in _model.neckArray.enumerated() {
+            if index > 2 && index < _model.neckArray.count - 3 {
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
+                _model.neckArray[index] = obj
+            }
+        }
+        _model.initNeckArray(true)
+        
+        // 脖子表情跟着动
+        for (i,list) in _model.neckCrossArray.enumerated() {
+            for (index,obj) in list.enumerated() {
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
+                _model.neckCrossArray[i][index] = list[index]
+            }
+        }
+        _model.initNeckFace(true)
+        
+        // 圆点跟着动
+        faceCenterPoint = _model.neckCrossArray[0][1].point
+        
+        /*** 输出 ***/
+        if self.delegate != nil {
+            self.delegate.control_outputValue!((currentAngle * 180.0) / CGFloat.pi, 20)
+        }
+        self.setNeedsDisplay()
+    }
+    
+    /*
+     * 重画
+     */
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         let context = UIGraphicsGetCurrentContext()
@@ -172,10 +229,7 @@ class SNeckControl: SFaceBase {
                 context?.addQuadCurve(to: _model.profileMidPointArray[index + 1].point, control: _model.neckArray[index + 1].point)
             }
         }
-        context?.setStrokeColor(UIColor.orange.cgColor)
-        context?.setLineWidth(3)
-        context?.setLineCap(.round)
-        context?.strokePath()
+        SFacePen.draw_line(context!)
         
         // 画脖子表情
         for (i,list) in _model.neckCrossMidArray.enumerated() {
@@ -184,10 +238,7 @@ class SNeckControl: SFaceBase {
                 context?.addQuadCurve(to: list[index + 1].point, control: _model.neckCrossArray[i][index + 1].point)
             }
         }
-        context?.setStrokeColor(UIColor.blue.cgColor)
-        context?.setLineWidth(3)
-        context?.setLineCap(.round)
-        context?.strokePath()
+        SFacePen.draw_line(context!,.blue)
         
         /* 画触控区域
          * [CGRect(x: 10, y: 200, width: 80, height: 200),CGRect(x: 465, y: 200, width: 80, height: 200),
@@ -195,7 +246,7 @@ class SNeckControl: SFaceBase {
         SFacePen.operation_touchArea([CGRect(x: 80, y: 550, width: 400, height: 80)], context!)
         
         // 牵引点
-        SFacePen.operation_pointMove(faceCenterPoint, context!)
+        SFacePen.draw_circle(faceCenterPoint, 15, .white, context!)
         
         // 摇头基础点
         SFacePen.operation_pointer(_model.centerSway.point, currentAngle, context!)

@@ -15,22 +15,34 @@ class ControlController: UIViewController, SControlDelegate {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isTranslucent = false
 
-        control = SControl(frame: CGRect(x: 50, y: 50, width: 600, height: 1200))
+        //脸
+        control = SFaceControl(frame: CGRect(x: 50, y: 50, width: 600, height: 1200))
         control.backgroundColor = .black
         control.delegate = self
         
-        operation = SFaceOperation(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
-        operation.backgroundColor = .lightGray
+        // 操控点
+        operationLine = SOperationLine(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationLine.backgroundColor = .lightGray
         
         // 脖子, 脸部朝向
-        let neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 1200))
+        let neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        neck.delegate = self
         
+        // 身体
+        let body =  SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        body.delegate = self
+        
+        // 环形控制
+        operationCircle = SOperationCircle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationCircle.backgroundColor = .lightGray
         
         self.view.backgroundColor = .black
-        self.view.addSubview(control)
-        self.view.addSubview(operation)
-        self.view.addSubview(neck)
-
+//        self.view.addSubview(control)
+//        self.view.addSubview(operationLine)
+//        self.view.addSubview(neck)
+        self.view.addSubview(body)
+        self.view.addSubview(operationCircle)
+        
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)
         transform = transform.scaledBy(x: 1, y: 1)
@@ -45,8 +57,9 @@ class ControlController: UIViewController, SControlDelegate {
         _ = slider2
         _ = slider3
     }
-    var control:SControl!
-    var operation:SFaceOperation!
+    var control:SFaceControl!
+    var operationLine:SOperationLine!
+    var operationCircle:SOperationCircle!
     var scroll:UIScrollView!
     // 取整, 整数错值进行下一赋值动作
     var forValue = 0
@@ -59,6 +72,10 @@ class ControlController: UIViewController, SControlDelegate {
         if tag == 9 {
             
             return
+        }
+        
+        if tag == 20 { // 脖子
+            faceLog.name("头部左轴")
         }
         
         if forValue != Int(value) {
@@ -145,7 +162,7 @@ class ControlController: UIViewController, SControlDelegate {
     lazy var slider1: UISlider = {
         let slider = UISlider()
         slider.frame = CGRect(x: 900, y: 620, width: 200, height: 40)
-        slider.maximumValue = Float(operation.w - 120.0)
+        slider.maximumValue = Float(operationLine.w - 120.0)
         slider.value = 0
         slider.minimumValue = 0
         slider.addTarget(self, action: #selector(sliderChange1(_:)), for: .valueChanged)
@@ -177,16 +194,16 @@ class ControlController: UIViewController, SControlDelegate {
     
     @objc func sliderChange1(_ sender:UISlider) {
         if sender == slider1 {
-            operation.setPoint(CGPoint(x: CGFloat(sender.value), y: operation.mPt.y))
+            operationLine.setPoint(CGPoint(x: CGFloat(sender.value), y: operationLine.mPt.y))
         }
         
         if sender == slider2 {
 //            operation.setPoint(CGPoint(x: operation.mPt.x, y: CGFloat(sender.value)))
-            operation.setValForSlider(CGFloat(sender.value))
+            operationLine.setValForSlider(CGFloat(sender.value))
         }
         
         if sender == slider3 {
-            operation.setAgl(CGFloat(sender.value))
+            operationLine.setAgl(CGFloat(sender.value))
         }
     }
 }

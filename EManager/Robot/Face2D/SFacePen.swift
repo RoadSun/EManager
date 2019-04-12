@@ -152,15 +152,15 @@ class SFacePen: NSObject {
     }
     
     /*
-     * 小圆点, 手动操控
+     * 基础绘画
      */
-    class func operation_pointMove(_ point:CGPoint, _ context:CGContext) {
-        context.addArc(center: point, radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
-        context.setLineWidth(12)
-        context.setStrokeColor(UIColor.white.cgColor)
+    class func draw_line(_ context:CGContext, _ color:UIColor = .orange) {
+        context.setStrokeColor(color.cgColor)
+        context.setLineWidth(3)
+        context.setLineCap(.round)
         context.strokePath()
     }
-    
+
     /*
      * 小圆点, 手动操控
      */
@@ -232,6 +232,40 @@ class SFacePen: NSObject {
         context.setLineWidth(3)
         context.setStrokeColor(UIColor.yellow.cgColor)
         context.setLineCap(.round)
+        context.strokePath()
+    }
+    
+    // 纯画圆
+    class func draw_circle(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
+        context.addArc(center: point, radius: r, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        context.setFillColor(color.cgColor)
+        context.fillPath()
+    }
+    
+    class func omodel_fanRange(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ min:CGFloat, _ max:CGFloat, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
+        if isRing == false {
+            context.move(to: point)
+        }
+        let max_trans = CGFloat.pi * 2 - max
+        let min_trans = CGFloat.pi * 2 - min
+        context.addArc(center: point, radius: r, startAngle: min_trans, endAngle: max_trans, clockwise: true)
+        
+        if isRing == false {
+            context.closePath()
+            context.setFillColor(color.cgColor)
+            context.fillPath()
+        }else{
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(width)
+            context.strokePath()
+        }
+    }
+    
+    class func draw_line(_ center:CGPoint, _ point:CGPoint, _ context:CGContext, _ color:UIColor = .red, _ width:CGFloat = 0.5) {
+        context.move(to: center)
+        context.addLine(to: point)
+        context.setLineWidth(width)
+        context.setStrokeColor(color.cgColor)
         context.strokePath()
     }
 }

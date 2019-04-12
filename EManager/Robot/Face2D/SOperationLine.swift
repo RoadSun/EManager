@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SFaceOperation: SFaceBase {
+class SOperationLine: SFaceBase {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setMove(CGPoint(x: self.w - 40, y: self.h/2))
@@ -81,7 +81,7 @@ class SFaceOperation: SFaceBase {
         // 尺度范围
         SFacePen.drawRulerOperationRange(CGPoint(x: self.w/2, y: self.h/2), mAgl, self.w/2 - 40, 20,120, context!)
         // 手动移动点
-        SFacePen.operation_pointMove(operationMove, context!)
+        SFacePen.draw_circle(operationMove, 15, .white, context!)
         // 最小值
         SFacePen.drawText("0", .center, SOperationModel.omodel_textPosition(selfCenter, mAgl, self.w/2 - 40).min, context!)
         // 最大值

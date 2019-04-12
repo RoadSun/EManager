@@ -134,16 +134,16 @@ class SPen: NSObject {
     /*
      * 画圆
      */
-    class func drawCirclePoint(_ pts:[CGPoint],_ context:CGContext, _ color:UIColor = .green) {
+    class func drawCirclePoint(_ pts:[CGPoint],_ context:CGContext, _ color:UIColor = .yellow, _ width:CGFloat = 3) {
         // 画圆
         for obj in pts {
             let rect = CGRect(origin: CGPoint(x: obj.x-4.5, y: obj.y-4.5), size: CGSize(width: 9, height: 9))
             context.addEllipse(in: rect)
         }
         // 线宽
-        context.setLineWidth(3)
+        context.setLineWidth(width)
         // 画笔颜色
-        context.setStrokeColor(UIColor.yellow.cgColor)
+        context.setStrokeColor(color.cgColor)
         // 关闭路径
         context.strokePath()
     }

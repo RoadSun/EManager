@@ -10,7 +10,7 @@
 import UIKit
 
 class SPt: NSObject {
-    var point = CGPoint(x: 0, y: 0)
+    var point = CGPoint.zero
     var state = 0
     var range = 0
     var min = 0

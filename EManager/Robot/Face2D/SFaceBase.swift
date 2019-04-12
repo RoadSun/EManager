@@ -8,23 +8,31 @@
 
 import UIKit
 
-class SFaceBase: UIView {
+class SFaceBase: UIView, SControlDelegate {
     // 基础数据
     var _model = SPointModel()
-    
+    var delegate:SControlDelegate!
+    var teamCurrentPoint = STeamCurrentPoint()
     override init(frame: CGRect) {
         super.init(frame: frame)
+        // 拖动
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panEvent(_:)))
         self.addGestureRecognizer(pan)
-        
+        // 捏合
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchEvent(_:)))
         self.addGestureRecognizer(pinch)
-        
+        // 长按
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressEvent(_:)))
         self.addGestureRecognizer(longPress)
-        
+        // 轻拍
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapEvent(_:)))
         self.addGestureRecognizer(tap)
+        // 轻扫
+        let swip = UISwipeGestureRecognizer()
+        swip.direction = [.left,.right]
+        swip.addTarget(self, action: #selector(swipeEvent(_:)))
+        self.addGestureRecognizer(swip)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,6 +46,8 @@ class SFaceBase: UIView {
     @objc func longPressEvent(_ sender:UILongPressGestureRecognizer) {}
     
     @objc func tapEvent(_ sender:UITapGestureRecognizer) {}
+    
+    @objc func swipeEvent(_ sender:UISwipeGestureRecognizer) {}
     
     lazy var capturePoint: UIButton = {
         let btn = UIButton(type: .system)

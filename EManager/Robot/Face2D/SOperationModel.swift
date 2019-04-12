@@ -344,4 +344,88 @@ class SOperationModel: NSObject {
         newAngle = newAngle - angle
         return newAngle
     }
+    
+    /*
+     * body计算肢体活动范围
+     */
+    class func omodel_body_moveRange(_ point:CGPoint, _ center:CGPoint,_ r:CGFloat) ->CGPoint{
+        let curX = (point.x - center.x)
+        let curY = (point.y - center.y)
+        let curR = sqrt(pow(fabs(curX), 2) + pow(fabs(curY), 2))
+        var point0 = CGPoint.zero
+        point0.y = r * curY / curR + center.y
+        point0.x = r * curX / curR + center.x
+        return point0
+    }
+    
+    /*
+     * 角度换算
+     */
+    class func π_Angle(_ pi:CGFloat)->CGFloat {
+        let angle = CGFloat(Int(pi * 180.0 / CGFloat.pi))
+        print("angle : \(angle)")
+        return angle
+    }
+    
+    /*
+     * 获得两点距离
+     */
+    class func r_between(_ center:CGPoint, _ point:CGPoint) ->CGFloat{
+        return sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
+    }
+    
+    // 子节点移动
+    class func omodel_body_subPointMoveRange(_ point:CGPoint, _ center:CGPoint, _ angle:CGFloat, _ dif:CGFloat) ->CGPoint{
+        var newAngle = fabs(angle + dif)
+        if newAngle > CGFloat.pi * 2 {
+            newAngle = newAngle - (CGFloat.pi * 2)
+        }
+        let cos_fabs = fabs(cos(newAngle))
+        let sin_fabs = fabs(sin(newAngle))
+        let r = sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint!
+        if newAngle >= 0 && newAngle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: center.x + x , y: center.y - y)
+        } else if (newAngle >= CGFloat.pi / 2 && newAngle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: center.x - x , y: center.y - y)
+        } else if (newAngle >= CGFloat.pi && newAngle < CGFloat.pi * 1.5) {
+            // 第三象限
+            point0 = CGPoint(x: center.x - x , y: center.y + y)
+        } else if (newAngle >= CGFloat.pi * 1.5 && Float(newAngle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            point0 = CGPoint(x: center.x + x , y: center.y + y)
+        }
+        return point0
+    }
+    
+    /*
+     * 计算点的当前角度
+     */
+    class func omodel_body_angle(_ center:CGPoint, _ point:CGPoint) -> CGFloat{
+        let r = sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
+        var newAngle:CGFloat = acos((point.x - center.x) / r)
+        if point.y - center.y >= 0 {
+            newAngle = -newAngle + CGFloat.pi * 2
+        }
+        if newAngle == CGFloat.pi * 2 {
+            newAngle = 0
+        }
+        return newAngle
+    }
+
+    /*
+     * 计算弧度点击区域
+     */
+    class func omodel_touchArea(_ center:CGPoint, _ point:CGPoint, _ angle:CGFloat, _ range:CGFloat, _ r:CGFloat, _ thick:CGFloat) ->Bool {
+        // 点是否在 区域内
+        let temp_r = r_between(center, point)
+        if temp_r >= (r - thick / 2) && temp_r <= (r + thick / 2) {
+            return true
+        }
+        return false
+    }
 }

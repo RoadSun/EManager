@@ -17,6 +17,8 @@ func midpointM(_ p1:CGPoint, _ p2:CGPoint, _ d:Int)->CGPoint {
 struct STeamCurrentPoint {
     var bpt = SPt(point: CGPoint(x: -200, y: -200), state: 0, No: 0,Min:0,Max:180) // 基础点 base point
     var pt = SPt(point: CGPoint(x: -200, y: -200), state: 0, No: 0,Min:0,Max:180) // point
+    var last = SPt(point: CGPoint.zero, state: 0, No: 0,Min:0,Max:180) // point
+    var subLevel = 0 // 向下层级
     var i0 = 0  // 第一层
     var i1 = 0 // 第二层
 }
@@ -38,11 +40,15 @@ class SPointModel: NSObject {
     var baseArray = [[SPt]]() // 面部变化点
     var profileArray = [SPt]() // 脸轮廓
     var profileMidPointArray = [SPt]() // 脸轮廓线段中点
+    
     var neckArray = [SPt]() // 脖子点
     var neckCrossArray = [[SPt]]() // 面部十字
     var neckCrossArrayBase = [[SPt]]() // 面部十字基础点
     var neckCrossMidArray = [[SPt]]() // 面部十字中点
     var nameArray = [String]() // 面部名称
+    
+    var bodyArray = [[SPt]]() // 肢体
+    var bodyArrayBase = [[SPt]]() // 肢体基础点
     func initArray() {
         // 左眼眉上
         let point_0_0 = SPt(point:CGPoint(x: 2*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
@@ -288,7 +294,7 @@ class SPointModel: NSObject {
             neckCrossArrayBase = [[point_0_0,point_0_1,point_0_2],
                                   [point_1_0,point_1_1,point_1_2]]
             
-            centerSway = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:0,No:2,Min:0,Max:180)
+            centerSway = SPt(point:CGPoint(x: 7*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
             
         }else{
             neckCrossMidArray.removeAll()
@@ -306,6 +312,51 @@ class SPointModel: NSObject {
     
     func initNameArray() {
         nameArray = ["左眼眉上","左眼眉上1","左眼眉上2","左眼眉上3","左眼眉上4","左眼眉上5","左眼眉上6","左眼眉上7","左眼眉上8","左眼眉上9","左眼眉上10","左眼眉上11"]
+    }
+    
+    var bodyLength:CGFloat! // 躯干一节的长度
+    func initBodyArray(_ isChange:Bool = false) {
+        if isChange == false {
+            
+            
+            let point_0_0 = SPt(point:CGPoint(x: 5*a+xx, y: 4*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_0_1 = SPt(point:CGPoint(x: 5*a+xx, y: 2*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_0_2 = SPt(point:CGPoint(x: 5*a+xx, y: 1*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_0 = [point_0_0,point_0_1,point_0_2]
+            
+            let point_1_0 = SPt(point:CGPoint(x: 5*a+xx, y: 4*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_1_1 = SPt(point:CGPoint(x: 5*a+xx, y: 2*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_1_2 = SPt(point:CGPoint(x: 3*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_1_3 = SPt(point:CGPoint(x: 3*a+xx, y: 4*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_1_4 = SPt(point:CGPoint(x: 3*a+xx, y: 6*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_1 = [point_1_0,point_1_1,point_1_2,point_1_3,point_1_4]
+            
+            let point_2_0 = SPt(point:CGPoint(x: 5*a+xx, y: 4*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_2_1 = SPt(point:CGPoint(x: 5*a+xx, y: 2*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_2_2 = SPt(point:CGPoint(x: 7*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_2_3 = SPt(point:CGPoint(x: 7*a+xx, y: 4*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_2_4 = SPt(point:CGPoint(x: 7*a+xx, y: 6*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_2 = [point_2_0,point_2_1,point_2_2,point_2_3,point_2_4]
+            
+            let point_3_0 = SPt(point:CGPoint(x: 5*a+xx, y: 4*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_3_1 = SPt(point:CGPoint(x: 5*a+xx, y: 5*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_3_2 = SPt(point:CGPoint(x: 4*a+xx, y: 5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_3_3 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_3_4 = SPt(point:CGPoint(x: 4*a+xx, y: 9*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_3 = [point_3_0,point_3_1,point_3_2,point_3_3,point_3_4]
+            
+            let point_4_0 = SPt(point:CGPoint(x: 5*a+xx, y: 4*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_4_1 = SPt(point:CGPoint(x: 5*a+xx, y: 5*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_4_2 = SPt(point:CGPoint(x: 6*a+xx, y: 5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_4_3 = SPt(point:CGPoint(x: 6*a+xx, y: 7*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_4_4 = SPt(point:CGPoint(x: 6*a+xx, y: 9*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_4 = [point_4_0,point_4_1,point_4_2,point_4_3,point_4_4]
+            
+            bodyArray = [array_0,array_1,array_2,array_3,array_4]
+            bodyArrayBase = [array_0,array_1,array_2,array_3,array_4]
+            
+            bodyLength = 2*a
+        }
     }
     
     static func XWPointOnPowerCurveLine(_ p0:CGPoint, _ p1:CGPoint, _ p2:CGPoint, _ t:CGFloat) ->CGPoint {
