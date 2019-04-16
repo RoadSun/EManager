@@ -32,16 +32,21 @@ class ControlController: UIViewController, SControlDelegate {
         let body =  SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
         body.delegate = self
         
+        // 测试
+        let limb = SHandControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        limb.delegate = self
+        
         // 环形控制
         operationCircle = SOperationCircle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
         operationCircle.backgroundColor = .lightGray
         
         self.view.backgroundColor = .black
-//        self.view.addSubview(control)
-//        self.view.addSubview(operationLine)
+        self.view.addSubview(control)
+        self.view.addSubview(operationLine)
 //        self.view.addSubview(neck)
-        self.view.addSubview(body)
-        self.view.addSubview(operationCircle)
+//        self.view.addSubview(body)
+//        self.view.addSubview(limb)
+//        self.view.addSubview(operationCircle)
         
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)

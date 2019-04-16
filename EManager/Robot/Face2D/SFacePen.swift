@@ -41,7 +41,7 @@ class SFacePen: NSObject {
         let y = r * sin_fabs
         var point0:CGPoint!
         var point1:CGPoint!
-
+        
         if angle >= 0 && angle < CGFloat.pi / 2 {
             // 第一象限
             point0 = CGPoint(x: center.x + x, y: center.y - y)
@@ -61,7 +61,7 @@ class SFacePen: NSObject {
         }else{
             return
         }
-
+        
         // 线条颜色
         context.setStrokeColor(UIColor.gray.cgColor)
         // 设置线条平滑，不需要两边像素宽
@@ -103,21 +103,21 @@ class SFacePen: NSObject {
         }else{
             return
         }
-
+        
         context.move(to: point0)
         context.addLine(to: pointMax)
         
         context.move(to: point1)
         context.addLine(to: pointMin)
         context.strokePath()
-
+        
         // 画小红线
         context.setStrokeColor(UIColor.red.cgColor)
         context.setLineWidth(35)
         context.move(to: CGPoint(x: center.x, y: center.y - 1))
         context.addLine(to: CGPoint(x: center.x, y: center.y + 1))
         context.strokePath()
-
+        
         // 画能动范围 范围最小值
         let min_val_r = minVal * 2 * r / 180
         let max_val_r = maxVal * 2 * r / 180
@@ -160,7 +160,7 @@ class SFacePen: NSObject {
         context.setLineCap(.round)
         context.strokePath()
     }
-
+    
     /*
      * 小圆点, 手动操控
      */
@@ -216,9 +216,9 @@ class SFacePen: NSObject {
                           NSAttributedStringKey.foregroundColor: UIColor.orange,
                           NSAttributedStringKey.paragraphStyle: style]
         //绘制在指定区域
-//        context.translateBy(x: rect.origin.x, y: rect.origin.y) // 旋转锚点
-//        context.rotate(by: val) // 135 * CGFloat.pi/180.0 // 旋转角度
-//        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3)) // 旋转角度
+        //        context.translateBy(x: rect.origin.x, y: rect.origin.y) // 旋转锚点
+        //        context.rotate(by: val) // 135 * CGFloat.pi/180.0 // 旋转角度
+        //        context.concatenate(CGAffineTransform.init(rotationAngle: -CGFloat.pi / 3)) // 旋转角度
         context.setFillColor(UIColor.green.cgColor)
         context.strokePath()
         (str as NSString).draw(in: rect, withAttributes: attributes)
@@ -260,12 +260,76 @@ class SFacePen: NSObject {
             context.strokePath()
         }
     }
-    
+    // 临时 画线
     class func draw_line(_ center:CGPoint, _ point:CGPoint, _ context:CGContext, _ color:UIColor = .red, _ width:CGFloat = 0.5) {
         context.move(to: center)
         context.addLine(to: point)
         context.setLineWidth(width)
         context.setStrokeColor(color.cgColor)
         context.strokePath()
+    }
+    
+    /*
+     * 粗细
+     */
+    class func draw_limb(_ center:CGPoint,_ point:CGPoint, _ ratio:CGFloat, _ context:CGContext) {
+        
+        let center_r:CGFloat = 30
+        let move_r:CGFloat = 30 * ratio
+        
+        let r = SOperationModel.r_between(center, point)
+        
+        if r >= fabs(center_r - move_r) {
+   
+            let dif = fabs(center_r - move_r)
+            let dif_agl = asin(dif / r)
+            var angle0:CGFloat = 0
+            var angle1:CGFloat = 0
+            
+            let angle = SOperationModel.omodel_body_angle(center, point)
+            angle0 = angle - dif_agl < 0 ? (angle - dif_agl + CGFloat.pi * 2) : (angle - dif_agl)
+            angle1 = angle + dif_agl
+            
+            context.addArc(center: center, radius: center_r, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+            context.setFillColor(UIColor(red: 105/255.0, green: 105/255.0, blue: 105/255.0, alpha: 1).cgColor)
+            context.fillPath()
+            
+            // 判断两个圆是否相互包含
+            let pt = SOperationModel.omodel_point_to_point(center, r, angle0)
+            
+            context.move(to: center)
+            context.addLine(to: pt)
+            context.setLineWidth(60)
+            context.setStrokeColor(UIColor(red: 105/255.0, green: 105/255.0, blue: 105/255.0, alpha: 1).cgColor)
+            context.strokePath()
+            
+            let pt1 = SOperationModel.omodel_point_to_point(center, r, angle1)
+            
+            context.move(to: center)
+            context.addLine(to: pt1)
+            context.setLineWidth(60)
+            context.setStrokeColor(UIColor(red: 105/255.0, green: 105/255.0, blue: 105/255.0, alpha: 1).cgColor)
+            context.strokePath()
+        }
+        context.addArc(center: point, radius: move_r, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+        context.setFillColor(UIColor.orange.cgColor)
+        context.fillPath()
+        
+        /*** 圆渐变 ***/
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        //颜色数组（这里使用三组颜色作为渐变）fc6820
+        let compoents:[CGFloat] = [255/255, 255/255, 255/255, 1,
+                                   211/255, 211/255, 211/255, 1,
+                                   55/255, 55/255, 55/255, 1]
+        //没组颜色所在位置（范围0~1)
+        let locations:[CGFloat] = [0,0.5,1]
+        //生成渐变色（count参数表示渐变个数）
+        let gradient = CGGradient(colorSpace: colorSpace, colorComponents: compoents, locations: locations, count: locations.count)
+        //渐变圆心位置（这里外圆内圆都用同一个圆心）
+        //绘制渐变
+        context.drawRadialGradient(gradient!,
+                                   startCenter: point, startRadius: move_r/2.0,
+                                   endCenter: point, endRadius: move_r,
+                                   options: .drawsBeforeStartLocation)
     }
 }

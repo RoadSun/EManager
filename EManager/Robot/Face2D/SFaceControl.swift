@@ -247,13 +247,6 @@ class SFaceControl: SFaceBase {
             }
         }
         
-//        for (index,obj) in _model.profileArray.enumerated() {
-//            if index == 0 {
-//                context?.move(to: obj.point)
-//            }else{
-//                context?.addLine(to: obj.point)
-//            }
-//        }
         // 遍历所有的中点, 画出头型
         context?.move(to: _model.profileMidPointArray[0].point)
         for (index,_) in _model.profileMidPointArray.enumerated() {
@@ -274,11 +267,6 @@ class SFaceControl: SFaceBase {
             SFacePen.drawRuler(teamCurrentPoint.bpt.point, crossData.angle, crossData.R, context!)
         }
         SPen.drawCircle([createRectR(moveB, 20)], context!)
-        
-//        SFacePen.drawText("左眼眉上", .left, CGRect(x: 20, y: 30, width: 120, height: 30), context!)
-//        SFacePen.drawText("当前值: \(crossData.value)", .left, CGRect(x: 20, y: 60, width: 120, height: 30), context!)
-//        SFacePen.drawText("范围: \(teamCurrentPoint.pt.min) ~ \(teamCurrentPoint.pt.max)", .left, CGRect(x: 20, y: 90, width: 120, height: 30), context!)
-        
         SPen.drawCirclePoint(resultPTS, context!)
     }
 

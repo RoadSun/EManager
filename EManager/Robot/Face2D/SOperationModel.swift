@@ -363,7 +363,7 @@ class SOperationModel: NSObject {
      */
     class func π_Angle(_ pi:CGFloat)->CGFloat {
         let angle = CGFloat(Int(pi * 180.0 / CGFloat.pi))
-        print("angle : \(angle)")
+//        print("angle : \(angle)")
         return angle
     }
     
@@ -374,7 +374,7 @@ class SOperationModel: NSObject {
         return sqrt(pow(fabs(point.x - center.x), 2) + pow(fabs(point.y - center.y), 2))
     }
     
-    // 子节点移动
+    // 子节点移动 点->线移动
     class func omodel_body_subPointMoveRange(_ point:CGPoint, _ center:CGPoint, _ angle:CGFloat, _ dif:CGFloat) ->CGPoint{
         var newAngle = fabs(angle + dif)
         if newAngle > CGFloat.pi * 2 {
@@ -427,5 +427,34 @@ class SOperationModel: NSObject {
             return true
         }
         return false
+    }
+    
+    /*
+     * 点-线
+     */
+    class func omodel_point_to_point(_ center:CGPoint, _ r:CGFloat, _ angle:CGFloat) ->CGPoint{
+        var newAngle = fabs(angle)
+        if newAngle > CGFloat.pi * 2 {
+            newAngle = newAngle - (CGFloat.pi * 2)
+        }
+        let cos_fabs = fabs(cos(newAngle))
+        let sin_fabs = fabs(sin(newAngle))
+        let x = r * cos_fabs
+        let y = r * sin_fabs
+        var point0:CGPoint!
+        if newAngle >= 0 && newAngle < CGFloat.pi / 2 {
+            // 第一象限
+            point0 = CGPoint(x: center.x + x , y: center.y - y)
+        } else if (newAngle >= CGFloat.pi / 2 && newAngle < CGFloat.pi) {
+            // 第二象限
+            point0 = CGPoint(x: center.x - x , y: center.y - y)
+        } else if (newAngle >= CGFloat.pi && newAngle < CGFloat.pi * 1.5) {
+            // 第三象限
+            point0 = CGPoint(x: center.x - x , y: center.y + y)
+        } else if (newAngle >= CGFloat.pi * 1.5 && Float(newAngle) <= Float(CGFloat.pi * 2)) {
+            // 第四象限
+            point0 = CGPoint(x: center.x + x , y: center.y + y)
+        }
+        return point0
     }
 }
