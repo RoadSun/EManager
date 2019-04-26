@@ -22,7 +22,7 @@ class SSnapEdgesView: UIView {
             self.addSubview(view)
             
             view.snp.makeConstraints { (make) in
-                make.edges.equalTo(lastView).inset(UIEdgeInsetsMake(5, 10, 15, 20))
+                make.edges.equalTo(lastView).inset(UIEdgeInsets.init(top: 5, left: 10, bottom: 15, right: 20))
             }
             
             lastView = view

@@ -87,7 +87,7 @@ class SHandControl: SFaceBase {
                     let curPt = movePointArray[teamCurrentPoint.i0 + index + 1]
                     angleArray[index] = SOperationModel.omodel_body_angle(teamCurrentPoint.last.point, curPt)
                 }
-                return
+                break
             }
         }
     }

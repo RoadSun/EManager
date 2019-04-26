@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 struct SPointerData {
     var points = [CGPoint]()
     var sign:Bool = true
@@ -41,29 +39,35 @@ class SNeckControl: SFaceBase {
         _model.initNeckArray()
         _model.initNeckFace()
         faceCenterPoint = _model.neckCrossArray[0][1].point
+        
         self.backgroundColor = .lightGray
         
         // 计算晃脖子的初始角度
         for (index, obj) in _model.neckArray.enumerated() {
             if index > 2 && index < _model.neckArray.count - 3 {
-                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, CGFloat.pi / 2, obj.point)
+                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, CGFloat.pi * 0.5, obj.point)
                 _model.neckArray[index] = obj
             }
         }
-        
+
         // 计算晃脖子表情的初始角度
         for (i,list) in _model.neckCrossArray.enumerated() {
             for (index,obj) in list.enumerated() {
-                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, CGFloat.pi / 2, obj.point)
+                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, CGFloat.pi * 0.5, obj.point)
                 _model.neckCrossArray[i][index] = list[index]
             }
         }
+        
+        self.neckAction(CGFloat.pi * 0.5)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // 重写, 原函数就不会调用
+    
+    /*
+     * 重写, 原函数就不会调用
+     */
     override func capturePointClick(_ sender:UIButton) {
         self.isCapture = !self.isCapture
         if self.isCapture {
@@ -73,10 +77,18 @@ class SNeckControl: SFaceBase {
         }
     }
     
+    /*
+     * 设定值初始值 , 外部调用
+     */
+    func setCurrentValue(_ value:CGFloat) {
+        self.neckAction(value)
+        self.setNeedsDisplay()
+    }
+    
     var faceCenterPoint:CGPoint!
     var beginPoint:CGPoint! // 起始点
     var pointerData = SPointerData(points: [], sign: true)  // 上两个点
-    var currentAngle:CGFloat = CGFloat.pi / 2
+    var currentAngle:SAngle = SAngle()
     // 晃动当前角度
     override func panEvent(_ sender: UIPanGestureRecognizer) {
         let point = sender.location(in: self)
@@ -90,49 +102,9 @@ class SNeckControl: SFaceBase {
                 if pointerData.sign == false {
                     beginPoint = pointerData.points[1]
                 }
-                currentAngle = val * CGFloat.pi / 6400.0 + currentAngle
-                // 设定范围
-                if currentAngle > CGFloat.pi * 0.75 {
-                    currentAngle = CGFloat.pi * 0.75
-                }else if (currentAngle < CGFloat.pi * 0.25) {
-                    currentAngle = CGFloat.pi * 0.25
-                }
                 
-                // 动作捕捉部分
-                
-                if self.isCapture {
-                    if sender.state == .ended {
-                        if (currentAngle - CGFloat.pi / 2) < 0.1 {
-                            currentAngle = CGFloat.pi / 2
-                        }
-                    }
-                }
-                
-                // 头部跟着动
-                for (index, obj) in _model.neckArray.enumerated() {
-                    if index > 2 && index < _model.neckArray.count - 3 {
-                        obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
-                        _model.neckArray[index] = obj
-                    }
-                }
-                _model.initNeckArray(true)
-                
-                // 脖子表情跟着动
-                for (i,list) in _model.neckCrossArray.enumerated() {
-                    for (index,obj) in list.enumerated() {
-                        obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
-                        _model.neckCrossArray[i][index] = list[index]
-                    }
-                }
-                _model.initNeckFace(true)
-                
-                // 圆点跟着动
-                faceCenterPoint = _model.neckCrossArray[0][1].point
-                
-                /*** 输出 ***/
-                if self.delegate != nil {
-                    self.delegate.control_outputValue!((currentAngle * 180.0) / CGFloat.pi, 20)
-                }
+                // 左右摆脖子动作
+                self.neckAction(val * CGFloat.pi / 25600.0 + currentAngle.radian)
                 self.setNeedsDisplay()
             }
             return
@@ -158,38 +130,41 @@ class SNeckControl: SFaceBase {
         // 计算晃脖子表情的初始角度
         for (i,list) in _model.neckCrossArray.enumerated() {
             for (index,obj) in list.enumerated() {
-                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, currentAngle, obj.point)
+                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, currentAngle.radian, obj.point)
                 _model.neckCrossArray[i][index] = list[index]
             }
         }
-        
         _model.initNeckFace(true)
         
         self.setNeedsDisplay()
     }
     
-    override func tapEvent(_ sender: UITapGestureRecognizer) {
-        let point = sender.location(in: self)
-        let angle_1:CGFloat = CGFloat.pi / 180.0
-        // 左偏
-        if point.x >= 80 && point.x < 280 && point.y >= 550 && point.y <= 630 {
-            currentAngle += angle_1
-        }
-        // 右偏
-        if point.x >= 280 && point.x <= 480 && point.y >= 550 && point.y <= 630 {
-            currentAngle -= angle_1
+    /*
+     * 脖子动作
+     */
+    func neckAction(_ value:CGFloat,_ state:UIPanGestureRecognizer.State = .ended) {
+        currentAngle.setVal(value)
+        // 设定范围
+        if currentAngle.radian > CGFloat.pi * 0.75 {
+            currentAngle.pi(0.75)
+        }else if (currentAngle.radian < CGFloat.pi * 0.25) {
+            currentAngle.pi(0.25)
         }
         
-        if currentAngle > CGFloat.pi * 0.75 {
-            currentAngle = CGFloat.pi * 0.75
-        }else if (currentAngle < CGFloat.pi * 0.25) {
-            currentAngle = CGFloat.pi * 0.25
+        // 动作捕捉部分
+        
+        if self.isCapture {
+            if state == .ended {
+                if (currentAngle.radian - CGFloat.pi / 2) < 0.1 {
+                    currentAngle.pi(0.5)
+                }
+            }
         }
-
+        
         // 头部跟着动
         for (index, obj) in _model.neckArray.enumerated() {
             if index > 2 && index < _model.neckArray.count - 3 {
-                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle.radian, obj.point)
                 _model.neckArray[index] = obj
             }
         }
@@ -198,7 +173,7 @@ class SNeckControl: SFaceBase {
         // 脖子表情跟着动
         for (i,list) in _model.neckCrossArray.enumerated() {
             for (index,obj) in list.enumerated() {
-                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle, obj.point)
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle.radian, obj.point)
                 _model.neckCrossArray[i][index] = list[index]
             }
         }
@@ -209,8 +184,23 @@ class SNeckControl: SFaceBase {
         
         /*** 输出 ***/
         if self.delegate != nil {
-            self.delegate.control_outputValue!((currentAngle * 180.0) / CGFloat.pi, 20)
+            self.delegate.control_outputValue!(currentAngle.radian, 20)
         }
+    }
+    
+    override func tapEvent(_ sender: UITapGestureRecognizer) {
+        let point = sender.location(in: self)
+        let angle_1:CGFloat = CGFloat.pi / 180.0
+        // 左偏
+        if point.x >= 80 && point.x < 280 && point.y >= 550 && point.y <= 630 {
+            self.neckAction(angle_1+currentAngle.radian)
+        }
+        
+        // 右偏
+        if point.x >= 280 && point.x <= 480 && point.y >= 550 && point.y <= 630 {
+            self.neckAction(-angle_1+currentAngle.radian)
+        }
+
         self.setNeedsDisplay()
     }
     
@@ -248,7 +238,21 @@ class SNeckControl: SFaceBase {
         // 牵引点
         SFacePen.draw_circle(faceCenterPoint, 15, .white, context!)
         
+        // 指针
+        SFacePen.draw_line(_model.centerSway.point, SOperationModel.omodel_point_to_point(_model.centerSway.point, 450, currentAngle.radian), context!)
+        
         // 摇头基础点
-        SFacePen.operation_pointer(_model.centerSway.point, currentAngle, context!)
+        SFacePen.draw_circle(_model.centerSway.point, 15, .blue, context!)
+        
+        
+        SFacePen.draw_cross(faceCenterPoint, val: 100, context!)
+        
+        /////// 测试
+        // 旋转盘
+//        context?.setAlpha( 0.3)
+//        SFacePen.draw_circle_rect(CGPoint(x: 150, y: 500), CGSize(width: 300, height: 100), .darkGray, context!)
+//        context?.setAlpha( 1)
+//        SFacePen.draw_circle_rect(CGPoint(x: 270, y: 570), CGSize(width: 60, height: 20), .white, context!)
+//        SFacePen.draw_line(CGPoint(x: 300, y: 550), CGPoint(x: 300, y: 475), context!, .red, 2)
     }
 }

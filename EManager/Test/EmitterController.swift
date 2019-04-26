@@ -35,11 +35,11 @@ class EmitterController: UIViewController {
         // 粒子发射图层
         rainLayer = CAEmitterLayer()
         // 发射器形状为线形，默认发射方向向上
-        rainLayer.emitterShape = kCAEmitterLayerLine
+        rainLayer.emitterShape = CAEmitterLayerEmitterShape.line
         // 从发射器的轮廓发射粒子
-        rainLayer.emitterMode = kCAEmitterLayerOutline
+        rainLayer.emitterMode = CAEmitterLayerEmitterMode.outline
         // 优先渲染旧的粒子
-        rainLayer.renderMode = kCAEmitterLayerOldestFirst
+        rainLayer.renderMode = CAEmitterLayerRenderMode.oldestFirst
         // 发射位置
         // 对于线形发射器，线的两端点分别为
         // (emitterPosition.x - emitterSize.width/2, emitterPosition.y, emitterZPosition)和
@@ -107,9 +107,9 @@ class EmitterController: UIViewController {
     private func setupCenterHeartLayer() {
         centerHeartLayer = CAEmitterLayer()
         // 发射器形状为圆形，默认向四周发射粒子
-        centerHeartLayer.emitterShape = kCAEmitterLayerCircle
-        centerHeartLayer.emitterMode = kCAEmitterLayerOutline
-        centerHeartLayer.renderMode = kCAEmitterLayerOldestFirst
+        centerHeartLayer.emitterShape = CAEmitterLayerEmitterShape.circle
+        centerHeartLayer.emitterMode = CAEmitterLayerEmitterMode.outline
+        centerHeartLayer.renderMode = CAEmitterLayerRenderMode.oldestFirst
         // 发射器位置
         // 对于圆形发射器
         // 圆心位于(emitterPosition.x, emitterPosition.y, emitterZPosition)
@@ -161,11 +161,11 @@ class EmitterController: UIViewController {
         leftHeartLayer = CAEmitterLayer()
         // 点状发射器，默认发射方向向右
         // 这句可以省略，点状是默认值
-        leftHeartLayer.emitterShape = kCAEmitterLayerPoint
+        leftHeartLayer.emitterShape = CAEmitterLayerEmitterShape.point
         // 从发射器中的一点发射粒子
         // 这句可以省略，是默认值
-        leftHeartLayer.emitterMode = kCAEmitterLayerVolume
-        leftHeartLayer.renderMode = kCAEmitterLayerOldestFirst
+        leftHeartLayer.emitterMode = CAEmitterLayerEmitterMode.volume
+        leftHeartLayer.renderMode = CAEmitterLayerRenderMode.oldestFirst
         // 发射器位置
         // 对于点状发射器，发射点在(emitterPosition.x, emitterPosition.y, emitterZPosition)
         leftHeartLayer.emitterPosition = CGPoint(x: view.bounds.midX * 0.5, y: view.bounds.midY)
@@ -209,7 +209,7 @@ class EmitterController: UIViewController {
     
     private func setupRightHeartLayer() {
         rightHeartLayer = CAEmitterLayer()
-        rightHeartLayer.renderMode = kCAEmitterLayerOldestFirst
+        rightHeartLayer.renderMode = CAEmitterLayerRenderMode.oldestFirst
         rightHeartLayer.emitterPosition = CGPoint(x: view.bounds.midX * 1.5, y: view.bounds.midY)
         rightHeartLayer.birthRate = 0
         
@@ -256,7 +256,7 @@ class EmitterController: UIViewController {
     
     private func setupGravityLayer() {
         gravityLayer = CAEmitterLayer()
-        gravityLayer.renderMode = kCAEmitterLayerOldestFirst
+        gravityLayer.renderMode = CAEmitterLayerRenderMode.oldestFirst
         gravityLayer.emitterPosition = CGPoint(x: 0, y: view.bounds.maxY)
         gravityLayer.birthRate = 0
         

@@ -14,7 +14,7 @@ class SSnapUpdateView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.size = CGSize(width: 20, height: 50)
-        button = UIButton(type: UIButtonType.system)
+        button = UIButton(type: UIButton.ButtonType.system)
         button.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
         button.backgroundColor = UIColor.lightGray
         button.layer.borderColor = UIColor.blue.cgColor

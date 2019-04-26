@@ -92,8 +92,8 @@ class CirclePan: UIView {
         _lineShape = CAShapeLayer()
         _lineShape.frame = CGRect.init(x: 0, y: 0, width: 600, height: 400)
         _lineShape.lineWidth = 2
-        _lineShape.lineJoin = kCALineJoinRound
-        _lineShape.lineCap = kCALineCapSquare
+        _lineShape.lineJoin = CAShapeLayerLineJoin.round
+        _lineShape.lineCap = CAShapeLayerLineCap.square
         _lineShape.strokeColor = UIColor.blue.cgColor
         _lineShape.fillColor = UIColor.clear.cgColor
         _lineShape.path = path

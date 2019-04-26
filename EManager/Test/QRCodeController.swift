@@ -38,7 +38,7 @@ class QRCodeController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
         let path = CGMutablePath()
         path.addRect(rect)
         path.addRect(self.view.bounds)
-        content.fillRule = kCAFillRuleEvenOdd
+        content.fillRule = CAShapeLayerFillRule.evenOdd
         content.path = path
         content.fillColor = UIColor.black.cgColor
         content.opacity = 0.3

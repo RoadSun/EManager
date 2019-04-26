@@ -8,19 +8,14 @@
 
 import UIKit
 
-// MARK: -1 上 0 不动 1 下
-func midpointM(_ p1:CGPoint, _ p2:CGPoint, _ d:Int)->CGPoint {
-    return CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y)/2 + (10.0 * CGFloat(d)))
-}
-
 // MARK: 操作的当前点
-struct STeamCurrentPoint {
+class STeamCurrentPoint:NSObject {
     var bpt = SPt(point: CGPoint(x: -200, y: -200), state: 0, No: 0,Min:0,Max:180) // 基础点 base point
     var pt = SPt(point: CGPoint(x: -200, y: -200), state: 0, No: 0,Min:0,Max:180) // point
     var last = SPt(point: CGPoint.zero, state: 0, No: 0,Min:0,Max:180) // point
     var subLevel = 0 // 向下层级
-    var i0 = 0  // 第一层
-    var i1 = 0 // 第二层
+    var i0 = -1  // 第一层
+    var i1 = -1 // 第二层
 }
 
 class SPointModel: NSObject {
@@ -28,16 +23,10 @@ class SPointModel: NSObject {
     
     var xx:CGFloat = 20
     var yy:CGFloat = 100
-    func midpointL(_ p1:CGPoint)->CGPoint {
-        return CGPoint(x: p1.x - a, y:p1.y)
-    }
     
-    func midpointR(_ p1:CGPoint)->CGPoint {
-        return CGPoint(x: p1.x + a, y: p1.y)
-    }
     // MARK: -
-    var teamArray = [[SPt]]() // 基础点
-    var baseArray = [[SPt]]() // 面部变化点
+    var teamArray = [[SPt]](repeating: [SPt()], count: 13) // 基础点 初始化指定数量的数组
+    var baseArray = [[SPt]](repeating: [SPt()], count: 13) // 面部变化点
     var profileArray = [SPt]() // 脸轮廓
     var profileMidPointArray = [SPt]() // 脸轮廓线段中点
     
@@ -49,158 +38,369 @@ class SPointModel: NSObject {
     
     var bodyArray = [[SPt]]() // 肢体
     var bodyArrayBase = [[SPt]]() // 肢体基础点
-    func initArray() {
+    func initArray(_ part:Int = -1) {
+        // 如果 part != -1 key自增有效
+        var key:Int = 0
         // 左眼眉上
-        let point_0_0 = SPt(point:CGPoint(x: 2*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_0_1 = SPt(point:CGPoint(x: 3*a+xx, y: 0.5*a+yy),state:1,No:1,Min:60,Max:120,Angle:CGFloat.pi/3)
-        let point_0_2 = SPt(point:CGPoint(x: 5*a+xx, y: 0.5*a+yy),state:1,No:2,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_0_3 = SPt(point:CGPoint(x: 6*a+xx, y: 1*a+yy),state:0,No:3,Min:0,Max:180)
-        let array_0 = [point_0_0,point_0_1,point_0_2,point_0_3]
+        if part == 0 || part == -1 {
+            let point_0_0 = SPt(point:CGPoint(x: 2*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_0_1 = SPt(point:CGPoint(x: 3*a+xx, y: 0.3*a+yy),state:-2,No:1,Min:60,Max:120,type:.line)
+            let point_0_2 = SPt(point:CGPoint(x: 4*a+xx, y: 0.3*a+yy),state:3,No:2,Min:0,Max:180)
+            let point_0_3 = SPt(point:CGPoint(x: 5*a+xx, y: 0.6*a+yy),state:2,No:3,Min:0,Max:180,type:.line)
+            let point_0_4 = SPt(point:CGPoint(x: 6*a+xx, y: 1*a+yy),state:0,No:4,Min:0,Max:180)
+            let array_0 = [point_0_0,point_0_1,point_0_2,point_0_3,point_0_4]
+            var array_mid_0 = [SPt]()
+            for index in 0..<(array_0.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_0[index].point, array_0[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_0.append(pt)
+            }
+            baseArray[part == -1 ? key : part] = array_0
+        }
         
         // 左眼上
-        let point_1_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_1_1 = SPt(point:CGPoint(x: 4*a+xx, y: 1*a+yy),state:1,No:1,Min:60,Max:120)
-        let point_1_2 = SPt(point:CGPoint(x: 6*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_1 = [point_1_0,point_1_1,point_1_2]
+        if part == 1 || part == -1 {
+            let point_1_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_1_1 = SPt(point:CGPoint(x: 6*a+xx, y: 2.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_1_2 = SPt(point:CGPoint(x: 4*a+xx, y: 1.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_1 = [point_1_0,point_1_1,point_1_2]
+            var array_mid_1 = [SPt]()
+            for index in 0..<(array_1.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_1[index].point, array_1[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_1.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_1
+        }
         
         // 左眼下
-        let point_2_0 = SPt(point:CGPoint(x: 2*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_2_1 = SPt(point:CGPoint(x: 4*a+xx, y: 3*a+yy),state:1,No:1,Min:60,Max:120)
-        let point_2_2 = SPt(point:CGPoint(x: 6*a+xx, y: 3*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_2 = [point_2_0,point_2_1,point_2_2]
+        if part == 2 || part == -1 {
+            let point_2_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_2_1 = SPt(point:CGPoint(x: 6*a+xx, y: 2.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_2_2 = SPt(point:CGPoint(x: 4*a+xx, y: 3.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_2 = [point_2_0,point_2_1,point_2_2]
+            var array_mid_2 = [SPt]()
+            for index in 0..<(array_2.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_2[index].point, array_2[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_2.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_2
+        }
         
         // 右眼眉上
-        let point_3_0 = SPt(point:CGPoint(x: 8*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_3_1 = SPt(point:CGPoint(x: 9*a+xx, y: 0.5*a+yy),state:1,No:1,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_3_2 = SPt(point:CGPoint(x: 11*a+xx, y: 0.5*a+yy),state:1,No:2,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_3_3 = SPt(point:CGPoint(x: 12*a+xx, y: 1*a+yy),state:0,No:3,Min:0,Max:180)
-        let array_3 = [point_3_0,point_3_1,point_3_2,point_3_3]
+        if part == 3 || part == -1 {
+            let point_3_0 = SPt(point:CGPoint(x: 12*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_3_1 = SPt(point:CGPoint(x: 11*a+xx, y: 0.3*a+yy),state:-2,No:1,Min:60,Max:120,type:.line)
+            let point_3_2 = SPt(point:CGPoint(x: 10*a+xx, y: 0.3*a+yy),state:3,No:2,Min:0,Max:180)
+            let point_3_3 = SPt(point:CGPoint(x: 9*a+xx, y: 0.6*a+yy),state:2,No:3,Min:0,Max:180,type:.line)
+            let point_3_4 = SPt(point:CGPoint(x: 8*a+xx, y: 1*a+yy),state:0,No:4,Min:0,Max:180)
+            let array_3 = [point_3_0,point_3_1,point_3_2,point_3_3,point_3_4]
+            var array_mid_3 = [SPt]()
+            for index in 0..<(array_3.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_3[index].point, array_3[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_3.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_3
+        }
+        
         // 右眼上
-        let point_4_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_4_1 = SPt(point:CGPoint(x: 10*a+xx, y: 1*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_4_2 = SPt(point:CGPoint(x: 12*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_4 = [point_4_0,point_4_1,point_4_2]
+        if part == 4 || part == -1 {
+            let point_4_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_4_1 = SPt(point:CGPoint(x: 12*a+xx, y: 2.5*a+yy),state:0,No:1,Min:0,Max:180)
+            let point_4_2 = SPt(point:CGPoint(x: 10*a+xx, y: 1.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_4 = [point_4_0,point_4_1,point_4_2]
+            var array_mid_4 = [SPt]()
+            for index in 0..<(array_4.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_4[index].point, array_4[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_4.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_4
+        }
+        
         // 右眼下
-        let point_5_0 = SPt(point:CGPoint(x: 8*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_5_1 = SPt(point:CGPoint(x: 10*a+xx, y: 3*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_5_2 = SPt(point:CGPoint(x: 12*a+xx, y: 3*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_5 = [point_5_0,point_5_1,point_5_2]
+        if part == 5 || part == -1 {
+            let point_5_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_5_1 = SPt(point:CGPoint(x: 12*a+xx, y: 2.5*a+yy),state:0,No:1,Min:0,Max:180)
+            let point_5_2 = SPt(point:CGPoint(x: 10*a+xx, y: 3.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_5 = [point_5_0,point_5_1,point_5_2]
+            var array_mid_5 = [SPt]()
+            for index in 0..<(array_5.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_5[index].point, array_5[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_5.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_5
+        }
         
         // 嘴上
-        let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.8*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.8*a+yy),state:1,No:2,Min:0,Max:180)
-        let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_7_1 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:5,Min:0,Max:180)
-        let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:6,Min:0,Max:180)
-        let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_1,point_7_2,point_7_3]
+        if part == 6 || part == -1 {
+            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.line)
+            let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.5*a+yy),state:2,No:1,Min:0,Max:180,type:.line)
+            let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.5*a+yy),state:2,No:2,Min:0,Max:180,type:.line)
+            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.line)
+            let point_7_0 = SPt(point:CGPoint(x: 8*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
+            let point_7_1 = SPt(point:CGPoint(x: 7*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
+            let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8.5*a+yy),state:2,No:6,Min:0,Max:180,type:.line)
+            let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
+            let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_0,point_7_1,point_7_2] //point_7_3
+            var array_mid_7 = [SPt]()
+            for index in 0..<(array_7.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_7[index].point, array_7[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_7.append(pt)
+            }
+            key += 1
+            baseArray[part == -1 ? key : part] = array_7
+        }
         
         // 下巴
-        let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_8_1 = SPt(point:CGPoint(x: 7*a+xx, y: 11*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_8_2 = SPt(point:CGPoint(x: 8*a+xx, y: 10.5*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_8 = [point_8_0,point_8_1,point_8_2]
+        if part == 7 || part == -1 {
+            let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_8_1 = SPt(point:CGPoint(x: 7*a+xx, y: 11*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_8_2 = SPt(point:CGPoint(x: 8*a+xx, y: 10.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_8 = [point_8_0,point_8_1,point_8_2]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_8
+        }
         
         // 脖1
-        let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_9 = [point_9_0,point_9_1,point_9_2]
+        if part == 8 || part == -1 {
+            let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_9 = [point_9_0,point_9_1,point_9_2]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_9
+        }
         
         // 脖2
-        let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_10 = [point_10_0,point_10_1,point_10_2]
+        if part == 9 || part == -1 {
+            let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_10 = [point_10_0,point_10_1,point_10_2]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_10
+        }
         
         // 转头
-        let point_11_0 = SPt(point:CGPoint(x: 2*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_11_1 = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_11 = [point_11_0,point_11_1,point_11_2]
+        if part == 10 || part == -1 {
+            let point_11_0 = SPt(point:CGPoint(x: 2*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_11_1 = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_11 = [point_11_0,point_11_1,point_11_2]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_11
+        }
         
-        teamArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_7,array_8,array_9,array_10,array_11]
+        // 左眼珠
+        if part == 11 || part == -1 {
+            let point_12_0 = SPt(point:CGPoint(x: 4*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180,type:.handle)
+            let array_12 = [point_12_0]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_12
+        }
+        // 右眼珠
+        if part == 12 || part == -1 {
+            let point_13_0 = SPt(point:CGPoint(x: 10*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180,type:.handle)
+            let array_13 = [point_13_0]
+            key += 1
+            baseArray[part == -1 ? key : part] = array_13
+        }
         
-        initArrayBase()
         initProfieArray()
         initNameArray()
+        initTeamArray(part)
     }
     
-    func initArrayBase() {
+    func initTeamArray(_ part:Int = -1) {
+        // 如果 part != -1 key自增有效
+        var key:Int = 0
         // 左眼眉上
-        let point_0_0 = SPt(point:CGPoint(x: 2*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_0_1 = SPt(point:CGPoint(x: 3*a+xx, y: 0.5*a+yy),state:1,No:1,Min:60,Max:120,Angle:CGFloat.pi/3)
-        let point_0_2 = SPt(point:CGPoint(x: 5*a+xx, y: 0.5*a+yy),state:1,No:2,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_0_3 = SPt(point:CGPoint(x: 6*a+xx, y: 1*a+yy),state:0,No:3,Min:0,Max:180)
-        let array_0 = [point_0_0,point_0_1,point_0_2,point_0_3]
+        if part == 0 || part == -1 {
+            let point_0_0 = SPt(point:CGPoint(x: 2*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_0_1 = SPt(point:CGPoint(x: 3*a+xx, y: 0.3*a+yy),state:-2,No:1,Min:60,Max:120,type:.line)
+            let point_0_2 = SPt(point:CGPoint(x: 4*a+xx, y: 0.3*a+yy),state:3,No:2,Min:0,Max:180)
+            let point_0_3 = SPt(point:CGPoint(x: 5*a+xx, y: 0.6*a+yy),state:2,No:3,Min:0,Max:180,type:.line)
+            let point_0_4 = SPt(point:CGPoint(x: 6*a+xx, y: 1*a+yy),state:0,No:4,Min:0,Max:180)
+            let array_0 = [point_0_0,point_0_1,point_0_2,point_0_3,point_0_4]
+            var array_mid_0 = [SPt]()
+            for index in 0..<(array_0.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_0[index].point, array_0[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_0.append(pt)
+            }
+            teamArray[part == -1 ? key : part] = array_0
+        }
         
         // 左眼上
-        let point_1_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_1_1 = SPt(point:CGPoint(x: 4*a+xx, y: 1*a+yy),state:1,No:1,Min:60,Max:120)
-        let point_1_2 = SPt(point:CGPoint(x: 6*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_1 = [point_1_0,point_1_1,point_1_2]
+        if part == 1 || part == -1 {
+            let point_1_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_1_1 = SPt(point:CGPoint(x: 6*a+xx, y: 2.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_1_2 = SPt(point:CGPoint(x: 4*a+xx, y: 1.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_1 = [point_1_0,point_1_1,point_1_2]
+            var array_mid_1 = [SPt]()
+            for index in 0..<(array_1.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_1[index].point, array_1[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_1.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_1
+        }
         
         // 左眼下
-        let point_2_0 = SPt(point:CGPoint(x: 2*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_2_1 = SPt(point:CGPoint(x: 4*a+xx, y: 3*a+yy),state:1,No:1,Min:60,Max:120)
-        let point_2_2 = SPt(point:CGPoint(x: 6*a+xx, y: 3*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_2 = [point_2_0,point_2_1,point_2_2]
+        if part == 2 || part == -1 {
+            let point_2_0 = SPt(point:CGPoint(x: 2*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_2_1 = SPt(point:CGPoint(x: 6*a+xx, y: 2.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let point_2_2 = SPt(point:CGPoint(x: 4*a+xx, y: 3.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_2 = [point_2_0,point_2_1,point_2_2]
+            var array_mid_2 = [SPt]()
+            for index in 0..<(array_2.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_2[index].point, array_2[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_2.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_2
+        }
         
         // 右眼眉上
-        let point_3_0 = SPt(point:CGPoint(x: 8*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_3_1 = SPt(point:CGPoint(x: 9*a+xx, y: 0.5*a+yy),state:1,No:1,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_3_2 = SPt(point:CGPoint(x: 11*a+xx, y: 0.5*a+yy),state:1,No:2,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_3_3 = SPt(point:CGPoint(x: 12*a+xx, y: 1*a+yy),state:0,No:3,Min:0,Max:180)
-        let array_3 = [point_3_0,point_3_1,point_3_2,point_3_3]
+        if part == 3 || part == -1 {
+            let point_3_0 = SPt(point:CGPoint(x: 12*a+xx, y: 1*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_3_1 = SPt(point:CGPoint(x: 11*a+xx, y: 0.3*a+yy),state:-2,No:1,Min:60,Max:120,type:.line)
+            let point_3_2 = SPt(point:CGPoint(x: 10*a+xx, y: 0.3*a+yy),state:3,No:2,Min:0,Max:180)
+            let point_3_3 = SPt(point:CGPoint(x: 9*a+xx, y: 0.6*a+yy),state:2,No:3,Min:0,Max:180,type:.line)
+            let point_3_4 = SPt(point:CGPoint(x: 8*a+xx, y: 1*a+yy),state:0,No:4,Min:0,Max:180)
+            let array_3 = [point_3_0,point_3_1,point_3_2,point_3_3,point_3_4]
+            var array_mid_3 = [SPt]()
+            for index in 0..<(array_3.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_3[index].point, array_3[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_3.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_3
+        }
+        
         // 右眼上
-        let point_4_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_4_1 = SPt(point:CGPoint(x: 10*a+xx, y: 1*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_4_2 = SPt(point:CGPoint(x: 12*a+xx, y: 2*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_4 = [point_4_0,point_4_1,point_4_2]
+        if part == 4 || part == -1 {
+            let point_4_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_4_1 = SPt(point:CGPoint(x: 12*a+xx, y: 2.5*a+yy),state:0,No:1,Min:0,Max:180)
+            let point_4_2 = SPt(point:CGPoint(x: 10*a+xx, y: 1.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_4 = [point_4_0,point_4_1,point_4_2]
+            var array_mid_4 = [SPt]()
+            for index in 0..<(array_4.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_4[index].point, array_4[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_4.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_4
+        }
+        
         // 右眼下
-        let point_5_0 = SPt(point:CGPoint(x: 8*a+xx, y: 3*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_5_1 = SPt(point:CGPoint(x: 10*a+xx, y: 3*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_5_2 = SPt(point:CGPoint(x: 12*a+xx, y: 3*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_5 = [point_5_0,point_5_1,point_5_2]
+        if part == 5 || part == -1 {
+            let point_5_0 = SPt(point:CGPoint(x: 8*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_5_1 = SPt(point:CGPoint(x: 12*a+xx, y: 2.5*a+yy),state:0,No:1,Min:0,Max:180)
+            let point_5_2 = SPt(point:CGPoint(x: 10*a+xx, y: 3.5*a+yy),state:4,No:2,Min:0,Max:180,type:.line)
+            let array_5 = [point_5_0,point_5_1,point_5_2]
+            var array_mid_5 = [SPt]()
+            for index in 0..<(array_5.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_5[index].point, array_5[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_5.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_5
+        }
         
         // 嘴上
-        let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.8*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.8*a+yy),state:1,No:2,Min:0,Max:180)
-        let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 7*a+yy),state:1,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3)
-        let point_7_1 = SPt(point:CGPoint(x: 8*a+xx, y: 8*a+yy),state:1,No:4,Min:0,Max:180)
-        let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8*a+yy),state:1,No:5,Min:0,Max:180)
-        let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 7*a+yy),state:1,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
-        let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_1,point_7_2,point_7_3]
+        if part == 6 || part == -1 {
+            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.line)
+            let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.5*a+yy),state:2,No:1,Min:0,Max:180,type:.line)
+            let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.5*a+yy),state:2,No:2,Min:0,Max:180,type:.line)
+            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.line)
+            let point_7_0 = SPt(point:CGPoint(x: 8*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
+            let point_7_1 = SPt(point:CGPoint(x: 7*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
+            let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8.5*a+yy),state:2,No:6,Min:0,Max:180,type:.line)
+            let point_7_3 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3)
+            let array_7 = [point_6_0,point_6_1,point_6_2,point_6_3,point_7_0,point_7_1,point_7_2] //point_7_3
+            var array_mid_7 = [SPt]()
+            for index in 0..<(array_7.count-1) {
+                let midPoint = SPointModel.CGPointMidPoint(array_7[index].point, array_7[index+1].point)
+                let pt = SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
+                array_mid_7.append(pt)
+            }
+            key += 1
+            teamArray[part == -1 ? key : part] = array_7
+        }
         
         // 下巴
-        let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_8_1 = SPt(point:CGPoint(x: 7*a+xx, y: 11*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_8_2 = SPt(point:CGPoint(x: 8*a+xx, y: 10.5*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_8 = [point_8_0,point_8_1,point_8_2]
+        if part == 7 || part == -1 {
+            let point_8_0 = SPt(point:CGPoint(x: 6*a+xx, y: 10.5*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_8_1 = SPt(point:CGPoint(x: 7*a+xx, y: 11*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_8_2 = SPt(point:CGPoint(x: 8*a+xx, y: 10.5*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_8 = [point_8_0,point_8_1,point_8_2]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_8
+        }
         
         // 脖1
-        let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_9 = [point_9_0,point_9_1,point_9_2]
+        if part == 8 || part == -1 {
+            let point_9_0 = SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_9_1 = SPt(point:CGPoint(x: 5*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_9_2 = SPt(point:CGPoint(x: 5*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_9 = [point_9_0,point_9_1,point_9_2]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_9
+        }
         
         // 脖2
-        let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_10 = [point_10_0,point_10_1,point_10_2]
+        if part == 9 || part == -1 {
+            let point_10_0 = SPt(point:CGPoint(x: 9*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_10_1 = SPt(point:CGPoint(x: 9*a+xx, y: 13*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_10_2 = SPt(point:CGPoint(x: 9*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_10 = [point_10_0,point_10_1,point_10_2]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_10
+        }
         
         // 转头
-        let point_11_0 = SPt(point:CGPoint(x: 2*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
-        let point_11_1 = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:1,No:1,Min:0,Max:180)
-        let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
-        let array_11 = [point_11_0,point_11_1,point_11_2]
+        if part == 10 || part == -1 {
+            let point_11_0 = SPt(point:CGPoint(x: 2*a+xx, y: 14*a+yy),state:0,No:0,Min:0,Max:180)
+            let point_11_1 = SPt(point:CGPoint(x: 7*a+xx, y: 15*a+yy),state:1,No:1,Min:0,Max:180)
+            let point_11_2 = SPt(point:CGPoint(x: 12*a+xx, y: 14*a+yy),state:0,No:2,Min:0,Max:180)
+            let array_11 = [point_11_0,point_11_1,point_11_2]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_11
+        }
         
-        baseArray = [array_0,array_1,array_2,array_3,array_4,array_5,array_7,array_8,array_9,array_10,array_11]
+        // 左眼珠
+        if part == 11 || part == -1 {
+            let point_12_0 = SPt(point:CGPoint(x: 4*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180,type:.handle)
+            let array_12 = [point_12_0]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_12
+        }
+        
+        // 右眼珠
+        if part == 12 || part == -1 {
+            let point_13_0 = SPt(point:CGPoint(x: 10*a+xx, y: 2.5*a+yy),state:0,No:0,Min:0,Max:180,type:.handle)
+            let array_13 = [point_13_0]
+            key += 1
+            teamArray[part == -1 ? key : part] = array_13
+        }
     }
-    
+
     func initProfieArray() {
         
         let point_0 =   SPt(point:CGPoint(x: 5*a+xx, y: 12*a+yy),state:0,No:0,Min:0,Max:180)
@@ -270,7 +470,6 @@ class SPointModel: NSObject {
             let pt =   SPt(point:midPoint,state:1,No:0,Min:0,Max:180)
             profileMidPointArray.append(pt)
         }
-        
     }
     
     /*
@@ -482,4 +681,12 @@ class SPointModel: NSObject {
     //            curve[index] = PointOnCubicBezier(cp, index*dt)
     //        }
     //    }
+    
+    //打印地址
+    /*
+     //            print("11111-------")
+     //            print(String(format:"%p",teamCurrentPoint.pt.point as CVarArg))
+     //            print("22222-------")
+     //            print(String(format:"%p",teamCurrentPoint.bpt.point as CVarArg))
+     */
 }

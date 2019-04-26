@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ControlController: UIViewController, SControlDelegate {
+class ControlController: UIViewController {
 
     
     override func viewDidLoad() {
@@ -16,38 +16,58 @@ class ControlController: UIViewController, SControlDelegate {
         self.navigationController?.navigationBar.isTranslucent = false
 
         //脸
-        control = SFaceControl(frame: CGRect(x: 50, y: 50, width: 600, height: 1200))
+        control = SFaceControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
         control.backgroundColor = .black
-        control.delegate = self
-        
+
         // 操控点
         operationLine = SOperationLine(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationLine.isHidden = true
         operationLine.backgroundColor = .lightGray
-        
+//
         // 脖子, 脸部朝向
-        let neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
-        neck.delegate = self
+        neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
         
         // 身体
-        let body =  SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
-        body.delegate = self
-        
+        body =  SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+
         // 测试
-        let limb = SHandControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
-        limb.delegate = self
+        hand = SHandControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+//
+        // 测试
+        limb = SLimbControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+                self.view.addSubview(neck)
+                self.view.addSubview(body)
+        self.view.addSubview(hand)
+                self.view.addSubview(limb)
         
         // 环形控制
         operationCircle = SOperationCircle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationCircle.isHidden = true
         operationCircle.backgroundColor = .lightGray
+        
+        // 环形控制
+        operationHandle = SOperationHandle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationHandle.isHidden = true
+        operationHandle.backgroundColor = .lightGray
+        
+        let bridge = SControlOperationBridge()
+        bridge.ctl_face = control
+        bridge.ctl_neck = neck
+        bridge.ctl_body = body
+        bridge.ctl_hand = hand
+        bridge.ctl_limb = limb
+        
+        bridge.opt_line = operationLine
+        bridge.opt_circle = operationCircle
+        bridge.opt_handle = operationHandle
+        bridge.setDelegates()
         
         self.view.backgroundColor = .black
         self.view.addSubview(control)
         self.view.addSubview(operationLine)
-//        self.view.addSubview(neck)
-//        self.view.addSubview(body)
-//        self.view.addSubview(limb)
-//        self.view.addSubview(operationCircle)
-        
+
+        self.view.addSubview(operationCircle)
+        self.view.addSubview(operationHandle)
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)
         transform = transform.scaledBy(x: 1, y: 1)
@@ -61,10 +81,38 @@ class ControlController: UIViewController, SControlDelegate {
         _ = slider1
         _ = slider2
         _ = slider3
+        
+        let names = ["face","neck","body","hand","limb"]
+        let seg = UISegmentedControl(items: names)
+        seg.frame = CGRect(x: 50, y: 10, width: 200, height: 30)
+        seg.addTarget(self, action: #selector(segClick(_:)), for: .valueChanged)
+        self.view.addSubview(seg)
     }
+    
+    @objc func segClick(_ sender:UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0{
+            self.view.bringSubviewToFront(control)
+        } else if (sender.selectedSegmentIndex == 1) {
+            self.operationCircle.isHidden = false
+            self.view.bringSubviewToFront(neck)
+        } else if (sender.selectedSegmentIndex == 2) {
+            self.view.bringSubviewToFront(body)
+        } else if (sender.selectedSegmentIndex == 3) {
+            self.view.bringSubviewToFront(hand)
+        } else if (sender.selectedSegmentIndex == 4) {
+            self.view.bringSubviewToFront(limb)
+        }
+    }
+    
     var control:SFaceControl!
     var operationLine:SOperationLine!
     var operationCircle:SOperationCircle!
+    var operationHandle:SOperationHandle!
+    
+    var neck:SNeckControl!
+    var body:SBodyControl!
+    var limb:SLimbControl!
+    var hand:SHandControl!
     var scroll:UIScrollView!
     // 取整, 整数错值进行下一赋值动作
     var forValue = 0
@@ -82,16 +130,23 @@ class ControlController: UIViewController, SControlDelegate {
         if tag == 20 { // 脖子
             faceLog.name("头部左轴")
         }
-        
-        if forValue != Int(value) {
-            forValue = Int(value)
-            faceLog.current("\(forValue)")
-        }
     }
     
     func control_nameCurrentRangeValue(_ value: String, _ min: String, _ max: String) {
         faceLog.name(value)
         faceLog.range("\(min) ~ \(max)")
+    }
+    
+    func control_outputObj(_ value: [String : Any], _ tag: Int) {
+        
+        if tag == 0 {
+            control.face_eyeMove(value["vval"] as! CGFloat, value["hval"] as! CGFloat)
+        }
+    }
+
+    func operation_outputValue(_ value: CGFloat) {
+//        control.face_other(value)
+        print(value)
     }
     
     override func didReceiveMemoryWarning() {
@@ -199,12 +254,12 @@ class ControlController: UIViewController, SControlDelegate {
     
     @objc func sliderChange1(_ sender:UISlider) {
         if sender == slider1 {
-            operationLine.setPoint(CGPoint(x: CGFloat(sender.value), y: operationLine.mPt.y))
+            
         }
         
         if sender == slider2 {
 //            operation.setPoint(CGPoint(x: operation.mPt.x, y: CGFloat(sender.value)))
-            operationLine.setValForSlider(CGFloat(sender.value))
+            operationLine.setCurrentValue(CGFloat(sender.value))
         }
         
         if sender == slider3 {

@@ -17,7 +17,7 @@ class SFacePen: NSObject {
         let point1 = CGPoint(x: point.x - x, y: point.y - y)
         
         // 线条颜色
-        context.setStrokeColor(UIColor.gray.cgColor)
+        context.setStrokeColor(UIColor.red.cgColor)
         // 设置线条平滑，不需要两边像素宽
         context.setShouldAntialias(false)
         // 设置线条宽度
@@ -35,8 +35,8 @@ class SFacePen: NSObject {
     
     // 能动范围
     class func drawRulerOperationRange(_ center:CGPoint, _ angle:CGFloat, _ r:CGFloat,_ minVal:CGFloat, _ maxVal:CGFloat, _ context:CGContext) {
-        let cos_fabs = fabs(cos(angle))
-        let sin_fabs = fabs(sin(angle))
+        let cos_fabs = abs(cos(angle))
+        let sin_fabs = abs(sin(angle))
         let x = r * cos_fabs
         let y = r * sin_fabs
         var point0:CGPoint!
@@ -111,12 +111,6 @@ class SFacePen: NSObject {
         context.addLine(to: pointMin)
         context.strokePath()
         
-        // 画小红线
-        context.setStrokeColor(UIColor.red.cgColor)
-        context.setLineWidth(35)
-        context.move(to: CGPoint(x: center.x, y: center.y - 1))
-        context.addLine(to: CGPoint(x: center.x, y: center.y + 1))
-        context.strokePath()
         
         // 画能动范围 范围最小值
         let min_val_r = minVal * 2 * r / 180
@@ -157,8 +151,41 @@ class SFacePen: NSObject {
     class func draw_line(_ context:CGContext, _ color:UIColor = .orange) {
         context.setStrokeColor(color.cgColor)
         context.setLineWidth(3)
-        context.setLineCap(.round)
         context.strokePath()
+    }
+    
+    /*
+     * 弧圈绘画
+     * 如果直接连线 isLine == true midArray = []
+     */
+    class func draw_bezier(_ baseArray:[SPt], _ midArray:[SPt],_ context:CGContext, _ isLine:Bool = false, _ isClose:Bool = false) {
+        if isLine {
+            for (index,obj) in baseArray.enumerated() {
+                if index == 0 {
+                    context.move(to: obj.point)
+                }else{
+                    context.addLine(to: obj.point)
+                }
+            }
+            // 是否使用闭合路径
+            if isClose {
+                context.closePath()
+            }
+        }else{
+            context.move(to: midArray[0].point)
+            for (index,_) in midArray.enumerated() {
+                if index < midArray.count - 1 {
+                    context.addQuadCurve(to: midArray[index + 1].point, control: baseArray[index + 1].point)
+                }
+            }
+        }
+        SFacePen.draw_line(context)
+    }
+    
+    class func draw_bezier1(_ baseArray:[SPt], _ midArray:[SPt],_ context:CGContext) {
+        context.move(to: baseArray[0].point)
+        context.addQuadCurve(to: baseArray[2].point, control: midArray[0].point)
+        SFacePen.draw_line(context)
     }
     
     /*
@@ -168,8 +195,8 @@ class SFacePen: NSObject {
         
         let r:CGFloat = 450
         
-        let cos_fabs = fabs(cos(angle))
-        let sin_fabs = fabs(sin(angle))
+        let cos_fabs = abs(cos(angle))
+        let sin_fabs = abs(sin(angle))
         let x = r * cos_fabs
         let y = r * sin_fabs
         var point0:CGPoint = CGPoint.zero
@@ -195,16 +222,6 @@ class SFacePen: NSObject {
     }
     
     /*
-     * 原点, 手动操控
-     */
-    class func operation_center(_ point:CGPoint, _ context:CGContext) {
-        context.addArc(center: point, radius: 6, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
-        context.setLineWidth(18)
-        context.setStrokeColor(UIColor.blue.cgColor)
-        context.strokePath()
-    }
-    
-    /*
      * 文字位置
      */
     class func  drawText(_ content:String, _ alignment:NSTextAlignment = .center,_ rect:CGRect,_ context:CGContext) {
@@ -212,9 +229,9 @@ class SFacePen: NSObject {
         //文字样式属性
         let style = NSMutableParagraphStyle()
         style.alignment = alignment
-        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 20),
-                          NSAttributedStringKey.foregroundColor: UIColor.orange,
-                          NSAttributedStringKey.paragraphStyle: style]
+        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20),
+                          NSAttributedString.Key.foregroundColor: UIColor.orange,
+                          NSAttributedString.Key.paragraphStyle: style]
         //绘制在指定区域
         //        context.translateBy(x: rect.origin.x, y: rect.origin.y) // 旋转锚点
         //        context.rotate(by: val) // 135 * CGFloat.pi/180.0 // 旋转角度
@@ -235,11 +252,102 @@ class SFacePen: NSObject {
         context.strokePath()
     }
     
-    // 纯画圆
+    /*
+     * 纯画圆
+     */
     class func draw_circle(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
         context.addArc(center: point, radius: r, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
-        context.setFillColor(color.cgColor)
-        context.fillPath()
+        if isRing {
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(width)
+            context.strokePath()
+        }else{
+            context.setFillColor(color.cgColor)
+            context.fillPath()
+        }
+    }
+    
+    // 画眼睛区域
+    class func draw_circle_area(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
+        context.addArc(center: point, radius: r, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        if isRing {
+            context.setStrokeColor(color.cgColor)
+            
+            context.setLineWidth(width)
+            context.strokePath()
+        }else{
+
+            UIColor.white.setFill()
+            context.setAlpha(0.3)
+            context.fillPath()
+        }
+    }
+    
+    // rect 画圆
+    class func draw_circle_rect(_ point:CGPoint, _ size:CGSize,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
+        context.addEllipse(in: CGRect(x: point.x, y: point.y, width: size.width, height: size.height))
+        if isRing {
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(width)
+            context.strokePath()
+        }else{
+            context.setFillColor(color.cgColor)
+            context.fillPath()
+        }
+    }
+    
+    // rect 画椭圆
+    class func draw_ellipse_rect(_ center:CGPoint ,
+                                 _ y:CGFloat,
+                                 _ size:CGSize,
+                                 _ color:UIColor,
+                                 _ context:CGContext,
+                                 _ angle:CGFloat,
+                                 _ isRing:Bool = false,
+                                 _ width:CGFloat = 3,
+                                 _ once:Bool = false){
+        var rotationAffineTransform = CGAffineTransform.init(rotationAngle: angle)
+        if once == true {
+            context.translateBy(x: center.x, y: center.y)
+        }
+        let path = CGPath.init(ellipseIn: CGRect(x: -size.width/2.0, y: y, width: size.width, height: size.height), transform: &rotationAffineTransform)
+        context.addPath(path)
+        if isRing {
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(width)
+            context.strokePath()
+        }else{
+            context.setFillColor(color.cgColor)
+            context.fillPath()
+        }
+    }
+    
+    // 画十字cross
+    class func draw_cross(_ point:CGPoint, val:CGFloat, _ context:CGContext, _ angel:CGFloat = 0) {
+        // 线条颜色
+        context.setStrokeColor(UIColor.red.cgColor)
+        // 设置线条平滑，不需要两边像素宽
+        context.setShouldAntialias(false)
+        // 设置线条宽度
+        context.setLineWidth(1.0)
+        // 设置线条起点
+        
+        let x = point.x - val
+        let y = point.y - val
+        let x_w = point.x + val
+        let y_h = point.y + val
+        
+        context.move(to: CGPoint(x: x, y: point.y))
+        context.addLine(to: CGPoint(x: x_w, y: point.y))
+        
+        context.move(to: CGPoint(x: point.x, y: y))
+        context.addLine(to: CGPoint(x: point.x, y: y_h))
+        
+        context.strokePath()
+        
+        // 开始画线
+        context.setLineWidth(3)
+        context.strokePath()
     }
     
     class func omodel_fanRange(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ min:CGFloat, _ max:CGFloat, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
@@ -279,9 +387,9 @@ class SFacePen: NSObject {
         
         let r = SOperationModel.r_between(center, point)
         
-        if r >= fabs(center_r - move_r) {
+        if r >= abs(center_r - move_r) {
    
-            let dif = fabs(center_r - move_r)
+            let dif = abs(center_r - move_r)
             let dif_agl = asin(dif / r)
             var angle0:CGFloat = 0
             var angle1:CGFloat = 0
@@ -332,4 +440,45 @@ class SFacePen: NSObject {
                                    endCenter: point, endRadius: move_r,
                                    options: .drawsBeforeStartLocation)
     }
+    
+    class func draw_circle_gradient(_ center:CGPoint, _ point:CGPoint, _ size:CGSize, _ context:CGContext) {
+        
+        context.addEllipse(in: CGRect(x: center.x - size.width/2.0, y: center.y - size.height/2.0, width: size.width, height: size.height))
+        let center_r:CGFloat = 60
+        context.clip()
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        //颜色数组（这里使用三组颜色作为渐变）fc6820
+//        let compoents:[CGFloat] = [160/255, 160/255, 160/255, 1,
+//                                   0/255, 191/255, 255/255, 1,
+//                                   0/255, 0/255, 0/255, 1]
+        let compoents:[CGFloat] = [160/255, 160/255, 160/255, 1,
+                                   111/255, 111/255, 111/255, 1,
+                                   55/255, 55/255, 55/255, 1]
+        //没组颜色所在位置（范围0~1)
+        let locations:[CGFloat] = [0,0.5,1]
+        //生成渐变色（count参数表示渐变个数）
+        let gradient = CGGradient(colorSpace: colorSpace, colorComponents: compoents, locations: locations, count: locations.count)
+        //渐变圆心位置（这里外圆内圆都用同一个圆心）
+        //绘制渐变
+        context.drawRadialGradient(gradient!,
+                                   startCenter: center, startRadius: center_r/2.0,
+                                   endCenter: point, endRadius: center_r,
+                                   options: .drawsBeforeStartLocation)
+        
+        context.fillPath()
+    }
+    
+    /*
+     * 虚线
+     */
+    class func omodel_dash(_ context:CGContext, _ isDash:Bool = true, _ color:UIColor = .white) {
+        if isDash {
+            let lengths:[CGFloat] = [3,5] // 绘制 跳过 无限循环
+            context.setStrokeColor(color.cgColor)
+            context.setLineDash(phase: 0, lengths: lengths)
+        }else{
+            context.setLineDash(phase: 0, lengths: [])
+        }
+    }
+  
 }

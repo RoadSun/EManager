@@ -13,7 +13,7 @@ class SSnapRemakeView: UIView {
     var isLeft = true
     override init(frame: CGRect) {
         super.init(frame: frame)
-        button = UIButton(type: UIButtonType.system)
+        button = UIButton(type: UIButton.ButtonType.system)
         button.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
         button.backgroundColor = UIColor.lightGray
         button.layer.borderColor = UIColor.blue.cgColor

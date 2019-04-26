@@ -50,7 +50,7 @@ class SColorView: UIView {
         //设置轨道透明度
         trackLayer.opacity = 0.25
         //轨道使用圆角线条
-        trackLayer.lineCap = kCALineCapRound
+        trackLayer.lineCap = CAShapeLayerLineCap.round
         //轨道线条的宽度
         trackLayer.lineWidth = progressWidth
         //设置轨道路径
@@ -63,7 +63,7 @@ class SColorView: UIView {
         progressLayer.frame = self.bounds
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = UIColor.black.cgColor
-        progressLayer.lineCap = kCALineCapRound
+        progressLayer.lineCap = CAShapeLayerLineCap.round
         progressLayer.lineWidth = progressWidth
         progressLayer.path = path.cgPath
         //进度条默认结束位置是0
@@ -110,7 +110,7 @@ class SColorView: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(!animated)
         CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name:
-            kCAMediaTimingFunctionEaseInEaseOut))
+            CAMediaTimingFunctionName.easeInEaseOut))
         progressLayer.strokeEnd = percent/100.0
         CATransaction.commit()
         

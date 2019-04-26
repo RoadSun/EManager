@@ -8,11 +8,35 @@
 
 import UIKit
 
+struct SBaseData {
+    var radius:CGFloat = 0
+    var center:CGPoint = CGPoint.zero
+    mutating func dif(_ val:CGFloat) ->CGFloat{
+        return radius - val
+    }
+}
+
+enum SOperationType {
+    case line   // 线性
+    case circle  // 圆盘
+    case handle // 手控
+    case none   // 无
+}
+
 class SFaceBase: UIView, SControlDelegate {
     // 基础数据
     var _model = SPointModel()
     var delegate:SControlDelegate!
+    var op_delegate:SOperationDelegate!
     var teamCurrentPoint = STeamCurrentPoint()
+    
+    var _DIS = SBaseData()
+    var currentType:SOperationType!
+    
+    // 线边操作
+    var isLineCap:Bool = true
+    var catObserveLog:Bool = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         // 拖动
@@ -39,6 +63,38 @@ class SFaceBase: UIView, SControlDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setObserverKey(_ key:String) {
+        self.addObserver(self, forKeyPath: key, options: [.new], context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let newValue = change?[NSKeyValueChangeKey.newKey] {
+            if catObserveLog == true {
+                print("\(keyPath!) : \(newValue)")
+            }
+            self.listen(newValue)
+        }
+    }
+    
+    // 监听
+    func listen(_ value:Any) {
+        
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let context = UIGraphicsGetCurrentContext()
+        if isLineCap {
+            context?.setLineCap(.round)
+            context?.setLineJoin(.round)
+        }
+        self.draw_canvas(rect, context!)
+    }
+    
+    func draw_canvas(_ rect: CGRect, _ context:CGContext) {
+        
+    }
+    
     @objc func panEvent(_ sender:UIPanGestureRecognizer) {}
     
     @objc func pinchEvent(_ sender:UIPinchGestureRecognizer) {}
@@ -56,7 +112,7 @@ class SFaceBase: UIView, SControlDelegate {
         btn.layer.cornerRadius = 3
         btn.layer.masksToBounds = true
         btn.setTitle("捕捉", for: .normal)
-        btn.backgroundColor = UIColor.gray//RGBA16(value: 0x00ffff, Alpha: 1)
+        btn.backgroundColor = UIColor.gray
         btn.setTitleColor(UIColor.white, for: .normal)
         self.addSubview(btn)
         return btn
@@ -66,4 +122,13 @@ class SFaceBase: UIView, SControlDelegate {
     @objc func capturePointClick(_ sender:UIButton) {
         
     }
+    
+    lazy var dataLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 4, y: 0, width: 100, height: 30))
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = .white
+        label.text = "--"
+        self.addSubview(label)
+        return label
+    }()
 }

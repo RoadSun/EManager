@@ -375,8 +375,8 @@ class BodyView: UIView {
         let layer = CAShapeLayer()
         layer.frame = CGRect.init(x: 0, y: 0, width: 600, height: 400)
         layer.lineWidth = 2
-        layer.lineJoin = kCALineJoinRound
-        layer.lineCap = kCALineCapSquare
+        layer.lineJoin = CAShapeLayerLineJoin.round
+        layer.lineCap = CAShapeLayerLineCap.square
         layer.strokeColor = UIColor.blue.cgColor
         layer.fillColor = UIColor.clear.cgColor
         layer.path = path

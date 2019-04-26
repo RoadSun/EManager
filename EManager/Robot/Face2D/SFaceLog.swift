@@ -29,5 +29,5 @@ class SFaceLog: UIView {
     func range(_ val:String) {
         rangeLabel.text = " 当前值 : \(val)"
     }
-
+    
 }

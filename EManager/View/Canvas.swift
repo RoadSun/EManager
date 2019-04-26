@@ -31,23 +31,23 @@ class Canvas:UIView{
         
         self.addSubview(eraserView)
         
-        let revokeBut = UIButton(type: UIButtonType.system)
+        let revokeBut = UIButton(type: UIButton.ButtonType.system)
         revokeBut.frame = CGRect(x: 20, y: 20, width: 80, height: 30)
-        revokeBut.setTitle("撤销", for: UIControlState.normal)
-        revokeBut.addTarget(self, action: #selector(revokeButClick), for: UIControlEvents.touchUpInside)
+        revokeBut.setTitle("撤销", for: UIControl.State.normal)
+        revokeBut.addTarget(self, action: #selector(revokeButClick), for: UIControl.Event.touchUpInside)
         self.addSubview(revokeBut)
         
-        let cleanBut = UIButton(type: UIButtonType.system)
+        let cleanBut = UIButton(type: UIButton.ButtonType.system)
         cleanBut.frame = CGRect(x: 110, y: 20, width: 80, height: 30)
-        cleanBut.setTitle("清空", for: UIControlState.normal)
-        cleanBut.addTarget(self, action: #selector(cleanButClick), for: UIControlEvents.touchUpInside)
+        cleanBut.setTitle("清空", for: UIControl.State.normal)
+        cleanBut.addTarget(self, action: #selector(cleanButClick), for: UIControl.Event.touchUpInside)
         self.addSubview(cleanBut)
         
-        let eraserBut = UIButton(type: UIButtonType.system)
+        let eraserBut = UIButton(type: UIButton.ButtonType.system)
         eraserBut.frame = CGRect(x: 200, y: 20, width:80, height: 30)
-        eraserBut.setTitle("橡皮", for: UIControlState.normal)
-        eraserBut.setTitle("画笔", for: UIControlState.selected)
-        eraserBut.addTarget(self, action: #selector(eraserButClick(but:)), for: UIControlEvents.touchUpInside)
+        eraserBut.setTitle("橡皮", for: UIControl.State.normal)
+        eraserBut.setTitle("画笔", for: UIControl.State.selected)
+        eraserBut.addTarget(self, action: #selector(eraserButClick(but:)), for: UIControl.Event.touchUpInside)
         self.addSubview(eraserBut)
         
         let ges = UIPanGestureRecognizer(target: self, action:#selector(handleGes(ges:)))
@@ -66,7 +66,7 @@ class Canvas:UIView{
     @objc private func handleGes(ges:UIPanGestureRecognizer) -> Void {
         let point = ges.location(in: self)
         switch ges.state {
-        case UIGestureRecognizerState.began:
+        case UIGestureRecognizer.State.began:
             if isInErasering {
                 //擦除状态,显示出橡皮擦
                 eraserView.alpha = 1
@@ -75,7 +75,7 @@ class Canvas:UIView{
             //生成新的一笔
             pathCreator.addNewPath(to: point,isEraser: isInErasering)
             self.setNeedsDisplay()
-        case UIGestureRecognizerState.changed:
+        case UIGestureRecognizer.State.changed:
             if isInErasering {
                 //移动橡皮擦
                 eraserView.center = ges.location(in: self)
@@ -83,7 +83,7 @@ class Canvas:UIView{
             //更新当前笔画路径
             pathCreator.addLineForCurrentPath(to: point,isEraser:isInErasering)
             self.setNeedsDisplay()
-        case UIGestureRecognizerState.ended:
+        case UIGestureRecognizer.State.ended:
             if isInErasering {
                 //擦除状态,隐藏橡皮擦
                 eraserView.alpha = 0
@@ -92,9 +92,9 @@ class Canvas:UIView{
             //更新当前笔画路径
             pathCreator.addLineForCurrentPath(to: point,isEraser: isInErasering)
             self.setNeedsDisplay()
-        case UIGestureRecognizerState.cancelled:
+        case UIGestureRecognizer.State.cancelled:
             print("cancel")
-        case UIGestureRecognizerState.failed:
+        case UIGestureRecognizer.State.failed:
             print("fail")
         default:
             return

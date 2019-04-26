@@ -44,9 +44,9 @@ class TimerController: UIViewController {
         let orbit = CAKeyframeAnimation(keyPath:"position")
         orbit.duration = duration
         orbit.path = path
-        orbit.calculationMode = kCAAnimationPaced
+        orbit.calculationMode = CAAnimationCalculationMode.paced
         orbit.isRemovedOnCompletion = false
-        orbit.fillMode = kCAFillModeForwards
+        orbit.fillMode = CAMediaTimingFillMode.forwards
         square.layer.add(orbit,forKey:"Move")
         
         //绘制运动轨迹
