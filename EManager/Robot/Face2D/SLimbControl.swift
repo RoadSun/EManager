@@ -11,18 +11,19 @@ import UIKit
 struct SDyWidth {
     var r:CGFloat = 0  // 单位半径
     var r0:CGFloat = 0 // 动态半径
-    var w:CGFloat = 6  // 单位线宽
-    var w0:CGFloat = 6 // 动态线宽
+    var w:CGFloat = 10  // 单位线宽
+    var w0:CGFloat = 10 // 动态线宽
     var rate:CGFloat = 0
     var rate0:CGFloat = 0 // 小圆半径
     var d:Bool = true // 方向
     mutating func c(_ d_r:CGFloat) {
         r0 = d_r
         if r0 - r <= 0 {
+            rate = 1 + (r - r0)/r
             rate0 = 1 - r0/r
-            w0 = w + w*(1-rate)
+            w0 = w * rate
             d = true
-        }else if(r0 - r <= r && r0 - r > 0){
+        }else if(r0 - r <= r && r0 - r > 0) {
             rate = 1+(r - r0)/r
             rate0 = (r - r0)/r
             w0 = w + w*((r - r0)/r)*0.5
@@ -31,11 +32,16 @@ struct SDyWidth {
     }
 }
 
+struct STPoint {
+    var p:CGPoint = CGPoint.zero
+    var d:Bool = true
+}
+
 class SLimbControl: SFaceBase {
 
-    var pointsArray = [CGPoint(x: 300, y: 200), CGPoint(x: 300, y: 400), CGPoint(x: 300, y: 600)]
-    var pointsArrayBase = [CGPoint(x: 300, y: 200), CGPoint(x: 300, y: 400), CGPoint(x: 300, y: 600)]
-    
+    var pointsArray = [STPoint(p: CGPoint(x: 300, y: 200), d: true), STPoint(p: CGPoint(x: 300, y: 400), d: true), STPoint(p: CGPoint(x: 300, y: 600), d: true)]
+    var pointsArrayBase = [STPoint(p: CGPoint(x: 300, y: 200), d: true), STPoint(p: CGPoint(x: 300, y: 400), d: true), STPoint(p: CGPoint(x: 300, y: 600), d: true)]
+    var angleDifArray = [CGFloat]()
     var movePoint:CGPoint!
     // 动态计算胳膊的宽度
     var dyWidth = SDyWidth()
@@ -58,16 +64,23 @@ class SLimbControl: SFaceBase {
         }else if sender.state == .changed {
             
             if (teamCurrentPoint.i0 - 1) >= 0 && movePoint != nil {
-                if SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1], point) <= 200 {
+                if SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1].p, point) <= 200 {
                     movePoint = point
-                    pointsArray[teamCurrentPoint.i0] = point
-                    dyWidth.c(SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1], point))
+                    pointsArray[teamCurrentPoint.i0].p = point
+                    pointsArray[teamCurrentPoint.i0].d = true
+                    dyWidth.c(SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1].p, point))
+                    
                 }else{
-                    dyWidth.c(SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1], point))
-                    let pt = SOperationModel.omodel_body_moveRange(point, pointsArray[teamCurrentPoint.i0 - 1], dyWidth.rate * 200)
+                    dyWidth.c(SOperationModel.r_between(pointsArray[teamCurrentPoint.i0 - 1].p, point))
+                    let pt = SOperationModel.omodel_body_moveRange(point, pointsArray[teamCurrentPoint.i0 - 1].p, dyWidth.rate * 200)
                     movePoint = pt
-                    pointsArray[teamCurrentPoint.i0] = pt
+                    pointsArray[teamCurrentPoint.i0].p = pt
+                    pointsArray[teamCurrentPoint.i0].d = false
                 }
+            }
+            
+            if teamCurrentPoint.i0 == 1 {
+                print("中间点")
             }
         }
         self.setNeedsDisplay()
@@ -76,11 +89,11 @@ class SLimbControl: SFaceBase {
     override func tapEvent(_ sender: UITapGestureRecognizer) {
         let point = sender.location(in: self)
         for (index,pt) in pointsArray.enumerated() {
-            if SOperationModel.r_between(pt, point) <= 20 {
+            if SOperationModel.r_between(pt.p, point) <= 20 {
                 // 点中设置
-                movePoint = pt
-                teamCurrentPoint.pt.point = pt
-                teamCurrentPoint.bpt.point = pointsArrayBase[index]
+                movePoint = pt.p
+                teamCurrentPoint.pt.point = pt.p
+                teamCurrentPoint.bpt.point = pointsArrayBase[index].p
                 teamCurrentPoint.i0 = index
                 
                 dyWidth.r = 200
@@ -97,30 +110,106 @@ class SLimbControl: SFaceBase {
     override func draw_canvas(_ rect: CGRect, _ context: CGContext) {
         super.draw_canvas(rect, context)
         
-        
-        // 关节点
-        for (index, pt) in pointsArray.enumerated() {
-            if teamCurrentPoint.i0 == index {
-                SFacePen.draw_circle(pt, 20, .white, context, true, 3)
-                SFacePen.draw_circle(pt, 10 + 10 * dyWidth.rate0 * 0.5, .red, context)
-            }else{
-                SFacePen.draw_circle(pt, 10, .green, context)
-            }
-        }
-        
-        // 肢体连接线
-        for (index, pt) in pointsArray.enumerated() {
-            if index != pointsArray.count - 1 {
-                if index + 1 == teamCurrentPoint.i0 {
-                    SFacePen.draw_line(pt, pointsArray[index + 1], context, .orange, dyWidth.w0)
+        // 判断点顺序
+        for index in 0..<(pointsArray.count-1) {
+            // 1, 先判断第一个点在前在后
+            
+            let pt1 = pointsArray[index]
+            let pt2 = pointsArray[index+1]
+            
+            if pt1.d == true &&  pt2.d == true {
+
+                // 画点1
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
                 }else{
-                    SFacePen.draw_line(pt, pointsArray[index + 1], context, .orange, dyWidth.w)
+                    SFacePen.draw_circle(pt1.p, 10, .green, context)
+                }
+                
+                // 画线
+                if index + 1 == teamCurrentPoint.i0 {
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w0)
+                }else{
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w)
+                }
+                
+                // 画点2
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt2.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
+                }else{
+                    SFacePen.draw_circle(pt2.p, 10, .green, context)
+                }
+                
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 20, .white, context, true, 3)
+                } else if (teamCurrentPoint.i0 == index + 1) {
+                    SFacePen.draw_circle(pt2.p, 20, .white, context, true, 3)
+                }
+            }
+            
+            
+            if pt1.d == true &&  pt2.d == false {
+                // 画点2
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt2.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
+                }else{
+                    SFacePen.draw_circle(pt2.p, 10, .green, context)
+                }
+                
+                // 画线
+                if index + 1 == teamCurrentPoint.i0 {
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w0)
+                }else{
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w)
+                }
+                
+                // 画点1
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
+                }else{
+                    SFacePen.draw_circle(pt1.p, 10, .green, context)
+                }
+                
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 20, .white, context, true, 3)
+                } else if (teamCurrentPoint.i0 == index + 1) {
+                    SFacePen.draw_circle(pt2.p, 20, .white, context, true, 3)
+                }
+            }
+            
+            if pt1.d == false &&  pt2.d == true {
+                
+                // 画点1
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
+                }else{
+                    SFacePen.draw_circle(pt1.p, 10, .green, context)
+                }
+                
+                // 画线
+                if index + 1 == teamCurrentPoint.i0 {
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w0)
+                }else{
+                    SFacePen.draw_line(pt1.p, pt2.p, context, .orange, dyWidth.w)
+                }
+                
+                // 画点2
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt2.p, 10 + 10 * dyWidth.rate0 * 0.5, .green, context)
+                }else{
+                    SFacePen.draw_circle(pt2.p, 10, .green, context)
+                }
+                
+                if teamCurrentPoint.i0 == index {
+                    SFacePen.draw_circle(pt1.p, 20, .white, context, true, 3)
+                } else if (teamCurrentPoint.i0 == index + 1) {
+                    SFacePen.draw_circle(pt2.p, 20, .white, context, true, 3)
                 }
             }
         }
         
-//        SFacePen.draw_ellipse_rect(_OP.center, eye__sub__y - self.w/2, eyeSubSize, .black, context, CGFloat.pi*1.5 - SOperationModel.omodel_body_angle(_OP.center, eyeMove))
-
+        
+        
         SFacePen.draw_line(CGPoint(x: 300, y: 0), CGPoint(x: 300, y: 700), context, .red, 0.5)
     }
     

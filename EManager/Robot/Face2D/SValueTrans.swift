@@ -23,4 +23,18 @@ class SValueTrans: NSObject {
         let new_v = SValueTrans.trans_toVal(0, 180, center.y + r, center.y - r, v)
         return CGPoint(x: center.x - r + new_h, y: center.y + r + new_v)
     }
+    
+    class func trans_toAngle_cross(_ minA:CGFloat, _ maxA:CGFloat, _ minV:CGFloat, _ maxV:CGFloat, _ current:CGFloat) ->CGFloat {
+        return CGFloat(Int((current - minV) / (maxV - minV) * (maxA - minA)))
+    }
+    
+    class func trans_toVal_cross(_ minA:CGFloat, _ maxA:CGFloat, _ minV:CGFloat, _ maxV:CGFloat, _ current:CGFloat) ->CGFloat {
+        return CGFloat(Int(current / (maxA - minA) * (maxV - minV)))
+    }
+    
+    class func trans_toPoint_cross(_ v:CGFloat, _ h:CGFloat, _ center:CGPoint, _ r:CGFloat) ->CGPoint{
+        let new_h = SValueTrans.trans_toVal_cross(0, 180, center.x - r, center.x + r, h)
+        let new_v = SValueTrans.trans_toVal_cross(0, 180, center.y + r, center.y - r, v)
+        return CGPoint(x: center.x - r + new_h, y: center.y - r - new_v)
+    }
 }

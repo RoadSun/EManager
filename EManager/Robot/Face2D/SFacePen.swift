@@ -283,6 +283,21 @@ class SFacePen: NSObject {
         }
     }
     
+    // 画方形区域
+    class func draw_square_area(_ point:CGPoint, _ r:CGFloat,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
+        context.addRect(CGRect(x: point.x - r, y: point.y - r, width: 2*r, height: 2*r))
+        if isRing {
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(width)
+            context.strokePath()
+        }else{
+            
+            UIColor.white.setFill()
+            context.setAlpha(0.3)
+            context.fillPath()
+        }
+    }
+    
     // rect 画圆
     class func draw_circle_rect(_ point:CGPoint, _ size:CGSize,_ color:UIColor, _ context:CGContext, _ isRing:Bool = false, _ width:CGFloat = 3) {
         context.addEllipse(in: CGRect(x: point.x, y: point.y, width: size.width, height: size.height))
@@ -479,6 +494,27 @@ class SFacePen: NSObject {
         }else{
             context.setLineDash(phase: 0, lengths: [])
         }
+    }
+    
+    /*
+     * 画正方形
+     */
+    class func draw_square(_ point:CGPoint, _ size:CGSize, _ context:CGContext) {
+        context.addRect(CGRect(origin: point, size: size))
+        context.setLineWidth(1)
+        context.setStrokeColor(UIColor.white.cgColor)
+        context.strokePath()
+    }
+    
+    /*
+     * 画动态线
+     */
+    class func draw_dynamicLine(_ center:CGPoint, _ rect:CGRect, _ context:CGContext, _ status:Int = 0) {
+        draw_line(CGPoint(x: center.x, y: rect.origin.y),
+                  CGPoint(x: center.x, y: rect.origin.y + rect.size.height), context, status == 2 ? UIColor.gray:UIColor.red)
+        
+        draw_line(CGPoint(x: rect.origin.x, y: center.y),
+                  CGPoint(x: rect.origin.x + rect.size.width, y: center.y), context, status == 1 ? UIColor.gray:UIColor.red)
     }
   
 }

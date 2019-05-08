@@ -47,13 +47,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let namespace = Bundle.main.infoDictionary!["CFBundleExecutable"]as!String
         let vcClass = NSClassFromString(namespace+"."+FilePagesNames[FilePages[indexPath.section][indexPath.row]]!)!as!UIViewController.Type
-        self.navigationController?.pushViewController(vcClass.init(), animated: true)
+        self.navigationController?.pushViewController(vcClass.init(), animated: false)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "功能"
         _ = self.list
+        
+        self.tableView(self.list, didSelectRowAt: IndexPath(row: 1, section: 5))
     }
 
     override func didReceiveMemoryWarning() {

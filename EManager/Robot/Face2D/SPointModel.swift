@@ -142,10 +142,10 @@ class SPointModel: NSObject {
         
         // 嘴上
         if part == 6 || part == -1 {
-            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.line)
+            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.cross)
             let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.5*a+yy),state:2,No:1,Min:0,Max:180,type:.line)
             let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.5*a+yy),state:2,No:2,Min:0,Max:180,type:.line)
-            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.line)
+            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.cross)
             let point_7_0 = SPt(point:CGPoint(x: 8*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
             let point_7_1 = SPt(point:CGPoint(x: 7*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
             let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8.5*a+yy),state:2,No:6,Min:0,Max:180,type:.line)
@@ -325,10 +325,10 @@ class SPointModel: NSObject {
         
         // 嘴上
         if part == 6 || part == -1 {
-            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.line)
+            let point_6_0 = SPt(point:CGPoint(x: 4*a+xx, y: 8*a+yy),state:5,No:0,Min:0,Max:180,Angle:CGFloat.pi/3,type:.cross)
             let point_6_1 = SPt(point:CGPoint(x: 6*a+xx, y: 7.5*a+yy),state:2,No:1,Min:0,Max:180,type:.line)
             let point_6_2 = SPt(point:CGPoint(x: 8*a+xx, y: 7.5*a+yy),state:2,No:2,Min:0,Max:180,type:.line)
-            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.line)
+            let point_6_3 = SPt(point:CGPoint(x: 10*a+xx, y: 8*a+yy),state:5,No:3,Min:0,Max:180,Angle:-CGFloat.pi/3,type:.cross)
             let point_7_0 = SPt(point:CGPoint(x: 8*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
             let point_7_1 = SPt(point:CGPoint(x: 7*a+xx, y: 8.5*a+yy),state:2,No:5,Min:0,Max:180,type:.line)
             let point_7_2 = SPt(point:CGPoint(x: 6*a+xx, y: 8.5*a+yy),state:2,No:6,Min:0,Max:180,type:.line)

@@ -19,6 +19,7 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
     var opt_line:SOperationLine!
     var opt_circle:SOperationCircle!
     var opt_handle:SOperationHandle!
+    var opt_cross:SOperationCross!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
         opt_line.op_delegate = self
         opt_circle.op_delegate = self
         opt_handle.op_delegate = self
+        opt_cross.op_delegate = self
     }
     
     // 操作器代理
@@ -44,8 +46,14 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
     }
     
     func operation_outputObj(_ value: [String : Any], _ tag: Int) {
+        // 眼部移动
         if tag == 0 {
             ctl_face.face_eyeMove(value["vval"] as! CGFloat, value["hval"] as! CGFloat)
+        }
+        
+        // 嘴角移动
+        if tag == 3 {
+            ctl_face.face_mouthCornerMmove(value["crossx"] as! CGFloat, value["crossy"] as! CGFloat)
         }
     }
     
@@ -71,17 +79,24 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
         if pt.type == .line {
             opt_circle.isHidden = true
             opt_handle.isHidden = true
+            opt_cross.isHidden = true
             opt_line.isHidden = false
-            
             opt_line.setAgl(pt.angle)
         } else if (pt.type == .circle) {
             opt_line.isHidden = true
             opt_handle.isHidden = true
+            opt_cross.isHidden = true
             opt_circle.isHidden = false
         }else if (pt.type == .handle) {
             opt_line.isHidden = true
             opt_circle.isHidden = true
+            opt_cross.isHidden = true
             opt_handle.isHidden = false
+        }else if (pt.type == .cross) {
+            opt_circle.isHidden = true
+            opt_handle.isHidden = true
+            opt_line.isHidden = true
+            opt_cross.isHidden = false
         }
     }
 }

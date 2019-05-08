@@ -10,20 +10,29 @@ import UIKit
 
 struct SPointerData {
     var points = [CGPoint]()
+    var pt = CGPoint.zero
     var sign:Bool = true
-    mutating func setPoint(_ point:CGPoint) {
-        points.append(point)
-        if points.count > 4 {
-            points.removeFirst()
-        }else if(points.count < 3){
-            return
-        }
-        let s0 = points[1].x - points[0].x
-        let s1 = points[2].x - points[1].x
-        if (s0 >= 0 && s1 >= 0) || (s0 <= 0 && s1 <= 0) {
-            sign = true
+    mutating func setPoint(_ point:CGPoint, _ d:Bool = true, second:CGPoint = CGPoint.zero) {
+        if d {
+            points.append(point)
+            if points.count > 4 {
+                points.removeFirst()
+            }else if(points.count < 3){
+                return
+            }
+            let s0 = points[1].x - points[0].x
+            let s1 = points[2].x - points[1].x
+            if (s0 >= 0 && s1 >= 0) || (s0 <= 0 && s1 <= 0) {
+                sign = true
+            }else{
+                sign = false
+            }
         }else{
-            sign = false
+            if ((second.x - pt.x < 0 && second.y - pt.x < 0) || (second.x - pt.x < 0 && second.y - pt.x > 0)) {
+                sign = false
+            } else {
+                sign = true
+            }
         }
     }
 }
@@ -87,7 +96,7 @@ class SNeckControl: SFaceBase {
     
     var faceCenterPoint:CGPoint!
     var beginPoint:CGPoint! // 起始点
-    var pointerData = SPointerData(points: [], sign: true)  // 上两个点
+    var pointerData = SPointerData()  // 上两个点
     var currentAngle:SAngle = SAngle()
     // 晃动当前角度
     override func panEvent(_ sender: UIPanGestureRecognizer) {

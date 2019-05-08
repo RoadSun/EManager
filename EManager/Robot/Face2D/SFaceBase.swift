@@ -20,6 +20,7 @@ enum SOperationType {
     case line   // 线性
     case circle  // 圆盘
     case handle // 手控
+    case cross  // 嘴角
     case none   // 无
 }
 
@@ -51,6 +52,10 @@ class SFaceBase: UIView, SControlDelegate {
         // 轻拍
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapEvent(_:)))
         self.addGestureRecognizer(tap)
+        // 轻拍2
+        let tapTwice = UITapGestureRecognizer(target: self, action: #selector(tapEvent(_:)))
+        tapTwice.numberOfTapsRequired = 2
+        self.addGestureRecognizer(tapTwice)
         // 轻扫
         let swip = UISwipeGestureRecognizer()
         swip.direction = [.left,.right]
@@ -124,7 +129,7 @@ class SFaceBase: UIView, SControlDelegate {
     }
     
     lazy var dataLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 4, y: 0, width: 100, height: 30))
+        let label = UILabel(frame: CGRect(x: 4, y: 0, width: 150, height: 30))
         label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = .white
         label.text = "--"

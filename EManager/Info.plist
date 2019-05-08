@@ -18,6 +18,15 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>&lt;key&gt;NSTemporaryExceptionAllowsInsecureHTTPLoads&lt;/key&gt;
+ 6                 &lt;true/&gt;
+ 7                 &lt;key&gt;NSIncludesSubdomains&lt;/key&gt;
+ 8                 &lt;true/&gt;
+ 9                 &lt;key&gt;NSExceptionRequiresForwardSecrecy&lt;/key&gt;
+10                 &lt;false/&gt;
+11                 &lt;key&gt;NSExceptionAllowInsecureHTTPLoads&lt;/key&gt;
+12                 &lt;true/&gt;</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>

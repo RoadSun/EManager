@@ -41,7 +41,6 @@ class SFaceControl: SFaceBase {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         _model.a = 40
         _model.initArray()
     }
@@ -60,15 +59,20 @@ class SFaceControl: SFaceBase {
         }
 
         if sender.state == .changed {
-            self.face_valueChange(point)
-            let val = SOperationModel.calculateVal(moveB, teamCurrentPoint.bpt.point, crossData.R, teamCurrentPoint.bpt.angle)
-            self.delegate.control_outputValue!(val, 0)
+            if SOperationModel.r_between(moveB, point) <= 20 {
+                self.face_valueChange(point)
+                let val = SOperationModel.calculateVal(moveB, teamCurrentPoint.bpt.point, crossData.R, teamCurrentPoint.bpt.angle)
+                self.delegate.control_outputValue!(val, 0)
+            }
         }
         
         self.setNeedsDisplay()
     }
     
     func face_valueChange(_ point:CGPoint) {
+        if teamCurrentPoint.i0 < 0 {
+            return
+        }
         moveB.y = point.y
         let dif = moveB.y - teamCurrentPoint.bpt.point.y
         for (index, obj) in _model.baseArray[teamCurrentPoint.i0].enumerated() {
@@ -154,11 +158,24 @@ class SFaceControl: SFaceBase {
     func face_eyeMove(_ v:CGFloat, _ h:CGFloat) {
         if teamCurrentPoint.i0 == 11 || teamCurrentPoint.i0 == 12 {
             moveB = SValueTrans.trans_toPoint(v, h, teamCurrentPoint.bpt.point, 40)
+            teamCurrentPoint.pt.point = moveB
             _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1].point = moveB
             self.setNeedsDisplay()
         }
     }
-
+    
+    /*
+     * 嘴角移动
+     */
+    func face_mouthCornerMmove(_ h:CGFloat, _ v:CGFloat) {
+        print("\(v) --- \(h)")
+        if teamCurrentPoint.i0 == 6 {
+            moveB = SValueTrans.trans_toPoint_cross(v, h, teamCurrentPoint.bpt.point, 40)
+            _model.teamArray[teamCurrentPoint.i0][teamCurrentPoint.i1].point = moveB
+            self.setNeedsDisplay()
+        }
+    }
+    
     override func draw_canvas(_ rect: CGRect, _ context: CGContext) {
         super.draw_canvas(rect, context)
 
@@ -201,7 +218,12 @@ class SFaceControl: SFaceBase {
         
         // 画移动轨迹
         if moveB.x != -200 {
-            SFacePen.drawRuler(teamCurrentPoint.bpt.point, crossData.angle, crossData.R, context)
+            if teamCurrentPoint.i0 == 6 && (teamCurrentPoint.i1 == 0 || teamCurrentPoint.i1 == 3) {
+                // 嘴角动点
+                SFacePen.draw_square_area(teamCurrentPoint.bpt.point, 45, .white, context, false, 1)
+            }else{
+                SFacePen.drawRuler(teamCurrentPoint.bpt.point, crossData.angle, crossData.R, context)
+            }
         }
         
         // 眼睛动区域

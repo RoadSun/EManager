@@ -40,6 +40,8 @@ class ControlController: UIViewController {
         self.view.addSubview(hand)
                 self.view.addSubview(limb)
         
+        web = SThreejsControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        self.view.addSubview(web)
         // 环形控制
         operationCircle = SOperationCircle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
         operationCircle.isHidden = true
@@ -49,6 +51,11 @@ class ControlController: UIViewController {
         operationHandle = SOperationHandle(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
         operationHandle.isHidden = true
         operationHandle.backgroundColor = .lightGray
+        
+        // 控制器
+        operationCross = SOperationCross(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationCross.isHidden = true
+        operationCross.backgroundColor = .lightGray
         
         let bridge = SControlOperationBridge()
         bridge.ctl_face = control
@@ -60,6 +67,7 @@ class ControlController: UIViewController {
         bridge.opt_line = operationLine
         bridge.opt_circle = operationCircle
         bridge.opt_handle = operationHandle
+        bridge.opt_cross = operationCross
         bridge.setDelegates()
         
         self.view.backgroundColor = .black
@@ -68,6 +76,8 @@ class ControlController: UIViewController {
 
         self.view.addSubview(operationCircle)
         self.view.addSubview(operationHandle)
+        self.view.addSubview(operationCross)
+        
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)
         transform = transform.scaledBy(x: 1, y: 1)
@@ -82,7 +92,7 @@ class ControlController: UIViewController {
         _ = slider2
         _ = slider3
         
-        let names = ["face","neck","body","hand","limb"]
+        let names = ["face","neck","body","hand","limb","web"]
         let seg = UISegmentedControl(items: names)
         seg.frame = CGRect(x: 50, y: 10, width: 200, height: 30)
         seg.addTarget(self, action: #selector(segClick(_:)), for: .valueChanged)
@@ -101,6 +111,8 @@ class ControlController: UIViewController {
             self.view.bringSubviewToFront(hand)
         } else if (sender.selectedSegmentIndex == 4) {
             self.view.bringSubviewToFront(limb)
+        } else if (sender.selectedSegmentIndex == 5) {
+            self.view.bringSubviewToFront(web)
         }
     }
     
@@ -108,11 +120,12 @@ class ControlController: UIViewController {
     var operationLine:SOperationLine!
     var operationCircle:SOperationCircle!
     var operationHandle:SOperationHandle!
-    
+    var operationCross:SOperationCross!
     var neck:SNeckControl!
     var body:SBodyControl!
     var limb:SLimbControl!
     var hand:SHandControl!
+    var web:SThreejsControl!
     var scroll:UIScrollView!
     // 取整, 整数错值进行下一赋值动作
     var forValue = 0

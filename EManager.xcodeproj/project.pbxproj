@@ -58,6 +58,13 @@
 		6091EA91224C60A9009F73E2 /* SPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA90224C60A9009F73E2 /* SPointModel.swift */; };
 		6091EA93224CA7AF009F73E2 /* SPt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA92224CA7AF009F73E2 /* SPt.swift */; };
 		6091EA97224DEADA009F73E2 /* SFacePen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA96224DEAD9009F73E2 /* SFacePen.swift */; };
+		60ABE0D3227FCC51003A3580 /* SOperationCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0D2227FCC51003A3580 /* SOperationCross.swift */; };
+		60ABE0DC2282A606003A3580 /* SCoordinateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */; };
+		60ABE0DD2282A606003A3580 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DA2282A606003A3580 /* GameViewController.swift */; };
+		60ABE0DE2282A606003A3580 /* SJointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DB2282A606003A3580 /* SJointModel.swift */; };
+		60ABE0E02282AB15003A3580 /* SDatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DF2282AB15003A3580 /* SDatum.swift */; };
+		60C3CE85227816B60098A9DA /* SThreejsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C3CE84227816B60098A9DA /* SThreejsControl.swift */; };
+		60C3CE87227817B70098A9DA /* index4.html in Resources */ = {isa = PBXBuildFile; fileRef = 60C3CE86227817B70098A9DA /* index4.html */; };
 		60C77C33222F548B00EF9F1A /* SBlueToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */; };
 		60C77C35222F54D000EF9F1A /* SBluetooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C34222F54D000EF9F1A /* SBluetooth.swift */; };
 		60C844C1225331230060C734 /* SFaceLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C844C0225331230060C734 /* SFaceLog.swift */; };
@@ -180,6 +187,13 @@
 		6091EA90224C60A9009F73E2 /* SPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPointModel.swift; sourceTree = "<group>"; };
 		6091EA92224CA7AF009F73E2 /* SPt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPt.swift; sourceTree = "<group>"; };
 		6091EA96224DEAD9009F73E2 /* SFacePen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFacePen.swift; sourceTree = "<group>"; };
+		60ABE0D2227FCC51003A3580 /* SOperationCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationCross.swift; sourceTree = "<group>"; };
+		60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCoordinateSystem.swift; sourceTree = "<group>"; };
+		60ABE0DA2282A606003A3580 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		60ABE0DB2282A606003A3580 /* SJointModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SJointModel.swift; sourceTree = "<group>"; };
+		60ABE0DF2282AB15003A3580 /* SDatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDatum.swift; sourceTree = "<group>"; };
+		60C3CE84227816B60098A9DA /* SThreejsControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SThreejsControl.swift; sourceTree = "<group>"; };
+		60C3CE86227817B70098A9DA /* index4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index4.html; sourceTree = "<group>"; };
 		60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBlueToothManager.swift; sourceTree = "<group>"; };
 		60C77C34222F54D000EF9F1A /* SBluetooth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBluetooth.swift; sourceTree = "<group>"; };
 		60C844C0225331230060C734 /* SFaceLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFaceLog.swift; sourceTree = "<group>"; };
@@ -432,6 +446,7 @@
 				60267117225F083500C4D605 /* SBodyControl.swift */,
 				60267119225F08A200C4D605 /* SHandControl.swift */,
 				60F630AC22704DE000C6B3F8 /* SLimbControl.swift */,
+				60C3CE84227816B60098A9DA /* SThreejsControl.swift */,
 				6091EA96224DEAD9009F73E2 /* SFacePen.swift */,
 				60C844C0225331230060C734 /* SFaceLog.swift */,
 				60C844C2225331530060C734 /* SFaceLog.xib */,
@@ -439,11 +454,57 @@
 				6026711F22606B3600C4D605 /* SOperationLine.swift */,
 				6026711D226067FF00C4D605 /* SOperationCircle.swift */,
 				605DD3DD226823A600CBE223 /* SOperationHandle.swift */,
+				60ABE0D2227FCC51003A3580 /* SOperationCross.swift */,
 				60E195D8225C31E300B51FDF /* SOperationModel.swift */,
 				60267113225ECA1E00C4D605 /* SControlProtocol.swift */,
 				60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */,
+				60ABE0D82282A606003A3580 /* SceneWork */,
+				60C3CE7C22756F7F0098A9DA /* 3D */,
 			);
 			path = Face2D;
+			sourceTree = "<group>";
+		};
+		60ABE0D82282A606003A3580 /* SceneWork */ = {
+			isa = PBXGroup;
+			children = (
+				60ABE0DA2282A606003A3580 /* GameViewController.swift */,
+				60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */,
+				60ABE0DB2282A606003A3580 /* SJointModel.swift */,
+				60ABE0DF2282AB15003A3580 /* SDatum.swift */,
+			);
+			path = SceneWork;
+			sourceTree = "<group>";
+		};
+		60C3CE7C22756F7F0098A9DA /* 3D */ = {
+			isa = PBXGroup;
+			children = (
+				60C3CE7D22756FB80098A9DA /* css */,
+				60C3CE7F22756FB80098A9DA /* html */,
+				60C3CE7E22756FB80098A9DA /* js */,
+			);
+			path = 3D;
+			sourceTree = "<group>";
+		};
+		60C3CE7D22756FB80098A9DA /* css */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		60C3CE7E22756FB80098A9DA /* js */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		60C3CE7F22756FB80098A9DA /* html */ = {
+			isa = PBXGroup;
+			children = (
+				60C3CE86227817B70098A9DA /* index4.html */,
+			);
+			path = html;
 			sourceTree = "<group>";
 		};
 		60C77C31222F548B00EF9F1A /* SBlue */ = {
@@ -620,6 +681,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60C3CE87227817B70098A9DA /* index4.html in Resources */,
 				60FBB9522216843A008A3F11 /* SCanvasControl.xib in Resources */,
 				602DE1702189AA5300CC4511 /* LaunchScreen.storyboard in Resources */,
 				60FBB94022153C63008A3F11 /* SendUDPController.xib in Resources */,
@@ -738,8 +800,11 @@
 				600B2B87219D66F300CBF641 /* Canvas.swift in Sources */,
 				60267118225F083500C4D605 /* SBodyControl.swift in Sources */,
 				60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */,
+				60ABE0DC2282A606003A3580 /* SCoordinateSystem.swift in Sources */,
 				6053CEA9219AA34900E1014C /* CoordinatesController.swift in Sources */,
+				60ABE0D3227FCC51003A3580 /* SOperationCross.swift in Sources */,
 				60FBB9B4221BD217008A3F11 /* SignalController.swift in Sources */,
+				60ABE0E02282AB15003A3580 /* SDatum.swift in Sources */,
 				60FBB93B2214FFB7008A3F11 /* UDPController.swift in Sources */,
 				60FBB94E2216843A008A3F11 /* SChangeBtn.swift in Sources */,
 				60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */,
@@ -747,6 +812,7 @@
 				60108D9321915E960099A903 /* SnapController.swift in Sources */,
 				60FBB9532216843A008A3F11 /* SCanvasModel.swift in Sources */,
 				60108DAA2193D03B0099A903 /* SCell.swift in Sources */,
+				60C3CE85227816B60098A9DA /* SThreejsControl.swift in Sources */,
 				60FBB94D2216843A008A3F11 /* SPen.swift in Sources */,
 				60E195DB225C68EE00B51FDF /* SNeckControl.swift in Sources */,
 				6091EA97224DEADA009F73E2 /* SFacePen.swift in Sources */,
@@ -770,6 +836,7 @@
 				6091EA91224C60A9009F73E2 /* SPointModel.swift in Sources */,
 				60FBB93F22153C63008A3F11 /* SendUDPController.swift in Sources */,
 				605DD46922699D3700CBE223 /* SValueTrans.swift in Sources */,
+				60ABE0DD2282A606003A3580 /* GameViewController.swift in Sources */,
 				60108D9F2192755E0099A903 /* ORCode.swift in Sources */,
 				60F63068226EE47D00C6B3F8 /* SControlOperationBridge.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
@@ -798,6 +865,7 @@
 				6053CEA7219A9A8700E1014C /* RobotHandle.swift in Sources */,
 				60267114225ECA1E00C4D605 /* SControlProtocol.swift in Sources */,
 				6053CEA1219922AE00E1014C /* CirclePan.swift in Sources */,
+				60ABE0DE2282A606003A3580 /* SJointModel.swift in Sources */,
 				600B2B89219D672E00CBF641 /* PathCreator.swift in Sources */,
 				6026712022606B3600C4D605 /* SOperationLine.swift in Sources */,
 				60F630B12272F5C800C6B3F8 /* SMount.swift in Sources */,
@@ -984,6 +1052,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HH2Y65XC6Y;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = EManager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1003,6 +1072,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HH2Y65XC6Y;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = EManager/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
