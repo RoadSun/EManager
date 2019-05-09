@@ -11,55 +11,50 @@ import QuartzCore
 import SceneKit
 
 class SDatum: NSObject {
-    func createSys(_ scnScene:SCNScene) {
+    class func createSys(_ scnScene:SCNScene) ->SCNNode{
         // 中心点
-        let boxCenter = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
-        let boxCenterNode = SCNNode(geometry: boxCenter)
-        boxCenterNode.position = SCNVector3Make(0, 0, 0)
-        scnScene.rootNode.addChildNode(boxCenterNode)
-        
-        let material = SCNMaterial()
-        material.lightingModel = .lambert
-        material.diffuse.contents = UIColor.white
-        material.ambient.contents = UIColor.init(white: 0.1, alpha: 1)
-        material.locksAmbientWithDiffuse = false
-        boxCenter.materials = [material]
+        let centerData = SGeoBasedata(l:0.1,w:0.1,h:0.1,r:0)
+        let centerNode = SJointModel.createBox(0, 0, 0, .white, data: centerData)
+        scnScene.rootNode.addChildNode(centerNode)
         
         /// x
-        let sphereX = SCNSphere(radius: 0.1)
-        let sphereXNode = SCNNode(geometry: sphereX)
-        sphereXNode.position = SCNVector3Make(1, 0, 0)
-        scnScene.rootNode.addChildNode(sphereXNode)
+        let x_cone = SJointModel.createCone(1, 0, 0, .red)
+        x_cone.runAction(SCNAction.rotateBy(x: 0, y: 0, z: -(CGFloat.pi*0.5), duration: 0))
+        scnScene.rootNode.addChildNode(x_cone)
         
-        let materialX = SCNMaterial()
-        materialX.lightingModel = .lambert
-        materialX.diffuse.contents = UIColor.red
-        materialX.ambient.contents = UIColor.init(white: 0.1, alpha: 1)
-        materialX.locksAmbientWithDiffuse = false
-        sphereX.materials = [materialX]
+        // x_o
+        let o_x = SJointModel.createCapsule(0.5, 0, 0, height:1, capR: 0.02)
+        scnScene.rootNode.addChildNode(o_x)
+        o_x.runAction(SCNAction.rotateBy(x: 0, y: 0, z: -(CGFloat.pi*0.5), duration: 0))
+        
         /// y
-        let sphereY = SCNSphere(radius: 0.1)
-        let sphereYNode = SCNNode(geometry: sphereY)
-        sphereYNode.position = SCNVector3Make(0, 1, 0)
-        scnScene.rootNode.addChildNode(sphereYNode)
+        let y_cone = SJointModel.createCone(0, 1, 0, .blue)
+        scnScene.rootNode.addChildNode(y_cone)
         
-        let materialY = SCNMaterial()
-        materialY.lightingModel = .lambert
-        materialY.diffuse.contents = UIColor.blue
-        materialY.ambient.contents = UIColor.init(white: 0.1, alpha: 1)
-        materialY.locksAmbientWithDiffuse = false
-        sphereY.materials = [materialY]
+        // o_y
+        let o_y = SJointModel.createCapsule(0, 0.5, 0, height:1, capR: 0.02)
+        scnScene.rootNode.addChildNode(o_y)
+        o_y.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
+        
         /// z
-        let sphereZ = SCNSphere(radius: 0.1)
-        let sphereZNode = SCNNode(geometry: sphereZ)
-        sphereZNode.position = SCNVector3Make(0, 0, 1)
-        scnScene.rootNode.addChildNode(sphereZNode)
+        let z_cone = SJointModel.createCone(0, 0, 1, .green)
+        z_cone.runAction(SCNAction.rotateBy(x: (CGFloat.pi*0.5), y: 0, z: 0, duration: 0))
+        scnScene.rootNode.addChildNode(z_cone)
         
-        let materialZ = SCNMaterial()
-        materialZ.lightingModel = .lambert
-        materialZ.diffuse.contents = UIColor.green
-        materialZ.ambient.contents = UIColor.init(white: 0.1, alpha: 1)
-        materialZ.locksAmbientWithDiffuse = false
-        sphereZ.materials = [materialZ]
+        // x_o
+        let o_z = SJointModel.createCapsule(0, 0, 0.5, height:1, capR: 0.02)
+        scnScene.rootNode.addChildNode(o_z)
+        o_z.runAction(SCNAction.rotateBy(x: (CGFloat.pi*0.5), y: 0, z: 0, duration: 0))
+        
+        centerNode.addChildNode(o_x)
+        centerNode.addChildNode(x_cone)
+        
+        centerNode.addChildNode(o_y)
+        centerNode.addChildNode(y_cone)
+        
+        centerNode.addChildNode(o_z)
+        centerNode.addChildNode(z_cone)
+        
+        return centerNode
     }
 }

@@ -22,15 +22,22 @@ class GameViewController: UIViewController {
         setupView()
         setupScene()
         setupCamera()
-        spawnShape()
-//        centerV3 = SCNVector3Make(0, 0, <#T##z: Float##Float#>)
-//        self.createSCN()
         
+        spawnShape()
+        createSlider()
+        
+//        self.createSCN()
+    }
+    /*
+     
+     */
+    var sliderx:UISlider!
+    var slidery:UISlider!
+    var sliderz:UISlider!
+    
+    func createSlider() {
         sliderx = UISlider(frame: CGRect(x: 700, y: 100, width: 200, height: 40 ))
         sliderx.tag = 1
-//        sliderx.maximumValue = 30
-//        sliderx.minimumValue = -30
-//        sliderx.value = 0
         sliderx.maximumValue = Float(CGFloat.pi)
         sliderx.minimumValue = Float(-CGFloat.pi)
         sliderx.value = 0
@@ -39,10 +46,6 @@ class GameViewController: UIViewController {
         
         slidery = UISlider(frame: CGRect(x: 700, y: 140, width: 200, height: 40 ))
         slidery.tag = 2
-        
-//        slidery.maximumValue = 30
-//        slidery.minimumValue = -30
-//        slidery.value = 0
         slidery.maximumValue = Float(CGFloat.pi)
         slidery.minimumValue = Float(-CGFloat.pi)
         slidery.value = 0
@@ -51,29 +54,31 @@ class GameViewController: UIViewController {
         
         sliderz = UISlider(frame: CGRect(x: 700, y: 180, width: 200, height: 40 ))
         sliderz.tag = 3
-//        sliderz.maximumValue = 30
-//        sliderz.minimumValue = -30
-//        sliderz.value = 10
         sliderz.maximumValue = Float(CGFloat.pi)
         sliderz.minimumValue = Float(-CGFloat.pi)
         sliderz.value = 0
         sliderz.addTarget(self, action: #selector(sliderChange(_:)), for: .valueChanged)
         self.view.addSubview(sliderz)
+        
+        let button = UIButton(type: .system)
+        button.frame = CGRect(x: 700, y: 220, width: 200, height: 40 )
+        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(buttonClick(_:)), for: .touchUpInside)
+        self.view.addSubview(button)
     }
     
-    var sliderx:UISlider!
-    var slidery:UISlider!
-    var sliderz:UISlider!
+    @objc
+    func buttonClick(_ sender:UIButton) {
+        lastNode.runAction(SCNAction.rotateBy(x: 0, y: 0.1, z: 0, duration: 0))
+    }
     
     @objc
     func sliderChange(_ sender:UISlider) {
-//        cameraNode.position.x = sliderx.value
-//        cameraNode.position.y = slidery.value
-//        cameraNode.position.z = sliderz.value
-        capsuleNode.runAction(SCNAction.rotateBy(x: CGFloat(sliderx!.value), y: CGFloat(slidery!.value), z: CGFloat(sliderz!.value), duration: 0))
-        print(SCNAction.rotateBy(x: CGFloat(sliderx!.value), y: CGFloat(slidery!.value), z: CGFloat(sliderz!.value), duration: 0))
-        
-        print("x:\(sliderx!.value)  y:\(slidery!.value)  z:\(sliderz!.value)  ")
+        if  sender == sliderx {
+            lastNode.runAction(SCNAction.rotateTo(x: CGFloat(sliderx.value), y: 0, z: 0, duration: 0))
+        }else if sender == slidery {
+            lastNode.runAction(SCNAction.rotateTo(x: 0, y: CGFloat(slidery.value), z: 0, duration: 0))
+        }
     }
     
     func createSCN() {
@@ -121,17 +126,19 @@ class GameViewController: UIViewController {
         
         guard let node  = results.first else{
             
-            torus.isHidden = true
+//            torus.isHidden = true
             pan.isEnabled = false
             return
         }
         // 点击到的节点
-        print(node.node)
+        print(node.worldCoordinates)
         lastNode = node.node
         lastNodeColor = (node.node.geometry?.materials.first?.diffuse.contents as! UIColor)
         node.node.geometry?.materials.first?.diffuse.contents = UIColor.green
-        torus.position = node.node.position
-        torus.isHidden = false
+//        torus.position = SCNVector3(round(node.worldCoordinates.x),
+//                                    round(node.worldCoordinates.y),
+//                                    round(node.worldCoordinates.z))
+//        torus.isHidden = false
         pan.isEnabled = true
     }
     func r_between(_ center:CGPoint, _ point:CGPoint) ->CGFloat{
@@ -150,7 +157,7 @@ class GameViewController: UIViewController {
         }
         rotateData.pt = point
         let d:CGFloat = rotateData.sign ? 1 : -1
-        torus.runAction(SCNAction.rotateBy(x: 0, y: d*(CGFloat.pi*r / 3000.0), z: 0, duration: 0))
+//        torus.runAction(SCNAction.rotateBy(x: 0, y: d*(CGFloat.pi*r / 3000.0), z: 0, duration: 0))
     }
     
     func setupScene() {
@@ -193,160 +200,49 @@ class GameViewController: UIViewController {
         scnScene.rootNode.addChildNode(back_1)
         back_1.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
         
-        // 左肩膀
-        let arm_l_line_0 = SJointModel.createCapsule(-1, 3, 0)
-        scnScene.rootNode.addChildNode(arm_l_line_0)
-        arm_l_line_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
+        /////////
         
-        // 左肩膀1
-        let arm_l_line_big_0 = SJointModel.createCapsule(-2, 2, 0)
-        scnScene.rootNode.addChildNode(arm_l_line_big_0)
-        arm_l_line_big_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
+        // 左臂
+        SLimbAssembly.ass_l_arm(scnScene)
         
-        // 左肩膀2
-        let arm_l_line_small_0 = SJointModel.createCapsule(-2, 0, 0)
-        scnScene.rootNode.addChildNode(arm_l_line_small_0)
-        arm_l_line_small_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
+        // 右臂
+        SLimbAssembly.ass_r_arm(scnScene)
         
-        // 右肩膀
-        let arm_r_line_0 = SJointModel.createCapsule(1, 3, 0)
-        scnScene.rootNode.addChildNode(arm_r_line_0)
-        arm_r_line_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
+        // 左腿
+        SLimbAssembly.ass_l_leg(scnScene)
         
+        // 右腿
+        SLimbAssembly.ass_r_leg(scnScene)
+        /////////
         
-        // 右肩膀1
-        let arm_r_line_big_0 = SJointModel.createCapsule(2, 2, 0)
-        scnScene.rootNode.addChildNode(arm_r_line_big_0)
-        arm_r_line_big_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-        // 右肩膀2
-        let arm_r_line_small_0 = SJointModel.createCapsule(2, 0, 0)
-        scnScene.rootNode.addChildNode(arm_r_line_small_0)
-        arm_r_line_small_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-        // 左胯
-        let arm_l_line_leg_0 = SJointModel.createCapsule(-0.5, -1, 0, height:1)
-        scnScene.rootNode.addChildNode(arm_l_line_leg_0)
-        arm_l_line_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
-        
-        // 左腿0
-        let arm_l_line_big_leg_0 = SJointModel.createCapsule(-1, -2, 0)
-        scnScene.rootNode.addChildNode(arm_l_line_big_leg_0)
-        arm_l_line_big_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-        
-        // 左腿1
-        let arm_r_line_small_leg_0 = SJointModel.createCapsule(-1, -4, 0)
-        scnScene.rootNode.addChildNode(arm_r_line_small_leg_0)
-        arm_r_line_small_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-        // 右胯
-        let arm_r_line_leg_0 = SJointModel.createCapsule(0.5, -1, 0, height:1)
-        scnScene.rootNode.addChildNode(arm_r_line_leg_0)
-        arm_r_line_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
-        
-        // 右腿0
-        let arm_r_line_big_leg_0 = SJointModel.createCapsule(1, -2, 0)
-        scnScene.rootNode.addChildNode(arm_r_line_big_leg_0)
-        arm_r_line_big_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-        
-        // 右腿1
-        let arm_l_line_small_leg_0 = SJointModel.createCapsule(1, -4, 0)
-        scnScene.rootNode.addChildNode(arm_l_line_small_leg_0)
-        arm_l_line_small_leg_0.runAction(SCNAction.rotateBy(x: 0, y: 0, z: 0, duration: 0))
-        
-//        let capsuleNode1 = SJointModel.createCapsule(1, -1, 0)
-//        scnScene.rootNode.addChildNode(capsuleNode1)
-        
-//        [geoNode runAction:[SCNAction repeatActionForever:[SCNAction rotateByX:0 y:0 z:2 duration:1]]];
-    
+        // 头
         let center = SJointModel.createSphere(0, 0, 0, .red)
         scnScene.rootNode.addChildNode(center)
         
+        // 脖1
         let neck0 = SJointModel.createSphere(0, 3, 0)
         scnScene.rootNode.addChildNode(neck0)
         
+        // 脖2
         let neck1 = SJointModel.createSphere(0, 4, 0)
         scnScene.rootNode.addChildNode(neck1)
-        /// 左臂
-        let arm0 = SJointModel.createSphere(-2, 3, 0)
-        scnScene.rootNode.addChildNode(arm0)
-        
-        let arm_rotate_l_0 = SJointModel.createBox(-2, 2, 0, .purple)
-        scnScene.rootNode.addChildNode(arm_rotate_l_0)
-        
-        let arm1 = SJointModel.createSphere(-2, 1, 0)
-        scnScene.rootNode.addChildNode(arm1)
-        
-        let arm_rotate_l_1 = SJointModel.createBox(-2, 0, 0, .purple)
-        scnScene.rootNode.addChildNode(arm_rotate_l_1)
-        
-        let arm2 = SJointModel.createSphere(-2, -1, 0)
-        scnScene.rootNode.addChildNode(arm2)
-        
-        /// 右臂
-        let arm_r_0 = SJointModel.createSphere(2, 3, 0)
-        scnScene.rootNode.addChildNode(arm_r_0)
-        
-        let arm_rotate_r_0 = SJointModel.createBox(2, 2, 0, .purple)
-        scnScene.rootNode.addChildNode(arm_rotate_r_0)
-        
-        let arm_r_1 = SJointModel.createSphere(2, 1, 0)
-        scnScene.rootNode.addChildNode(arm_r_1)
-        
-        let arm_rotate_r_1 = SJointModel.createBox(2, 0, 0, .purple)
-        scnScene.rootNode.addChildNode(arm_rotate_r_1)
-        
-        let arm_r_2 = SJointModel.createSphere(2, -1, 0)
-        scnScene.rootNode.addChildNode(arm_r_2)
-        
-        /// 左腿
-        let leg_l_0 = SJointModel.createSphere(1, -1, 0)
-        scnScene.rootNode.addChildNode(leg_l_0)
-        
-        let leg_l_1 = SJointModel.createSphere(1, -3, 0)
-        scnScene.rootNode.addChildNode(leg_l_1)
-        
-        let leg_l_2 = SJointModel.createSphere(1, -5, 0)
-        scnScene.rootNode.addChildNode(leg_l_2)
-        
-        /// 右腿
-        let belly = SJointModel.createSphere(0, -1, 0)
-        scnScene.rootNode.addChildNode(belly)
-        
-        let leg_r_0 = SJointModel.createSphere(-1, -1, 0)
-        scnScene.rootNode.addChildNode(leg_r_0)
-
-        let leg_r_1 = SJointModel.createSphere(-1, -3, 0)
-        scnScene.rootNode.addChildNode(leg_r_1)
-        
-        let leg_r_2 = SJointModel.createSphere(-1, -5, 0)
-        scnScene.rootNode.addChildNode(leg_r_2)
         
         let floor = SJointModel.createFloor(0, -50, 0)
         scnScene.rootNode.addChildNode(floor)
         
-        let cone = SJointModel.createSphere(0, 0, 0.3, .blue, radius:0.08)
-        scnScene.rootNode.addChildNode(cone)
+//        let cone = SJointModel.createSphere(0, 0, 0.3, .blue, radius:0.08)
+//        scnScene.rootNode.addChildNode(cone)
+//
+//        torus = SJointModel.createTorus(1, 1, 1)
+//        torus.isHidden = true
+//        scnScene.rootNode.addChildNode(torus)
+//        torus.addChildNode(cone)
         
-        torus = SJointModel.createTorus(1, 1, 1)
-        torus.isHidden = true
-        scnScene.rootNode.addChildNode(torus)
-        torus.addChildNode(cone)
-        cone.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
+//        cone.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
     }
-    
-    
     
     // 创建一个基准坐标
     var torus:SCNNode!
-    func raiseHand(_ hand:SCNNode) {
-        let raiseAction = SCNAction.rotateTo(x: 1, y: 0, z: 0, duration: 0)
-        let putAction = SCNAction.rotateTo(x: 0, y: 0, z: 0, duration: 0)
-        let sequenceAction = SCNAction.sequence([raiseAction,putAction])
-        hand.runAction(sequenceAction)
-    }
     
     override var shouldAutorotate: Bool {
         return true

@@ -10,10 +10,17 @@ import UIKit
 import QuartzCore
 import SceneKit
 
+struct SGeoBasedata {
+    var l:CGFloat = 0.2      // length
+    var w:CGFloat = 0.2  // width
+    var h:CGFloat = 0.2 // height
+    var r:CGFloat = 0   // radius
+}
+
 class SJointModel: NSObject {
     // 绘制胶囊
-    class func createCapsule(_ x:CGFloat, _ y:CGFloat, _ z:CGFloat, _ color:UIColor = .lightGray, height:CGFloat = 2) ->SCNNode{
-        let capsule = SCNCapsule(capRadius: 0.05, height: height)
+    class func createCapsule(_ x:CGFloat, _ y:CGFloat, _ z:CGFloat, _ color:UIColor = .lightGray, height:CGFloat = 2, capR:CGFloat = 0.05) ->SCNNode{
+        let capsule = SCNCapsule(capRadius: capR, height: height)
         let capsuleNode = SCNNode(geometry: capsule)
         capsuleNode.position = SCNVector3Make(Float(x), Float(y), Float(z))
         
@@ -48,8 +55,8 @@ class SJointModel: NSObject {
         return sphereNode
     }
     // 绘制立方体
-    class func createBox(_ x:CGFloat, _ y:CGFloat, _ z:CGFloat, _ color:UIColor = .yellow) ->SCNNode{
-        let sphere = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0)
+    class func createBox(_ x:CGFloat, _ y:CGFloat, _ z:CGFloat, _ color:UIColor = .yellow, data:SGeoBasedata = SGeoBasedata()) ->SCNNode{
+        let sphere = SCNBox(width: data.w, height: data.h, length: data.l, chamferRadius: data.r)
         let sphereNode = SCNNode(geometry: sphere)
         sphereNode.position = SCNVector3Make(Float(x), Float(y), Float(z))
         
@@ -121,4 +128,5 @@ class SJointModel: NSObject {
         cone.materials = [material]
         return coneNode
     }
+
 }

@@ -63,6 +63,7 @@
 		60ABE0DD2282A606003A3580 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DA2282A606003A3580 /* GameViewController.swift */; };
 		60ABE0DE2282A606003A3580 /* SJointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DB2282A606003A3580 /* SJointModel.swift */; };
 		60ABE0E02282AB15003A3580 /* SDatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DF2282AB15003A3580 /* SDatum.swift */; };
+		60ABE0E22283CF2A003A3580 /* SLimbAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */; };
 		60C3CE85227816B60098A9DA /* SThreejsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C3CE84227816B60098A9DA /* SThreejsControl.swift */; };
 		60C3CE87227817B70098A9DA /* index4.html in Resources */ = {isa = PBXBuildFile; fileRef = 60C3CE86227817B70098A9DA /* index4.html */; };
 		60C77C33222F548B00EF9F1A /* SBlueToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */; };
@@ -192,6 +193,7 @@
 		60ABE0DA2282A606003A3580 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		60ABE0DB2282A606003A3580 /* SJointModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SJointModel.swift; sourceTree = "<group>"; };
 		60ABE0DF2282AB15003A3580 /* SDatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDatum.swift; sourceTree = "<group>"; };
+		60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLimbAssembly.swift; sourceTree = "<group>"; };
 		60C3CE84227816B60098A9DA /* SThreejsControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SThreejsControl.swift; sourceTree = "<group>"; };
 		60C3CE86227817B70098A9DA /* index4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index4.html; sourceTree = "<group>"; };
 		60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBlueToothManager.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				60ABE0DA2282A606003A3580 /* GameViewController.swift */,
 				60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */,
 				60ABE0DB2282A606003A3580 /* SJointModel.swift */,
+				60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */,
 				60ABE0DF2282AB15003A3580 /* SDatum.swift */,
 			);
 			path = SceneWork;
@@ -841,6 +844,7 @@
 				60F63068226EE47D00C6B3F8 /* SControlOperationBridge.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
+				60ABE0E22283CF2A003A3580 /* SLimbAssembly.swift in Sources */,
 				6053CE9F219909F900E1014C /* ControlController.swift in Sources */,
 				60108DB3219416D00099A903 /* SSnapUpdateView.swift in Sources */,
 				60108DE621956DA70099A903 /* SSnapUsingView.swift in Sources */,
