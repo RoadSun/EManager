@@ -29,8 +29,13 @@ class SPt: NSObject {
     var angle = CGFloat.pi / 2
     var type:SOperationType = .none
     var d = 0 // 方向
+    var servoNo:Int = -1
+    var servoNoArray:[Int] = [Int]()
     // 0 定点 1 动点
-    
+    func servoNo(_ no:Int) ->SPt {
+        self.servoNo = no
+        return self
+    }
     convenience init(point:CGPoint,state:Int,No:Int,Min:Int,Max:Int,Angle:CGFloat = CGFloat.pi / 2,type:SOperationType = .none){
         self.init()
         self.point = point

@@ -42,6 +42,7 @@
 		602DE17B2189AA5300CC4511 /* EManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE17A2189AA5300CC4511 /* EManagerTests.swift */; };
 		602DE1862189AA5300CC4511 /* EManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1852189AA5300CC4511 /* EManagerUITests.swift */; };
 		602DE197218AD99800CC4511 /* SRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE196218AD99800CC4511 /* SRequest.swift */; };
+		6031C98D228523E200C564BC /* SDynamicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031C98C228523E200C564BC /* SDynamicData.swift */; };
 		60507331226EABBA006DCFB4 /* SOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60507330226EABBA006DCFB4 /* SOperationBase.swift */; };
 		6053CE9D2199088E00E1014C /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9C2199088E00E1014C /* BodyView.swift */; };
 		6053CE9F219909F900E1014C /* ControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9E219909F900E1014C /* ControlController.swift */; };
@@ -78,6 +79,7 @@
 		60D8A2D12227D7F300E89B1A /* EmitterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D8A2D02227D7F300E89B1A /* EmitterController.swift */; };
 		60E195D9225C31E300B51FDF /* SOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E195D8225C31E300B51FDF /* SOperationModel.swift */; };
 		60E195DB225C68EE00B51FDF /* SNeckControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E195DA225C68EE00B51FDF /* SNeckControl.swift */; };
+		60E5B43322851E8B0042EC87 /* 01.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60E5B43222851E8B0042EC87 /* 01.txt */; };
 		60F63068226EE47D00C6B3F8 /* SControlOperationBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */; };
 		60F6306A226FF10300C6B3F8 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F63069226FF10300C6B3F8 /* SceneKit.framework */; };
 		60F630AD22704DE000C6B3F8 /* SLimbControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F630AC22704DE000C6B3F8 /* SLimbControl.swift */; };
@@ -172,6 +174,7 @@
 		602DE1872189AA5300CC4511 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		602DE196218AD99800CC4511 /* SRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRequest.swift; sourceTree = "<group>"; };
 		602DE19A218C2B5B00CC4511 /* PeerTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PeerTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6031C98C228523E200C564BC /* SDynamicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDynamicData.swift; sourceTree = "<group>"; };
 		60507330226EABBA006DCFB4 /* SOperationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationBase.swift; sourceTree = "<group>"; };
 		6053CE9C2199088E00E1014C /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
 		6053CE9E219909F900E1014C /* ControlController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlController.swift; sourceTree = "<group>"; };
@@ -208,6 +211,7 @@
 		60D8A2D02227D7F300E89B1A /* EmitterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmitterController.swift; sourceTree = "<group>"; };
 		60E195D8225C31E300B51FDF /* SOperationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationModel.swift; sourceTree = "<group>"; };
 		60E195DA225C68EE00B51FDF /* SNeckControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNeckControl.swift; sourceTree = "<group>"; };
+		60E5B43222851E8B0042EC87 /* 01.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 01.txt; sourceTree = "<group>"; };
 		60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SControlOperationBridge.swift; sourceTree = "<group>"; };
 		60F63069226FF10300C6B3F8 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		60F630AC22704DE000C6B3F8 /* SLimbControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLimbControl.swift; sourceTree = "<group>"; };
@@ -423,6 +427,14 @@
 			path = Tool;
 			sourceTree = "<group>";
 		};
+		6031C98B228523B000C564BC /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6031C98C228523E200C564BC /* SDynamicData.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		6053CE9B2199086E00E1014C /* Robot */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +472,7 @@
 				60E195D8225C31E300B51FDF /* SOperationModel.swift */,
 				60267113225ECA1E00C4D605 /* SControlProtocol.swift */,
 				60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */,
+				6031C98B228523B000C564BC /* Data */,
 				60ABE0D82282A606003A3580 /* SceneWork */,
 				60C3CE7C22756F7F0098A9DA /* 3D */,
 			);
@@ -481,6 +494,7 @@
 		60C3CE7C22756F7F0098A9DA /* 3D */ = {
 			isa = PBXGroup;
 			children = (
+				60E5B43222851E8B0042EC87 /* 01.txt */,
 				60C3CE7D22756FB80098A9DA /* css */,
 				60C3CE7F22756FB80098A9DA /* html */,
 				60C3CE7E22756FB80098A9DA /* js */,
@@ -689,6 +703,7 @@
 				602DE1702189AA5300CC4511 /* LaunchScreen.storyboard in Resources */,
 				60FBB94022153C63008A3F11 /* SendUDPController.xib in Resources */,
 				60C844C3225331530060C734 /* SFaceLog.xib in Resources */,
+				60E5B43322851E8B0042EC87 /* 01.txt in Resources */,
 				6007BB3721C38803000CD104 /* path.html in Resources */,
 				60FBB93C2214FFB7008A3F11 /* UDPController.xib in Resources */,
 				602DE16D2189AA5300CC4511 /* Assets.xcassets in Resources */,
@@ -828,6 +843,7 @@
 				602DE197218AD99800CC4511 /* SRequest.swift in Sources */,
 				60507331226EABBA006DCFB4 /* SOperationBase.swift in Sources */,
 				60108DAE2193D61B0099A903 /* CollectionHeaderView.swift in Sources */,
+				6031C98D228523E200C564BC /* SDynamicData.swift in Sources */,
 				6026711A225F08A200C4D605 /* SHandControl.swift in Sources */,
 				6026711C225F08DC00C4D605 /* SFaceControl.swift in Sources */,
 				60D8A2D12227D7F300E89B1A /* EmitterController.swift in Sources */,

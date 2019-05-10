@@ -54,9 +54,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         self.title = "功能"
         _ = self.list
-        
+
         self.tableView(self.list, didSelectRowAt: IndexPath(row: 1, section: 5))
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

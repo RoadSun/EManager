@@ -229,16 +229,6 @@ class GameViewController: UIViewController {
         
         let floor = SJointModel.createFloor(0, -50, 0)
         scnScene.rootNode.addChildNode(floor)
-        
-//        let cone = SJointModel.createSphere(0, 0, 0.3, .blue, radius:0.08)
-//        scnScene.rootNode.addChildNode(cone)
-//
-//        torus = SJointModel.createTorus(1, 1, 1)
-//        torus.isHidden = true
-//        scnScene.rootNode.addChildNode(torus)
-//        torus.addChildNode(cone)
-        
-//        cone.runAction(SCNAction.rotateBy(x: 0, y: 0, z: (CGFloat.pi*0.5), duration: 0))
     }
     
     // 创建一个基准坐标

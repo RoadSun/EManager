@@ -37,4 +37,9 @@ class SValueTrans: NSObject {
         let new_v = SValueTrans.trans_toVal_cross(0, 180, center.y + r, center.y - r, v)
         return CGPoint(x: center.x - r + new_h, y: center.y - r - new_v)
     }
+    
+    // 弧度 角度互转
+    class func trans_πAngel(_ value:CGFloat, _ toA:Bool = true) ->CGFloat {
+        return CGFloat.pi * value / 180.0
+    }
 }

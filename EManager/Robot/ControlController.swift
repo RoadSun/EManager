@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ControlController: UIViewController {
+class ControlController: UIViewController, SDynamicDataDelegate {
 
     
     override func viewDidLoad() {
@@ -25,10 +25,10 @@ class ControlController: UIViewController {
         operationLine.backgroundColor = .lightGray
 //
         // 脖子, 脸部朝向
-        neck =  SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        neck = SNeckControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
         
         // 身体
-        body =  SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
+        body = SBodyControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
 
         // 测试
         hand = SHandControl(frame: CGRect(x: 50, y: 50, width: 600, height: 700))
@@ -97,6 +97,12 @@ class ControlController: UIViewController {
         seg.frame = CGRect(x: 50, y: 10, width: 200, height: 30)
         seg.addTarget(self, action: #selector(segClick(_:)), for: .valueChanged)
         self.view.addSubview(seg)
+        
+        _ = startBtn
+        _ = pauseBtn
+        data = SDynamicData()
+        data.getRobData()
+        data.delegate = self
     }
     
     @objc func segClick(_ sender:UISegmentedControl) {
@@ -278,5 +284,46 @@ class ControlController: UIViewController {
         if sender == slider3 {
             operationLine.setAgl(CGFloat(sender.value))
         }
+    }
+    
+    var data:SDynamicData!
+    lazy var startBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(self, action: #selector(startBtnClick(_:)), for: .touchUpInside)
+        btn.frame = CGRect(x: 20, y: 120, width: 50, height: 30)
+        btn.layer.cornerRadius = 3
+        btn.layer.masksToBounds = true
+        btn.setTitle("开始", for: .normal)
+        btn.backgroundColor = UIColor.gray
+        btn.setTitleColor(UIColor.white, for: .normal)
+        self.view.addSubview(btn)
+        return btn
+    }()
+    
+    lazy var pauseBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.addTarget(self, action: #selector(startBtnClick(_:)), for: .touchUpInside)
+        btn.frame = CGRect(x: 20, y: 160, width: 50, height: 30)
+        btn.layer.cornerRadius = 3
+        btn.layer.masksToBounds = true
+        btn.setTitle("暂停", for: .normal)
+        btn.backgroundColor = UIColor.gray
+        btn.setTitleColor(UIColor.white, for: .normal)
+        self.view.addSubview(btn)
+        return btn
+    }()
+    
+    @objc
+    func startBtnClick(_ sender:UIButton) {
+        if sender == startBtn {
+            data.start()
+        }else{
+            data.pause()
+        }
+    }
+    
+    func data_output(_ section: Int, _ value: Int) {
+        print("section : \(section) -- value : \(value)")
+        control.face_other(CGFloat(value))
     }
 }
