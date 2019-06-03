@@ -11,6 +11,7 @@ import UIKit
 
 @objc protocol SControlDelegate {
     @objc optional func control_outputValue(_ value:CGFloat, _ tag:Int)
+    @objc optional func control_outputObj(_ value:[String:CGFloat], _ tag:Int)
     @objc optional func control_nameCurrentRangeValue(_ value:String, _ min:String, _ max:String) // 部位 当前值 范围
     @objc optional func control_pointData(_ pt:SPt)
 }

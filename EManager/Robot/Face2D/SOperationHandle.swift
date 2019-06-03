@@ -28,6 +28,7 @@ class SOperationHandle: SOperationBase {
         eyecross = _OP.center
         eye__y = -60
         eye__sub__y = -15
+        self.setNeedsDisplay()
     }
     
     required init?(coder aDecoder: NSCoder) {

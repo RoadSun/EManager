@@ -129,4 +129,17 @@ class SJointModel: NSObject {
         return coneNode
     }
 
+    class func createCylinder(_ x:CGFloat, _ y:CGFloat, _ z:CGFloat, _ color:UIColor = .yellow, r:CGFloat = 0.3, height:CGFloat = 0.1) ->SCNNode{
+        let cone = SCNCylinder(radius: r, height: height)
+        let coneNode = SCNNode(geometry: cone)
+        coneNode.position = SCNVector3Make(Float(x), Float(y), Float(z))
+        
+        let material = SCNMaterial()
+        material.lightingModel = .lambert
+        material.diffuse.contents = color
+        material.ambient.contents = UIColor.init(white: 0.1, alpha: 1)
+        material.locksAmbientWithDiffuse = false
+        cone.materials = [material]
+        return coneNode
+    }
 }

@@ -12,11 +12,15 @@ class SOperationModel: NSObject {
     class func omodel_movePoint(_ val:CGFloat,
                                 _ center:CGPoint,
                                 _ angle:CGFloat,
-                                _ r:CGFloat) -> CGPoint{
+                                _ r:CGFloat, _ direction:Int = 1) -> CGPoint{
         // 计算旋转时候圆点的位置
         let r0 = val * r / 90.0
-        let cos_abs = abs(cos(angle))
-        let sin_abs = abs(sin(angle))
+        var cos_abs = abs(cos(angle))
+        var sin_abs = abs(sin(angle))
+        if direction == 0 {
+            cos_abs = -cos_abs
+            sin_abs = -sin_abs
+        }
         let x = r * cos_abs
         let y = r * sin_abs
         var point0:CGPoint!
@@ -397,7 +401,7 @@ class SOperationModel: NSObject {
     /*
      * 计算点的当前角度
      */
-    class func omodel_body_angle(_ center:CGPoint, _ point:CGPoint) -> CGFloat{
+    class func omodel_body_angle(_ center:CGPoint, _ point:CGPoint, margin:CGFloat = 0) -> CGFloat{
         let r = sqrt(pow(abs(point.x - center.x), 2) + pow(abs(point.y - center.y), 2))
         var newAngle:CGFloat = acos((point.x - center.x) / r)
         if point.y - center.y >= 0 {
@@ -410,7 +414,12 @@ class SOperationModel: NSObject {
         if newAngle.isNaN {
             return 0
         }
-        return newAngle
+        
+        var v:CGFloat = newAngle + margin
+        while v > CGFloat.pi * 2 {
+            v = v - CGFloat.pi * 2
+        }
+        return v
     }
 
     /*
@@ -467,5 +476,29 @@ class SOperationModel: NSObject {
         let btm = center.y - sin(agl2)*r0
         let standard = center.y - sin(angle)*r0
         return (s:standard,y:up,h:abs(btm - up))
+    }
+    
+    /*
+     * 方形区域
+     * center 中心点
+     * size 以中心点为基准
+     * point 当前移动点
+     */
+    class func omodel_judge_square_are(_ center:CGPoint, _ size:CGSize, _ point:CGPoint) -> Bool{
+        let half_w = size.width / 2
+        let half_h = size.height / 2
+        if abs(point.x - center.x) > half_w {
+            return false
+        } else if abs(point.y - center.y) > half_h {
+            return false
+        }
+        return true
+    }
+    
+    /*
+     * 算中点
+     */
+    class func omodel_center_point(_ start:CGPoint, _ end:CGPoint) ->CGPoint{
+        return CGPoint(x: (start.x + end.x)*0.5, y: (start.y + end.y)*0.5)
     }
 }

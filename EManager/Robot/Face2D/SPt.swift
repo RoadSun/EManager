@@ -28,14 +28,35 @@ class SPt: NSObject {
     var No = 0
     var angle = CGFloat.pi / 2
     var type:SOperationType = .none
-    var d = 0 // 方向
+    var d = 0 // 方向, 标准方向
+    var d_s = 0 // 有第二个控制方向左右或者上下 方向
+    var debugD = 0 // 相对调试使用(原始方向) 1 正 0 反
+    var debugD_S = 0 // 相对调试使用(原始方向) 1 正 0 反
+    var standardD = 0 // 实际方向
+    var standardD_S = 0 // 实际方向,有第二个控制点
     var servoNo:Int = -1
-    var servoNoArray:[Int] = [Int]()
+    var servoNoS:Int = -1 //有第二个控制方向左右或者上下
+    var servoD:Int = 0 // (输入)实际电机方向 0 正 1 反
     // 0 定点 1 动点
-    func servoNo(_ no:Int) ->SPt {
+    func servoNo(_ no:Int, _ no_s:Int = -1) ->SPt {
         self.servoNo = no
+        self.servoNoS = no_s
         return self
     }
+    
+    // 设置电机方向
+    func setD(_ direction:Int, _ dir_s:Int = 0) ->SPt {
+        self.d = direction
+        self.d_s = dir_s
+        return self
+    }
+    // 设置原始方向
+    func setDebugD(_ dd:Int, _ dd_s:Int = 0) ->SPt {
+        self.debugD = dd
+        self.debugD_S = dd_s
+        return self
+    }
+    
     convenience init(point:CGPoint,state:Int,No:Int,Min:Int,Max:Int,Angle:CGFloat = CGFloat.pi / 2,type:SOperationType = .none){
         self.init()
         self.point = point

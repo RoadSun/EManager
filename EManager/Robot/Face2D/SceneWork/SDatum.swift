@@ -19,7 +19,7 @@ class SDatum: NSObject {
         
         /// x
         let x_cone = SJointModel.createCone(1, 0, 0, .red)
-        x_cone.runAction(SCNAction.rotateBy(x: 0, y: 0, z: -(CGFloat.pi*0.5), duration: 0))
+        x_cone.transform = SCNMatrix4MakeRotation(-(Float.pi*0.5), 0, 0, 1)
         scnScene.rootNode.addChildNode(x_cone)
         
         // x_o

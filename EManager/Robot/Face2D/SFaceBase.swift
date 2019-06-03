@@ -18,9 +18,10 @@ struct SBaseData {
 
 enum SOperationType {
     case line   // 线性
-    case circle  // 圆盘
+    case circle // 圆盘
     case handle // 手控
     case cross  // 嘴角
+    case rotate // 旋转(眼部)
     case none   // 无
 }
 
@@ -61,7 +62,6 @@ class SFaceBase: UIView, SControlDelegate {
         swip.direction = [.left,.right]
         swip.addTarget(self, action: #selector(swipeEvent(_:)))
         self.addGestureRecognizer(swip)
-
     }
     
     required init?(coder aDecoder: NSCoder) {

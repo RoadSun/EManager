@@ -8,37 +8,11 @@
 
 import UIKit
 
-struct SPointerData {
-    var points = [CGPoint]()
-    var pt = CGPoint.zero
-    var sign:Bool = true
-    mutating func setPoint(_ point:CGPoint, _ d:Bool = true, second:CGPoint = CGPoint.zero) {
-        if d {
-            points.append(point)
-            if points.count > 4 {
-                points.removeFirst()
-            }else if(points.count < 3){
-                return
-            }
-            let s0 = points[1].x - points[0].x
-            let s1 = points[2].x - points[1].x
-            if (s0 >= 0 && s1 >= 0) || (s0 <= 0 && s1 <= 0) {
-                sign = true
-            }else{
-                sign = false
-            }
-        }else{
-            if ((second.x - pt.x < 0 && second.y - pt.x < 0) || (second.x - pt.x < 0 && second.y - pt.x > 0)) {
-                sign = false
-            } else {
-                sign = true
-            }
-        }
-    }
-}
-
 class SNeckControl: SFaceBase {
 
+    var leftMothPoint:CGPoint! // 左轴移动
+    var rightMothPoint:CGPoint! // 右轴移动
+    var mothAngle:CGFloat = CGFloat.pi*0.5 // 轴合成角度
     override init(frame: CGRect) {
         super.init(frame: frame)
         _ = capturePoint
@@ -68,6 +42,10 @@ class SNeckControl: SFaceBase {
         }
         
         self.neckAction(CGFloat.pi * 0.5)
+        
+        // 初始化左右轴点
+        leftMothPoint = CGPoint(x: _model.neckCrossArrayBase[0][0].point.x-170, y: 380 + 75)
+        rightMothPoint = CGPoint(x: _model.neckCrossArrayBase[0][0].point.x+170, y: 380 + 75)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,50 +74,77 @@ class SNeckControl: SFaceBase {
     
     var faceCenterPoint:CGPoint!
     var beginPoint:CGPoint! // 起始点
-    var pointerData = SPointerData()  // 上两个点
+//    var pointerData = SPointerData()  // 上两个点
     var currentAngle:SAngle = SAngle()
     // 晃动当前角度
     override func panEvent(_ sender: UIPanGestureRecognizer) {
         let point = sender.location(in: self)
-        // 先判断可移动点位置, 如果不在范围内, 不让进行移动
-        if point.x >= 80 && point.x <= 480 && point.y >= 550 && point.y <= 630 {
-            if sender.state == .began {
-                beginPoint = point
-            }else{
-                let val = beginPoint.x - point.x
-                pointerData.setPoint(point)
-                if pointerData.sign == false {
-                    beginPoint = pointerData.points[1]
-                }
-                
-                // 左右摆脖子动作
-                self.neckAction(val * CGFloat.pi / 25600.0 + currentAngle.radian)
-                self.setNeedsDisplay()
+        
+        // 拖动左轴点
+        if SOperationModel.r_between(leftMothPoint, point) < 20 {
+            leftMothPoint.y = point.y
+            if leftMothPoint.y < 380 {
+                leftMothPoint.y = 380
             }
+            
+            if leftMothPoint.y > 380 + 150 {
+                leftMothPoint.y = 380 + 150
+            }
+            
+            // 赋予合成角度
+            self.mothAngle = SOperationModel.omodel_body_angle(leftMothPoint, rightMothPoint, margin: CGFloat.pi*0.5)
+            print("angle left ---- \(self.mothAngle / CGFloat.pi * 180)")
+            self.neckAction(self.mothAngle + currentAngle.radian - CGFloat.pi*0.5)
+            self.setNeedsDisplay()
+            return
+        }
+        
+        // 拖动右轴点
+        if SOperationModel.r_between(rightMothPoint, point) < 20 {
+            rightMothPoint.y = point.y
+            if rightMothPoint.y < 380 {
+                rightMothPoint.y = 380
+            }
+            
+            if rightMothPoint.y > 380 + 150 {
+                rightMothPoint.y = 380 + 150
+            }
+            
+            // 赋予合成角度
+            self.mothAngle = SOperationModel.omodel_body_angle(leftMothPoint, rightMothPoint, margin: CGFloat.pi*0.5)
+            print("angle left ---- \(self.mothAngle / CGFloat.pi * 180)")
+            self.neckAction(self.mothAngle + currentAngle.radian - CGFloat.pi*0.5)
+            self.setNeedsDisplay()
             return
         }
         
         // 判定白色牵引圆点触控区域
-        if (pow((faceCenterPoint.x - point.x), 2) + pow((faceCenterPoint.y - point.y), 2)) >= 400 {
+        if SOperationModel.r_between(faceCenterPoint, point) > 20 {
             return
         }
         
         // 操作中心点
         faceCenterPoint = point
+        if faceCenterPoint.x > _model.neckCrossArrayBase[0][0].point.x + 100 {
+            faceCenterPoint.x = _model.neckCrossArrayBase[0][0].point.x + 100
+        }
+        if faceCenterPoint.x < _model.neckCrossArrayBase[0][0].point.x - 100 {
+            faceCenterPoint.x = _model.neckCrossArrayBase[0][0].point.x - 100
+        }
         // 中心控制点改变
-        _model.neckCrossArray[0][1].point = point
-        _model.neckCrossArray[1][1].point = point
+        _model.neckCrossArray[0][1].point = faceCenterPoint
+        _model.neckCrossArray[1][1].point = faceCenterPoint
         // 上下点变换
-        _model.neckCrossArray[0][0].point = SOperationModel.omodel_neck(_model.neckCrossArrayBase[0][0].point,_model.neckCrossArrayBase[0][1].point, faceCenterPoint)
-        _model.neckCrossArray[0][2].point = SOperationModel.omodel_neck(_model.neckCrossArrayBase[0][2].point,_model.neckCrossArrayBase[0][1].point, faceCenterPoint)
+        _model.neckCrossArray[0][0].point = SOperationModel.omodel_neck(_model.neckCrossArray[0][0].point,_model.neckCrossArray[0][1].point, faceCenterPoint)
+        _model.neckCrossArray[0][2].point = SOperationModel.omodel_neck(_model.neckCrossArray[0][2].point,_model.neckCrossArray[0][1].point, faceCenterPoint)
         // 左右点变换
-        _model.neckCrossArray[1][0].point = SOperationModel.omodel_neck(_model.neckCrossArrayBase[1][0].point,_model.neckCrossArrayBase[1][1].point, faceCenterPoint)
-        _model.neckCrossArray[1][2].point = SOperationModel.omodel_neck(_model.neckCrossArrayBase[1][2].point,_model.neckCrossArrayBase[1][1].point, faceCenterPoint)
+        _model.neckCrossArray[1][0].point = SOperationModel.omodel_neck(_model.neckCrossArray[1][0].point,_model.neckCrossArray[1][1].point, faceCenterPoint)
+        _model.neckCrossArray[1][2].point = SOperationModel.omodel_neck(_model.neckCrossArray[1][2].point,_model.neckCrossArray[1][1].point, faceCenterPoint)
         
         // 计算晃脖子表情的初始角度
         for (i,list) in _model.neckCrossArray.enumerated() {
             for (index,obj) in list.enumerated() {
-                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, currentAngle.radian, obj.point)
+                obj.angle = SOperationModel.omodel_angle(_model.centerSway.point, self.mothAngle, obj.point)
                 _model.neckCrossArray[i][index] = list[index]
             }
         }
@@ -153,18 +158,11 @@ class SNeckControl: SFaceBase {
      */
     func neckAction(_ value:CGFloat,_ state:UIPanGestureRecognizer.State = .ended) {
         currentAngle.setVal(value)
-        // 设定范围
-        if currentAngle.radian > CGFloat.pi * 0.75 {
-            currentAngle.pi(0.75)
-        }else if (currentAngle.radian < CGFloat.pi * 0.25) {
-            currentAngle.pi(0.25)
-        }
-        
         // 动作捕捉部分
         
         if self.isCapture {
             if state == .ended {
-                if (currentAngle.radian - CGFloat.pi / 2) < 0.1 {
+                if (self.mothAngle - CGFloat.pi / 2) < 0.1 {
                     currentAngle.pi(0.5)
                 }
             }
@@ -173,7 +171,7 @@ class SNeckControl: SFaceBase {
         // 头部跟着动
         for (index, obj) in _model.neckArray.enumerated() {
             if index > 2 && index < _model.neckArray.count - 3 {
-                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle.radian, obj.point)
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, self.mothAngle, obj.point)
                 _model.neckArray[index] = obj
             }
         }
@@ -182,7 +180,7 @@ class SNeckControl: SFaceBase {
         // 脖子表情跟着动
         for (i,list) in _model.neckCrossArray.enumerated() {
             for (index,obj) in list.enumerated() {
-                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, currentAngle.radian, obj.point)
+                obj.point = SOperationModel.omodel_swas(_model.centerSway.point, obj.angle, self.mothAngle, obj.point)
                 _model.neckCrossArray[i][index] = list[index]
             }
         }
@@ -193,75 +191,72 @@ class SNeckControl: SFaceBase {
         
         /*** 输出 ***/
         if self.delegate != nil {
-            self.delegate.control_outputValue!(currentAngle.radian, 20)
+            self.delegate.control_outputValue!(self.mothAngle, 20)
         }
-    }
-    
-    override func tapEvent(_ sender: UITapGestureRecognizer) {
-        let point = sender.location(in: self)
-        let angle_1:CGFloat = CGFloat.pi / 180.0
-        // 左偏
-        if point.x >= 80 && point.x < 280 && point.y >= 550 && point.y <= 630 {
-            self.neckAction(angle_1+currentAngle.radian)
-        }
-        
-        // 右偏
-        if point.x >= 280 && point.x <= 480 && point.y >= 550 && point.y <= 630 {
-            self.neckAction(-angle_1+currentAngle.radian)
-        }
-
-        self.setNeedsDisplay()
     }
     
     /*
      * 重画
      */
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        let context = UIGraphicsGetCurrentContext()
+    override func draw_canvas(_ rect: CGRect, _ context: CGContext) {
+        super.draw_canvas(rect, context)
         
         // 画脖子表情
-        context?.move(to: _model.profileMidPointArray[0].point)
+        context.move(to: _model.profileMidPointArray[0].point)
         for (index,_) in _model.profileMidPointArray.enumerated() {
             // 在点范围之内
             if index < _model.profileMidPointArray.count - 1 {
-                context?.addQuadCurve(to: _model.profileMidPointArray[index + 1].point, control: _model.neckArray[index + 1].point)
+                context.addQuadCurve(to: _model.profileMidPointArray[index + 1].point, control: _model.neckArray[index + 1].point)
             }
         }
-        SFacePen.draw_line(context!)
+        SFacePen.draw_line(context)
         
         // 画脖子表情
         for (i,list) in _model.neckCrossMidArray.enumerated() {
-            context?.move(to: list[0].point)
+            context.move(to: list[0].point)
             for index in 0..<(list.count - 1) {
-                context?.addQuadCurve(to: list[index + 1].point, control: _model.neckCrossArray[i][index + 1].point)
+                context.addQuadCurve(to: list[index + 1].point, control: _model.neckCrossArray[i][index + 1].point)
             }
         }
-        SFacePen.draw_line(context!,.blue)
+        SFacePen.draw_line(context,.blue)
         
-        /* 画触控区域
-         * [CGRect(x: 10, y: 200, width: 80, height: 200),CGRect(x: 465, y: 200, width: 80, height: 200),
-         */
-        SFacePen.operation_touchArea([CGRect(x: 80, y: 550, width: 400, height: 80)], context!)
+        // 左轴
+        SFacePen.draw_line(CGPoint(x: _model.neckCrossArrayBase[0][0].point.x-170, y: 380),
+                           CGPoint(x: _model.neckCrossArrayBase[0][0].point.x-170, y: 380 + 150),
+                           context, .purple, 3)
         
-        // 牵引点
-        SFacePen.draw_circle(faceCenterPoint, 15, .white, context!)
+        SFacePen.draw_line(CGPoint(x: _model.neckCrossArrayBase[0][0].point.x-170-20, y: 380 + 75),
+                           CGPoint(x: _model.neckCrossArrayBase[0][0].point.x-170+20, y: 380 + 75),
+                           context, .purple, 3)
+        // 右轴
+        SFacePen.draw_line(CGPoint(x: _model.neckCrossArrayBase[0][0].point.x+170, y: 380),
+                           CGPoint(x: _model.neckCrossArrayBase[0][0].point.x+170, y: 380 + 150),
+                           context, .purple, 3)
         
-        // 指针
-        SFacePen.draw_line(_model.centerSway.point, SOperationModel.omodel_point_to_point(_model.centerSway.point, 450, currentAngle.radian), context!)
+        SFacePen.draw_line(CGPoint(x: _model.neckCrossArrayBase[0][0].point.x+170-20, y: 380 + 75),
+                           CGPoint(x: _model.neckCrossArrayBase[0][0].point.x+170+20, y: 380 + 75),
+                           context, .purple, 3)
         
-        // 摇头基础点
-        SFacePen.draw_circle(_model.centerSway.point, 15, .blue, context!)
+        // 左右轴连接线
+        SFacePen.draw_line(leftMothPoint, rightMothPoint, context)
         
+        // 平衡点(两轴之间的牵引)
+        let center_pt = SOperationModel.omodel_center_point(leftMothPoint,rightMothPoint)
+        SFacePen.draw_circle(center_pt, 5, .yellow, context)
         
-        SFacePen.draw_cross(faceCenterPoint, val: 100, context!)
+        // 垂直线
+        SFacePen.draw_line(center_pt,
+                           SOperationModel.omodel_point_to_point(center_pt, 80, self.mothAngle),
+                           context, .green)
         
-        /////// 测试
-        // 旋转盘
-//        context?.setAlpha( 0.3)
-//        SFacePen.draw_circle_rect(CGPoint(x: 150, y: 500), CGSize(width: 300, height: 100), .darkGray, context!)
-//        context?.setAlpha( 1)
-//        SFacePen.draw_circle_rect(CGPoint(x: 270, y: 570), CGSize(width: 60, height: 20), .white, context!)
-//        SFacePen.draw_line(CGPoint(x: 300, y: 550), CGPoint(x: 300, y: 475), context!, .red, 2)
+        // 左轴牵引点
+        SFacePen.draw_circle(leftMothPoint, 15, .white, context)
+        
+        // 右轴牵引点
+        SFacePen.draw_circle(rightMothPoint, 15, .white, context)
+        
+        // 面部牵引点 + 十字
+        SFacePen.draw_circle(faceCenterPoint, 15, .white, context)
+        SFacePen.draw_cross(faceCenterPoint, val: 5, context)
     }
 }

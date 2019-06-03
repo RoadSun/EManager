@@ -4,7 +4,7 @@
 //
 //  Created by EX DOLL on 2018/10/31.
 //  Copyright © 2018 EX DOLL. All rights reserved.
-//
+// 二代机器人服务
 
 import UIKit
 import SnapKit
@@ -55,14 +55,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.title = "功能"
         _ = self.list
 
-        self.tableView(self.list, didSelectRowAt: IndexPath(row: 1, section: 5))
+        self.tableView(self.list, didSelectRowAt: IndexPath(row: 0, section: 5))
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     lazy var list:UITableView = {
         let table = UITableView(frame: self.view.frame, style: .grouped)
         table.delegate = self

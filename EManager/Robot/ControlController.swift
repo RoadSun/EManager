@@ -57,6 +57,11 @@ class ControlController: UIViewController, SDynamicDataDelegate {
         operationCross.isHidden = true
         operationCross.backgroundColor = .lightGray
         
+        // 控制器
+        operationRotate = SOperationRotate(frame: CGRect(x: 700, y: 50, width: 400, height: 400))
+        operationRotate.isHidden = true
+        operationRotate.backgroundColor = .lightGray
+        
         let bridge = SControlOperationBridge()
         bridge.ctl_face = control
         bridge.ctl_neck = neck
@@ -68,6 +73,7 @@ class ControlController: UIViewController, SDynamicDataDelegate {
         bridge.opt_circle = operationCircle
         bridge.opt_handle = operationHandle
         bridge.opt_cross = operationCross
+        bridge.opt_rotate = operationRotate
         bridge.setDelegates()
         
         self.view.backgroundColor = .black
@@ -77,7 +83,7 @@ class ControlController: UIViewController, SDynamicDataDelegate {
         self.view.addSubview(operationCircle)
         self.view.addSubview(operationHandle)
         self.view.addSubview(operationCross)
-        
+        self.view.addSubview(operationRotate)
         var transform = CGAffineTransform.identity
         transform = transform.translatedBy(x: 0, y: 0)
         transform = transform.scaledBy(x: 1, y: 1)
@@ -127,6 +133,7 @@ class ControlController: UIViewController, SDynamicDataDelegate {
     var operationCircle:SOperationCircle!
     var operationHandle:SOperationHandle!
     var operationCross:SOperationCross!
+    var operationRotate:SOperationRotate!
     var neck:SNeckControl!
     var body:SBodyControl!
     var limb:SLimbControl!
@@ -157,7 +164,6 @@ class ControlController: UIViewController, SDynamicDataDelegate {
     }
     
     func control_outputObj(_ value: [String : Any], _ tag: Int) {
-        
         if tag == 0 {
             control.face_eyeMove(value["vval"] as! CGFloat, value["hval"] as! CGFloat)
         }
@@ -235,7 +241,6 @@ class ControlController: UIViewController, SDynamicDataDelegate {
             transform = transform.rotated(by: CGFloat(sender.value))
             control.transform = transform
         }
-        
     }
     
     lazy var slider1: UISlider = {
@@ -322,8 +327,10 @@ class ControlController: UIViewController, SDynamicDataDelegate {
         }
     }
     
-    func data_output(_ section: Int, _ value: Int) {
-        print("section : \(section) -- value : \(value)")
-        control.face_other(CGFloat(value))
+    func data_output(_ section: Int, _ value: Int, _ list: [Int]) {
+        print(list)
+        control.face_data(list)
+//        print("section : \(section) -- value : \(value)")
+//        control.face_other(CGFloat(value))
     }
 }

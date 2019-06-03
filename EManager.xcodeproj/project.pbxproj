@@ -27,6 +27,7 @@
 		60108DE4219568950099A903 /* SSnapRemakeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE3219568950099A903 /* SSnapRemakeView.swift */; };
 		60108DE621956DA70099A903 /* SSnapUsingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE521956DA70099A903 /* SSnapUsingView.swift */; };
 		60108DE8219571F30099A903 /* SSnapEdgesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60108DE7219571F30099A903 /* SSnapEdgesView.swift */; };
+		60156EF5229E5EFE0072D07D /* SPointSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60156EF4229E5EFE0072D07D /* SPointSet.swift */; };
 		60267114225ECA1E00C4D605 /* SControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60267113225ECA1E00C4D605 /* SControlProtocol.swift */; };
 		60267118225F083500C4D605 /* SBodyControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60267117225F083500C4D605 /* SBodyControl.swift */; };
 		6026711A225F08A200C4D605 /* SHandControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60267119225F08A200C4D605 /* SHandControl.swift */; };
@@ -43,6 +44,8 @@
 		602DE1862189AA5300CC4511 /* EManagerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE1852189AA5300CC4511 /* EManagerUITests.swift */; };
 		602DE197218AD99800CC4511 /* SRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 602DE196218AD99800CC4511 /* SRequest.swift */; };
 		6031C98D228523E200C564BC /* SDynamicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6031C98C228523E200C564BC /* SDynamicData.swift */; };
+		604F021F228E9640002E802F /* SSceneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604F021E228E9640002E802F /* SSceneData.swift */; };
+		604F0223228E9676002E802F /* SSceneData.xib in Resources */ = {isa = PBXBuildFile; fileRef = 604F0222228E9676002E802F /* SSceneData.xib */; };
 		60507331226EABBA006DCFB4 /* SOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60507330226EABBA006DCFB4 /* SOperationBase.swift */; };
 		6053CE9D2199088E00E1014C /* BodyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9C2199088E00E1014C /* BodyView.swift */; };
 		6053CE9F219909F900E1014C /* ControlController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6053CE9E219909F900E1014C /* ControlController.swift */; };
@@ -59,12 +62,17 @@
 		6091EA91224C60A9009F73E2 /* SPointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA90224C60A9009F73E2 /* SPointModel.swift */; };
 		6091EA93224CA7AF009F73E2 /* SPt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA92224CA7AF009F73E2 /* SPt.swift */; };
 		6091EA97224DEADA009F73E2 /* SFacePen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091EA96224DEAD9009F73E2 /* SFacePen.swift */; };
+		60A4436B229CFDAF000AA56F /* EyeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A4436A229CFDAF000AA56F /* EyeController.swift */; };
+		60A44373229D0C2B000AA56F /* eye_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 60A44372229D0C2B000AA56F /* eye_icon.png */; };
+		60A44375229E182D000AA56F /* SOperationRotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A44374229E182D000AA56F /* SOperationRotate.swift */; };
 		60ABE0D3227FCC51003A3580 /* SOperationCross.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0D2227FCC51003A3580 /* SOperationCross.swift */; };
 		60ABE0DC2282A606003A3580 /* SCoordinateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */; };
 		60ABE0DD2282A606003A3580 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DA2282A606003A3580 /* GameViewController.swift */; };
 		60ABE0DE2282A606003A3580 /* SJointModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DB2282A606003A3580 /* SJointModel.swift */; };
 		60ABE0E02282AB15003A3580 /* SDatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0DF2282AB15003A3580 /* SDatum.swift */; };
 		60ABE0E22283CF2A003A3580 /* SLimbAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */; };
+		60AFEE51228C0A41000E45EE /* 机器人舵机调试规范1.1.xlsx in Resources */ = {isa = PBXBuildFile; fileRef = 60AFEE50228C0A41000E45EE /* 机器人舵机调试规范1.1.xlsx */; };
+		60AFEE53228E594D000E45EE /* SSceneOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AFEE52228E594D000E45EE /* SSceneOperationModel.swift */; };
 		60C3CE85227816B60098A9DA /* SThreejsControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C3CE84227816B60098A9DA /* SThreejsControl.swift */; };
 		60C3CE87227817B70098A9DA /* index4.html in Resources */ = {isa = PBXBuildFile; fileRef = 60C3CE86227817B70098A9DA /* index4.html */; };
 		60C77C33222F548B00EF9F1A /* SBlueToothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */; };
@@ -80,6 +88,8 @@
 		60E195D9225C31E300B51FDF /* SOperationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E195D8225C31E300B51FDF /* SOperationModel.swift */; };
 		60E195DB225C68EE00B51FDF /* SNeckControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E195DA225C68EE00B51FDF /* SNeckControl.swift */; };
 		60E5B43322851E8B0042EC87 /* 01.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60E5B43222851E8B0042EC87 /* 01.txt */; };
+		60E7E23B2292518E004020C7 /* SClickTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7E23A2292518E004020C7 /* SClickTip.swift */; };
+		60E7E23D22963326004020C7 /* SNodeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7E23C22963326004020C7 /* SNodeUnit.swift */; };
 		60F63068226EE47D00C6B3F8 /* SControlOperationBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */; };
 		60F6306A226FF10300C6B3F8 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F63069226FF10300C6B3F8 /* SceneKit.framework */; };
 		60F630AD22704DE000C6B3F8 /* SLimbControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F630AC22704DE000C6B3F8 /* SLimbControl.swift */; };
@@ -152,6 +162,7 @@
 		60108DE3219568950099A903 /* SSnapRemakeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapRemakeView.swift; sourceTree = "<group>"; };
 		60108DE521956DA70099A903 /* SSnapUsingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapUsingView.swift; sourceTree = "<group>"; };
 		60108DE7219571F30099A903 /* SSnapEdgesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSnapEdgesView.swift; sourceTree = "<group>"; };
+		60156EF4229E5EFE0072D07D /* SPointSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPointSet.swift; sourceTree = "<group>"; };
 		60267113225ECA1E00C4D605 /* SControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SControlProtocol.swift; sourceTree = "<group>"; };
 		60267117225F083500C4D605 /* SBodyControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SBodyControl.swift; sourceTree = "<group>"; };
 		60267119225F08A200C4D605 /* SHandControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHandControl.swift; sourceTree = "<group>"; };
@@ -175,6 +186,8 @@
 		602DE196218AD99800CC4511 /* SRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRequest.swift; sourceTree = "<group>"; };
 		602DE19A218C2B5B00CC4511 /* PeerTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PeerTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6031C98C228523E200C564BC /* SDynamicData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDynamicData.swift; sourceTree = "<group>"; };
+		604F021E228E9640002E802F /* SSceneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSceneData.swift; sourceTree = "<group>"; };
+		604F0222228E9676002E802F /* SSceneData.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSceneData.xib; sourceTree = "<group>"; };
 		60507330226EABBA006DCFB4 /* SOperationBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationBase.swift; sourceTree = "<group>"; };
 		6053CE9C2199088E00E1014C /* BodyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyView.swift; sourceTree = "<group>"; };
 		6053CE9E219909F900E1014C /* ControlController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlController.swift; sourceTree = "<group>"; };
@@ -191,12 +204,17 @@
 		6091EA90224C60A9009F73E2 /* SPointModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPointModel.swift; sourceTree = "<group>"; };
 		6091EA92224CA7AF009F73E2 /* SPt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPt.swift; sourceTree = "<group>"; };
 		6091EA96224DEAD9009F73E2 /* SFacePen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFacePen.swift; sourceTree = "<group>"; };
+		60A4436A229CFDAF000AA56F /* EyeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeController.swift; sourceTree = "<group>"; };
+		60A44372229D0C2B000AA56F /* eye_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = eye_icon.png; sourceTree = "<group>"; };
+		60A44374229E182D000AA56F /* SOperationRotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationRotate.swift; sourceTree = "<group>"; };
 		60ABE0D2227FCC51003A3580 /* SOperationCross.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationCross.swift; sourceTree = "<group>"; };
 		60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCoordinateSystem.swift; sourceTree = "<group>"; };
 		60ABE0DA2282A606003A3580 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		60ABE0DB2282A606003A3580 /* SJointModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SJointModel.swift; sourceTree = "<group>"; };
 		60ABE0DF2282AB15003A3580 /* SDatum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDatum.swift; sourceTree = "<group>"; };
 		60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLimbAssembly.swift; sourceTree = "<group>"; };
+		60AFEE50228C0A41000E45EE /* 机器人舵机调试规范1.1.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "机器人舵机调试规范1.1.xlsx"; sourceTree = "<group>"; };
+		60AFEE52228E594D000E45EE /* SSceneOperationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSceneOperationModel.swift; sourceTree = "<group>"; };
 		60C3CE84227816B60098A9DA /* SThreejsControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SThreejsControl.swift; sourceTree = "<group>"; };
 		60C3CE86227817B70098A9DA /* index4.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index4.html; sourceTree = "<group>"; };
 		60C77C32222F548B00EF9F1A /* SBlueToothManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBlueToothManager.swift; sourceTree = "<group>"; };
@@ -212,6 +230,8 @@
 		60E195D8225C31E300B51FDF /* SOperationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SOperationModel.swift; sourceTree = "<group>"; };
 		60E195DA225C68EE00B51FDF /* SNeckControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNeckControl.swift; sourceTree = "<group>"; };
 		60E5B43222851E8B0042EC87 /* 01.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 01.txt; sourceTree = "<group>"; };
+		60E7E23A2292518E004020C7 /* SClickTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SClickTip.swift; sourceTree = "<group>"; };
+		60E7E23C22963326004020C7 /* SNodeUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNodeUnit.swift; sourceTree = "<group>"; };
 		60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SControlOperationBridge.swift; sourceTree = "<group>"; };
 		60F63069226FF10300C6B3F8 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 		60F630AC22704DE000C6B3F8 /* SLimbControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLimbControl.swift; sourceTree = "<group>"; };
@@ -468,9 +488,11 @@
 				6026711F22606B3600C4D605 /* SOperationLine.swift */,
 				6026711D226067FF00C4D605 /* SOperationCircle.swift */,
 				605DD3DD226823A600CBE223 /* SOperationHandle.swift */,
+				60A44374229E182D000AA56F /* SOperationRotate.swift */,
 				60ABE0D2227FCC51003A3580 /* SOperationCross.swift */,
 				60E195D8225C31E300B51FDF /* SOperationModel.swift */,
 				60267113225ECA1E00C4D605 /* SControlProtocol.swift */,
+				60156EF4229E5EFE0072D07D /* SPointSet.swift */,
 				60F63067226EE47D00C6B3F8 /* SControlOperationBridge.swift */,
 				6031C98B228523B000C564BC /* Data */,
 				60ABE0D82282A606003A3580 /* SceneWork */,
@@ -482,11 +504,18 @@
 		60ABE0D82282A606003A3580 /* SceneWork */ = {
 			isa = PBXGroup;
 			children = (
+				60A44372229D0C2B000AA56F /* eye_icon.png */,
 				60ABE0DA2282A606003A3580 /* GameViewController.swift */,
+				60A4436A229CFDAF000AA56F /* EyeController.swift */,
 				60ABE0D92282A606003A3580 /* SCoordinateSystem.swift */,
 				60ABE0DB2282A606003A3580 /* SJointModel.swift */,
 				60ABE0E12283CF2A003A3580 /* SLimbAssembly.swift */,
 				60ABE0DF2282AB15003A3580 /* SDatum.swift */,
+				60AFEE52228E594D000E45EE /* SSceneOperationModel.swift */,
+				604F021E228E9640002E802F /* SSceneData.swift */,
+				604F0222228E9676002E802F /* SSceneData.xib */,
+				60E7E23A2292518E004020C7 /* SClickTip.swift */,
+				60E7E23C22963326004020C7 /* SNodeUnit.swift */,
 			);
 			path = SceneWork;
 			sourceTree = "<group>";
@@ -494,6 +523,7 @@
 		60C3CE7C22756F7F0098A9DA /* 3D */ = {
 			isa = PBXGroup;
 			children = (
+				60AFEE50228C0A41000E45EE /* 机器人舵机调试规范1.1.xlsx */,
 				60E5B43222851E8B0042EC87 /* 01.txt */,
 				60C3CE7D22756FB80098A9DA /* css */,
 				60C3CE7F22756FB80098A9DA /* html */,
@@ -703,9 +733,12 @@
 				602DE1702189AA5300CC4511 /* LaunchScreen.storyboard in Resources */,
 				60FBB94022153C63008A3F11 /* SendUDPController.xib in Resources */,
 				60C844C3225331530060C734 /* SFaceLog.xib in Resources */,
+				604F0223228E9676002E802F /* SSceneData.xib in Resources */,
+				60A44373229D0C2B000AA56F /* eye_icon.png in Resources */,
 				60E5B43322851E8B0042EC87 /* 01.txt in Resources */,
 				6007BB3721C38803000CD104 /* path.html in Resources */,
 				60FBB93C2214FFB7008A3F11 /* UDPController.xib in Resources */,
+				60AFEE51228C0A41000E45EE /* 机器人舵机调试规范1.1.xlsx in Resources */,
 				602DE16D2189AA5300CC4511 /* Assets.xcassets in Resources */,
 				602DE1682189AA5100CC4511 /* Main.storyboard in Resources */,
 				60FBB9B5221BD217008A3F11 /* SignalController.xib in Resources */,
@@ -820,6 +853,7 @@
 				60108DA82193C57C0099A903 /* CollectionViewController.swift in Sources */,
 				60ABE0DC2282A606003A3580 /* SCoordinateSystem.swift in Sources */,
 				6053CEA9219AA34900E1014C /* CoordinatesController.swift in Sources */,
+				604F021F228E9640002E802F /* SSceneData.swift in Sources */,
 				60ABE0D3227FCC51003A3580 /* SOperationCross.swift in Sources */,
 				60FBB9B4221BD217008A3F11 /* SignalController.swift in Sources */,
 				60ABE0E02282AB15003A3580 /* SDatum.swift in Sources */,
@@ -827,6 +861,7 @@
 				60FBB94E2216843A008A3F11 /* SChangeBtn.swift in Sources */,
 				60108DB121940DCC0099A903 /* SSnapBasicView.swift in Sources */,
 				60F630AD22704DE000C6B3F8 /* SLimbControl.swift in Sources */,
+				60E7E23B2292518E004020C7 /* SClickTip.swift in Sources */,
 				60108D9321915E960099A903 /* SnapController.swift in Sources */,
 				60FBB9532216843A008A3F11 /* SCanvasModel.swift in Sources */,
 				60108DAA2193D03B0099A903 /* SCell.swift in Sources */,
@@ -849,6 +884,7 @@
 				60D8A2D12227D7F300E89B1A /* EmitterController.swift in Sources */,
 				60FBB9512216843A008A3F11 /* SChartBridge.swift in Sources */,
 				60108DAD2193D61B0099A903 /* CollectionFootView.swift in Sources */,
+				60A4436B229CFDAF000AA56F /* EyeController.swift in Sources */,
 				60108D9D219273F30099A903 /* QRCodeController.swift in Sources */,
 				60FBB9502216843A008A3F11 /* SCanvasModelExtend.swift in Sources */,
 				60FBB94C2216843A008A3F11 /* SCanvasControl.swift in Sources */,
@@ -857,6 +893,7 @@
 				605DD46922699D3700CBE223 /* SValueTrans.swift in Sources */,
 				60ABE0DD2282A606003A3580 /* GameViewController.swift in Sources */,
 				60108D9F2192755E0099A903 /* ORCode.swift in Sources */,
+				60E7E23D22963326004020C7 /* SNodeUnit.swift in Sources */,
 				60F63068226EE47D00C6B3F8 /* SControlOperationBridge.swift in Sources */,
 				602DE1652189AA5100CC4511 /* ViewController.swift in Sources */,
 				602DE1632189AA5100CC4511 /* AppDelegate.swift in Sources */,
@@ -890,8 +927,11 @@
 				6026712022606B3600C4D605 /* SOperationLine.swift in Sources */,
 				60F630B12272F5C800C6B3F8 /* SMount.swift in Sources */,
 				6053CEAB219BFD2200E1014C /* RBSlider.swift in Sources */,
+				60AFEE53228E594D000E45EE /* SSceneOperationModel.swift in Sources */,
+				60156EF5229E5EFE0072D07D /* SPointSet.swift in Sources */,
 				607A6F3721A3B3B900F5059A /* SAudio.swift in Sources */,
 				6053CEAF219C023A00E1014C /* VController.swift in Sources */,
+				60A44375229E182D000AA56F /* SOperationRotate.swift in Sources */,
 				60C844C1225331230060C734 /* SFaceLog.swift in Sources */,
 				60C77C35222F54D000EF9F1A /* SBluetooth.swift in Sources */,
 				6053CEA5219A632600E1014C /* BasicFunction.swift in Sources */,

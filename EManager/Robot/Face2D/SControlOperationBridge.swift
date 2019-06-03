@@ -18,7 +18,8 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
     
     var opt_line:SOperationLine!
     var opt_circle:SOperationCircle!
-    var opt_handle:SOperationHandle!
+    var opt_rotate:SOperationRotate!
+    var opt_handle:SOperationHandle! // 眼球
     var opt_cross:SOperationCross!
     
     override func viewDidLoad() {
@@ -36,6 +37,7 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
         
         opt_line.op_delegate = self
         opt_circle.op_delegate = self
+        opt_rotate.op_delegate = self
         opt_handle.op_delegate = self
         opt_cross.op_delegate = self
     }
@@ -45,15 +47,16 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
         ctl_face.face_other(value)
     }
     
+    // 输出
     func operation_outputObj(_ value: [String : Any], _ tag: Int) {
         // 眼部移动
-        if tag == 0 {
-            ctl_face.face_eyeMove(value["vval"] as! CGFloat, value["hval"] as! CGFloat)
+        if tag == 5 {
+            ctl_face.face_eyeMove(value["eye.x"] as! CGFloat, value["eye.y"] as! CGFloat)
         }
         
         // 嘴角移动
         if tag == 3 {
-            ctl_face.face_mouthCornerMmove(value["crossx"] as! CGFloat, value["crossy"] as! CGFloat)
+            ctl_face.face_mouthCornerMove(value["crossx"] as! CGFloat, value["crossy"] as! CGFloat)
         }
     }
     
@@ -66,37 +69,55 @@ class SControlOperationBridge: UIViewController, SControlDelegate,SOperationDele
     func control_outputValue(_ value: CGFloat, _ tag: Int) {
         if tag == 20 {
             opt_circle.setCurrentValue(value)
-        }else{
+        }else if tag == 11 {
+            opt_rotate.isReverse = true
+        } else if tag == 12 {
+            opt_rotate.isReverse = false
+        } else{
             opt_line.setCurrentValue(value)
         }
+    }
+    
+    func control_outputObj(_ value: [String : CGFloat], _ tag: Int) {
+        opt_rotate.setEyeValue(value["eye.h"]! / 60, value["eye.v"]! / 60)
     }
     
     func control_nameCurrentRangeValue(_ value: String, _ min: String, _ max: String) {
         
     }
-    
+    //setMove
+    // 操作输出
     func control_pointData(_ pt: SPt) {
         if pt.type == .line {
             opt_circle.isHidden = true
             opt_handle.isHidden = true
             opt_cross.isHidden = true
+            opt_rotate.isHidden = true
             opt_line.isHidden = false
             opt_line.setAgl(pt.angle)
         } else if (pt.type == .circle) {
             opt_line.isHidden = true
             opt_handle.isHidden = true
             opt_cross.isHidden = true
+            opt_rotate.isHidden = true
             opt_circle.isHidden = false
         }else if (pt.type == .handle) {
             opt_line.isHidden = true
             opt_circle.isHidden = true
             opt_cross.isHidden = true
+            opt_rotate.isHidden = true
             opt_handle.isHidden = false
         }else if (pt.type == .cross) {
             opt_circle.isHidden = true
             opt_handle.isHidden = true
             opt_line.isHidden = true
+            opt_rotate.isHidden = true
             opt_cross.isHidden = false
+        }else if (pt.type == .rotate) {
+            opt_line.isHidden = true
+            opt_circle.isHidden = true
+            opt_cross.isHidden = true
+            opt_rotate.isHidden = false
         }
     }
 }
